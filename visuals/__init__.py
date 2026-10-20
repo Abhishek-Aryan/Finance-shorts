@@ -1,0 +1,1 @@
+"""Finance Shorts - Visuals Package"""

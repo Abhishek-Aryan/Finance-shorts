@@ -1,0 +1,51 @@
+# Finance Shorts - Git Ignore
+# Never commit secrets, tokens, generated files, or environment data.
+
+# ── Secrets & credentials ──────────────────────────────────
+.env
+config/youtube_client_secrets.json
+config/youtube_token.json
+config/instagram_token.json
+*.pem
+*.key
+
+# ── Generated output ───────────────────────────────────────
+output/
+logs/
+data/finance_shorts.db
+data/finance_shorts.db-wal
+data/finance_shorts.db-shm
+data/*.backup_*.xlsx
+
+# ── Piper TTS binaries and voice models ───────────────────
+piper/
+assets/voices/*.onnx
+assets/voices/*.onnx.json
+
+# ── Python ────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── Scratch & Debug Scripts ──────────────────────────────
+tools/test_*.py
+tools/debug_*.py
+tools/user_table_prompt*.txt
+
+# ── OS / Editor ───────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*.suo
+*.user

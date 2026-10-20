@@ -1,0 +1,1 @@
+"""Finance Shorts - Automation Package"""

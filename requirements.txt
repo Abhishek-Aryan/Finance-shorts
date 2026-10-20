@@ -1,0 +1,46 @@
+# Finance Shorts — Python Dependencies
+# All packages are free and open-source.
+# Install with: pip install -r requirements.txt
+
+# ── Core ──────────────────────────────────────────────────
+python-dotenv>=1.0.0          # .env loading
+openpyxl>=3.1.2               # Excel read/write
+pandas>=2.0.0                 # Data manipulation (analytics, reports)
+
+# ── Local LLM ─────────────────────────────────────────────
+# Ollama must be installed separately from https://ollama.com
+# This client talks to the local Ollama server
+ollama>=0.3.0                 # Ollama Python client
+
+# ── Video / Audio ─────────────────────────────────────────
+# ffmpeg-python is a wrapper; FFmpeg binary must be installed separately
+ffmpeg-python>=0.2.0          # FFmpeg Python bindings
+Pillow>=10.0.0                # Image generation and compositing
+matplotlib>=3.7.0             # Financial charts and graphs
+
+# ── Scheduling ────────────────────────────────────────────
+APScheduler>=3.10.0           # Local Python scheduler
+pytz>=2024.1                  # Timezone support
+
+# ── YouTube API ───────────────────────────────────────────
+google-api-python-client>=2.100.0
+google-auth-httplib2>=0.2.0
+google-auth-oauthlib>=1.2.0
+
+# ── HTTP (research module) ────────────────────────────────
+requests>=2.31.0
+beautifulsoup4>=4.12.0        # HTML parsing for research scraping
+
+# ── Data validation ───────────────────────────────────────
+jsonschema>=4.21.0            # JSON schema validation for scripts
+pydantic>=2.5.0               # Data models and validation
+
+# ── Testing ───────────────────────────────────────────────
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+
+# ── Utilities ─────────────────────────────────────────────
+rich>=13.7.0                  # Pretty terminal output
+click>=8.1.0                  # (Optional) Alternative CLI builder
+tqdm>=4.66.0                  # Progress bars
