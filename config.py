@@ -215,7 +215,7 @@ NOTIFY_EMAIL_PASSWORD  = _get("NOTIFY_EMAIL_PASSWORD", "")
 
 def validate() -> list[str]:
     """
-    Return a list of configuration warnings.
+    Return a list of configuration warnings reporting missing names.
     Empty list means everything looks good.
     """
     warnings: list[str] = []
@@ -225,21 +225,23 @@ def validate() -> list[str]:
 
     if PUBLISHING_MODE == "production":
         if not YOUTUBE_CLIENT_SECRETS_FILE.exists():
-            warnings.append(f"YouTube client secrets not found: {YOUTUBE_CLIENT_SECRETS_FILE}")
+            warnings.append("YOUTUBE_CLIENT_SECRETS_FILE")
         if not YOUTUBE_TOKEN_FILE.exists():
-            warnings.append(f"YouTube token file not found: {YOUTUBE_TOKEN_FILE}")
+            warnings.append("YOUTUBE_TOKEN_FILE")
         if not OPENROUTER_API_KEY and not GEMINI_API_KEY:
-            warnings.append("Both OPENROUTER_API_KEY and GEMINI_API_KEY are empty — script generation will fail")
+            warnings.append("OPENROUTER_API_KEY_OR_GEMINI_API_KEY")
+        if VIDEO_PROVIDER == "veo" and not GEMINI_API_KEY:
+            warnings.append("GEMINI_API_KEY")
 
     if TTS_ENGINE == "piper":
         if not PIPER_EXECUTABLE.exists():
-            warnings.append(f"Piper TTS not found at: {PIPER_EXECUTABLE} — TTS will fail")
+            warnings.append("PIPER_EXECUTABLE")
         if not PIPER_VOICE_MODEL.exists():
-            warnings.append(f"Piper voice model not found at: {PIPER_VOICE_MODEL} — TTS will fail")
+            warnings.append("PIPER_VOICE_MODEL")
     else:
         try:
             import edge_tts  # noqa: F401
         except ImportError:
-            warnings.append("edge_tts package not found — TTS will fail")
+            warnings.append("edge_tts")
 
     return warnings

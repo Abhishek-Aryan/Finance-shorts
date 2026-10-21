@@ -116,14 +116,17 @@ def publish_next_topic(
     if config.PUBLISHING_MODE == "production" and not dry_run:
         crit_errors = [
             w for w in warnings
-            if "YouTube client secrets" in w
-            or "YouTube token file" in w
-            or "Both OPENROUTER_API_KEY and GEMINI_API_KEY" in w
+            if w in (
+                "YOUTUBE_CLIENT_SECRETS_FILE",
+                "YOUTUBE_TOKEN_FILE",
+                "OPENROUTER_API_KEY_OR_GEMINI_API_KEY",
+                "GEMINI_API_KEY",
+            )
         ]
         if crit_errors:
             logger.error("Configuration validation failed in production mode: %s", crit_errors)
             for err in crit_errors:
-                print(f"[CONFIG ERROR] {err}", file=sys.stderr)
+                print(f"[CONFIG ERROR] Missing credential/file: {err}", file=sys.stderr)
             return 2
 
     # ── Step 1: Acquire the Run Lock ─────────────────────────────────────────
