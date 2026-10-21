@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-21T12:59:41.980382+05:30",
+  "updated_at": "2026-10-21T22:10:17.169814+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -71,15 +71,15 @@
       "day": 2,
       "scheduled_at": "2026-10-21T15:00:00+05:30",
       "topic": "EV/EBITDA vs P/E",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D02-15:00_1792600640",
+      "claimed_at": "2026-10-21T22:07:19.372770+05:30",
+      "youtube_video_id": "VdxFhvJLxFE",
+      "youtube_url": "https://youtube.com/shorts/VdxFhvJLxFE",
+      "published_at": "2026-10-21T22:10:17.165987+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Why do smart investors ignore the standard PE ratio and use EV to EBITDA instead for better stock valuation? The PE ratio only looks at share price and earnings, while enterprise value includes total debt and cash in hand. If a company has massive debt, its PE ratio looks artificially cheap until high interest payments crush their actual operating profits. On the NSE, capital-heavy manufacturing firms in India often mask high borrowing costs until EV to EBITDA exposes the truth. Always use EV to EBITDA when comparing heavily indebted companies to find true value without nasty debt surprises. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D02-20:00": {
       "row_index": 7,

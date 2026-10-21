@@ -181,8 +181,8 @@ def run_pro_pipeline(
 
         # ── Step 3: Google Veo Scene Videos ───────────────────────────────────
         logger.info("═══ [3/5] GOOGLE VEO SCENE VIDEOS (%d scenes) ═══", len(scenes))
-        if dry_run:
-            logger.info("[DRY RUN] Skipping Veo scene generation")
+        if dry_run or config.VIDEO_PROVIDER != "veo":
+            logger.info("Skipping Veo scene generation (dry_run=%s, provider=%s)", dry_run, config.VIDEO_PROVIDER)
             scene_paths = [None] * len(scenes)
         else:
             scene_paths = generate_all_scenes(scenes, job_id, scenes_dir)

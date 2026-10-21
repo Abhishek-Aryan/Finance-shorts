@@ -185,22 +185,17 @@ class VeoProvider(SceneVideoProvider):
             f"dark luxury studio, gold ambient rim light, 30fps."
         )
 
+        # Map requested duration to valid discrete Veo values: 4, 6, 8
+        valid_durations = [4, 6, 8]
+        closest_duration = min(valid_durations, key=lambda x: abs(x - duration))
+
         payload = {
-            "prompt": enhanced_prompt,
-            "config": {
-                "aspect_ratio": "9:16",
-                "resolution": "720p",
-                "negative_prompt": "blurry, low quality, distorted, cartoon, watermark, talking audio, spoken words",
-                "duration_seconds": duration,
+            "instances": [{"prompt": enhanced_prompt}],
+            "parameters": {
+                "aspectRatio": "9:16",
+                "durationSeconds": closest_duration,
             },
         }
-
-        # Reference image conditioning if asset exists
-        ref_image_path = config.ROOT_DIR / "assets" / "character" / "mentor_character_1.png"
-        if ref_image_path.exists():
-            payload["config"]["reference_images"] = [
-                {"description": "Luxury finance mentor silhouette in dark suit with gold rim light"}
-            ]
 
         # Retry transient errors up to 5 attempts with exponential backoff
         last_error = None
