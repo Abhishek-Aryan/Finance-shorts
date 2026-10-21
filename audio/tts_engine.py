@@ -340,8 +340,15 @@ class TTSEngine:
         filename: str = "voiceover",
         rate: str = "+0%",
         normalize: bool = True,
+        output_filename: Optional[Path | str] = None,
+        **kwargs: Any,
     ) -> dict[str, Any]:
-        return synthesize_speech(
+        if output_filename:
+            out_p = Path(output_filename)
+            output_dir = out_p.parent
+            filename = out_p.stem
+
+        res = synthesize_speech(
             text=text,
             output_dir=Path(output_dir) if output_dir else None,
             filename_prefix=filename,
@@ -349,6 +356,11 @@ class TTSEngine:
             rate=rate,
             normalize=normalize,
         )
+        # Compatibility aliases for callers
+        res["audio_file"] = str(res["audio_path"])
+        res["srt_file"] = str(res["srt_path"]) if res.get("srt_path") else ""
+        res["duration_seconds"] = res["duration"]
+        return res
 
     # Alias for compatibility with pro_pipeline
     generate_speech = generate_audio

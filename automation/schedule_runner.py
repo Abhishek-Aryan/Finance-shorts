@@ -121,7 +121,7 @@ def publish_next_topic(
                 "YOUTUBE_TOKEN_FILE",
                 "OPENROUTER_API_KEY_OR_GEMINI_API_KEY",
                 "GEMINI_API_KEY",
-            )
+            ) or "secret" in str(w).lower() or "token" in str(w).lower() or "key" in str(w).lower()
         ]
         if crit_errors:
             logger.error("Configuration validation failed in production mode: %s", crit_errors)

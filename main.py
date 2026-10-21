@@ -313,9 +313,9 @@ def _build_parser() -> argparse.ArgumentParser:
     rd.add_argument("--max-videos", dest="max_videos", type=int, default=1,
                     help="Max videos to publish in this cycle (default: 1)")
 
-    # Scheduler setup
-    sub.add_parser("install-scheduler", help="Register Windows Task Scheduler jobs (9AM, 3PM, 8PM IST)")
-    sub.add_parser("uninstall-scheduler", help="Remove Windows Task Scheduler jobs")
+    # Scheduler setup (deprecated)
+    sub.add_parser("install-scheduler", help="[Deprecated] Register Windows Task Scheduler jobs (9AM, 3PM, 8PM IST)")
+    sub.add_parser("uninstall-scheduler", help="[Deprecated] Remove Windows Task Scheduler jobs")
 
     return p
 

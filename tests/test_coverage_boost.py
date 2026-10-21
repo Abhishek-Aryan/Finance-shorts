@@ -108,17 +108,7 @@ def test_schedule_runner_print_status(capsys):
 
 def test_schedule_runner_publish_next_branches(tmp_path, monkeypatch):
     """Test publish_next_topic branches: config err, lock held, conflict, nothing due, excel fail."""
-    # 1. Config error (Exit code 2 in production mode)
-    monkeypatch.setattr(config, "PUBLISHING_MODE", "production")
-    with patch("automation.schedule_runner.config.validate", return_value=["YouTube client secrets file not found"]):
-        assert schedule_runner.publish_next_topic() == 2
-
-    # 2. Lock held (Exit code 0)
-    with patch("automation.schedule_runner.config.validate", return_value=[]), \
-         patch("automation.schedule_runner.acquire_run_lock", side_effect=run_lock.LockHeld("Locked")):
-        assert schedule_runner.publish_next_topic() == 0
-
-    # 3. State conflict (Exit code 3)
+    # Isolate Excel and State to tmp_path
     excel_path = tmp_path / "sched.xlsx"
     state_path = tmp_path / "state.json"
     wb = openpyxl.Workbook()
@@ -127,6 +117,18 @@ def test_schedule_runner_publish_next_branches(tmp_path, monkeypatch):
     ws.append(["Day #", "Week", "Date", "Day of Week", "Publish Time", "Topic", "Category", "Objective", "Script", "Posted?"])
     ws.append([1, 1, "20-Oct-2026", "Tuesday", "9:00 AM", "Topic 1", "Basics", "Obj", "Script", "Pending"])
     wb.save(excel_path)
+
+    # 1. Config error (Exit code 2 in production mode)
+    monkeypatch.setattr(config, "PUBLISHING_MODE", "production")
+    with patch("automation.schedule_runner.config.validate", return_value=["YOUTUBE_CLIENT_SECRETS_FILE"]):
+        assert schedule_runner.publish_next_topic(excel_path=excel_path, state_file=state_path) == 2
+
+    # 2. Lock held (Exit code 0)
+    with patch("automation.schedule_runner.config.validate", return_value=[]), \
+         patch("automation.schedule_runner.acquire_run_lock", side_effect=run_lock.LockHeld("Locked")):
+        assert schedule_runner.publish_next_topic(excel_path=excel_path, state_file=state_path) == 0
+
+    # 3. State conflict (Exit code 3)
     
     st = {
         "version": 1,
