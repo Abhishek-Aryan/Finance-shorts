@@ -73,6 +73,7 @@ OLLAMA_TIMEOUT     = _get_int("OLLAMA_TIMEOUT", 120)
 OLLAMA_RETRY_COUNT = _get_int("OLLAMA_RETRY_COUNT", 3)
 
 # ── TTS / Voice & Audio Mix ───────────────────────────────
+TTS_ENGINE           = _get("TTS_ENGINE", "edge").lower()
 DEFAULT_VOICE        = _get("DEFAULT_VOICE", "en-US-AndrewMultilingualNeural")
 PIPER_EXECUTABLE     = _ROOT / _get("PIPER_EXECUTABLE", "piper/piper.exe")
 PIPER_VOICE_MODEL    = _ROOT / _get("PIPER_VOICE_MODEL", "assets/voices/en_US-lessac-medium.onnx")
@@ -91,8 +92,8 @@ TARGET_DURATION_MAX  = _get_int("TARGET_DURATION_MAX", 60)
 
 # ── Publishing Schedule ───────────────────────────────────
 TIMEZONE             = _get("TIMEZONE", "Asia/Kolkata")
-PUBLISH_TIMES        = [t.strip() for t in _get("PUBLISH_TIMES", "08:00,19:00").split(",")]
-MAX_VIDEOS_PER_DAY   = _get_int("MAX_VIDEOS_PER_DAY", 2)
+PUBLISH_TIMES        = [t.strip() for t in _get("PUBLISH_TIMES", "09:00,15:00,20:00").split(",") if t.strip()]
+MAX_VIDEOS_PER_DAY   = _get_int("MAX_VIDEOS_PER_DAY", 3)
 MIN_QUEUE_BUFFER     = _get_int("MIN_QUEUE_BUFFER", 3)
 
 # ── Publishing Mode ───────────────────────────────────────
@@ -105,6 +106,11 @@ YOUTUBE_CLIENT_SECRETS_FILE = _ROOT / _secrets_rel if not Path(_secrets_rel).is_
 _token_rel = _get("YOUTUBE_TOKEN_FILE", "config/youtube_token.json")
 YOUTUBE_TOKEN_FILE = _ROOT / _token_rel if not Path(_token_rel).is_absolute() else Path(_token_rel)
 YOUTUBE_CATEGORY_ID  = _get_int("YOUTUBE_CATEGORY_ID", 27)
+
+_privacy_val = _get("YOUTUBE_PRIVACY_STATUS", "unlisted").lower()
+if _privacy_val not in ("public", "unlisted", "private"):
+    raise ValueError(f"Invalid YOUTUBE_PRIVACY_STATUS {_privacy_val!r}, must be 'public', 'unlisted', or 'private'")
+YOUTUBE_PRIVACY_STATUS = _privacy_val
 
 # ── Instagram ─────────────────────────────────────────────
 INSTAGRAM_ACCESS_TOKEN = _get("INSTAGRAM_ACCESS_TOKEN", "")
@@ -143,13 +149,20 @@ def validate() -> list[str]:
     if PUBLISHING_MODE == "production":
         if not YOUTUBE_CLIENT_SECRETS_FILE.exists():
             warnings.append(f"YouTube client secrets not found: {YOUTUBE_CLIENT_SECRETS_FILE}")
-        if not INSTAGRAM_ACCESS_TOKEN:
-            warnings.append("INSTAGRAM_ACCESS_TOKEN is empty — Instagram publishing will fail")
+        if not YOUTUBE_TOKEN_FILE.exists():
+            warnings.append(f"YouTube token file not found: {YOUTUBE_TOKEN_FILE}")
+        if not OPENROUTER_API_KEY and not GEMINI_API_KEY:
+            warnings.append("Both OPENROUTER_API_KEY and GEMINI_API_KEY are empty — script generation will fail")
 
-    if not PIPER_EXECUTABLE.exists():
-        warnings.append(f"Piper TTS not found at: {PIPER_EXECUTABLE} — TTS will fail")
-
-    if not PIPER_VOICE_MODEL.exists():
-        warnings.append(f"Piper voice model not found at: {PIPER_VOICE_MODEL} — TTS will fail")
+    if TTS_ENGINE == "piper":
+        if not PIPER_EXECUTABLE.exists():
+            warnings.append(f"Piper TTS not found at: {PIPER_EXECUTABLE} — TTS will fail")
+        if not PIPER_VOICE_MODEL.exists():
+            warnings.append(f"Piper voice model not found at: {PIPER_VOICE_MODEL} — TTS will fail")
+    else:
+        try:
+            import edge_tts  # noqa: F401
+        except ImportError:
+            warnings.append("edge_tts package not found — TTS will fail")
 
     return warnings

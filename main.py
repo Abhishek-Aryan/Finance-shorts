@@ -245,7 +245,8 @@ def cmd_schedule_status(args: argparse.Namespace) -> None:
 def cmd_publish_next(args: argparse.Namespace) -> None:
     logger_setup.setup_logging("INFO")
     from automation.schedule_runner import publish_next_topic
-    publish_next_topic(dry_run=args.dry_run)
+    code = publish_next_topic(dry_run=args.dry_run)
+    sys.exit(code)
 
 
 def cmd_run_schedule(args: argparse.Namespace) -> None:

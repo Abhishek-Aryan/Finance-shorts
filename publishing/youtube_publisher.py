@@ -247,12 +247,32 @@ def upload_direct(
     title: str,
     description: str,
     tags: Optional[list[str]] = None,
-    privacy_status: str = "public",
+    privacy_status: str | None = None,
 ) -> dict[str, Any]:
     """Uploads a standalone video file directly to YouTube using OAuth2 credentials."""
     video_path = Path(video_path)
     if not video_path.exists():
         raise FileNotFoundError(f"Video file not found: {video_path}")
+
+    if config.PUBLISHING_MODE not in ("test", "production"):
+        raise ValueError(f"Invalid PUBLISHING_MODE: {config.PUBLISHING_MODE!r}, must be 'test' or 'production'")
+
+    privacy_status = privacy_status or config.YOUTUBE_PRIVACY_STATUS
+
+    if config.PUBLISHING_MODE == "test":
+        import time as _time
+        test_video_id = f"TEST-{int(_time.time())}"
+        test_url = f"https://youtube.com/shorts/{test_video_id}"
+        logger.info("[TEST MODE] upload_direct skipped network call. Assigned mock video ID: %s (%s)", test_video_id, test_url)
+        return {
+            "id": test_video_id,
+            "video_id": test_video_id,
+            "url": test_url,
+            "published_url": test_url,
+            "title": title,
+            "mode": "test",
+            "status": "PUBLISHED",
+        }
 
     from googleapiclient.discovery import build
     from googleapiclient.http import MediaFileUpload
