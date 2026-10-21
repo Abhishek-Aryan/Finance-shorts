@@ -295,7 +295,13 @@ def select_due_row(
 
     e_path = Path(excel_path or SCHEDULE_FILE)
     st = state_store.load(state_file=state_file, excel_file=e_path)
-    state_store.reconcile(st, excel_path=e_path, state_file=state_file, now=now)
+
+    try:
+        state_store.reconcile(st, excel_path=e_path, state_file=state_file, now=now)
+    except state_store.RunInProgressError as rpe:
+        logger.info("Active run currently in progress: %s", rpe)
+        select_due_row.reason = "active run in progress"
+        return None
 
     rows = st.get("rows", {})
     candidates = []
@@ -397,6 +403,16 @@ def mark_row_done(
         raise ValueError(
             f"Topic mismatch at row {row_index} for key {row_key}: "
             f"expected {expected_topic!r}, found {actual_topic!r}"
+        )
+
+    # Refuse if there are duplicate topics matching expected_topic in the sheet
+    matches = [
+        r_idx for r_idx in range(2, ws.max_row + 1)
+        if str(ws.cell(row=r_idx, column=6).value or "").strip().lower() == expected_topic.strip().lower()
+    ]
+    if len(matches) > 1:
+        raise ValueError(
+            f"Duplicate topics ({len(matches)} occurrences) found for {expected_topic!r}; refusing mark_row_done"
         )
 
     status_cell = ws.cell(row=row_index, column=10)  # Col J: Posted?
