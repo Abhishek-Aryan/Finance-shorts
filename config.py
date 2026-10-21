@@ -6,6 +6,7 @@ Never import secrets directly — always use this module.
 
 from __future__ import annotations
 
+import logging
 import os
 from pathlib import Path
 from dotenv import load_dotenv
