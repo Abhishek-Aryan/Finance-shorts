@@ -146,20 +146,18 @@ def _generate_script_gemini(topic: str, category: str, objective: str, prompt: s
     return None
 
 
-def generate_pro_script(
+def _generate_single_script(
     topic: str,
     category: str,
     key_learning_objective: str,
-) -> dict[str, Any]:
-    """
-    Generates a full pro-level storyboard script.
-    Tries Gemini API first, then OpenRouter models, with graceful fallback.
-    """
+    extra_instruction: str = "",
+) -> Optional[dict[str, Any]]:
+    """Attempts generation via Gemini first, then OpenRouter models."""
     user_prompt = f"""Write a YouTube Short script for:
 Topic: {topic}
 Category: {category}
 Learning Objective: {key_learning_objective}
-
+{extra_instruction}
 CRITICAL RULES:
 1. Return valid JSON only.
 2. NEVER use double quotes inside string values. Use single quotes if needed (e.g. 'yield curve').
@@ -170,7 +168,7 @@ CRITICAL RULES:
 Return ONLY this JSON structure:
 {{
   "video_title": "Punchy 7-word title with power word",
-  "voiceover_hook": "Visceral hook starting with 'Did you know' or 'Most investors don't realize'",
+  "voiceover_hook": "Visceral hook starting with a number, a question, a contrast, or a short story",
   "scenes": [
     {{
       "scene_number": 1,
@@ -308,6 +306,67 @@ Return ONLY this JSON structure:
             except Exception as e:
                 logger.error("Attempt %d error (%s): %s", attempt + 1, model_name, e)
                 time.sleep(2)
+
+    return None
+
+
+def generate_pro_script(
+    topic: str,
+    category: str,
+    key_learning_objective: str,
+    recent_scripts: list[dict | str] | None = None,
+) -> dict[str, Any]:
+    """
+    Generates a full pro-level storyboard script with hook uniqueness check.
+    Retries up to 3 times if the hook duplicates any of the last 10 published scripts.
+    """
+    from content.script_validator import check_hook_uniqueness, extract_hook_words
+    from storage.state_store import get_recent_published_scripts
+
+    if recent_scripts is None:
+        try:
+            recent_scripts = get_recent_published_scripts(limit=10)
+        except Exception:
+            recent_scripts = []
+
+    candidates = []
+    extra_instruction = ""
+
+    for attempt in range(1, 4):
+        if attempt > 1:
+            extra_instruction = (
+                "\nDo not begin with 'Most investors don't realize'. "
+                "Use a different opening structure: a number, a question, a contrast, or a short story.\n"
+            )
+
+        script = _generate_single_script(
+            topic, category, key_learning_objective, extra_instruction=extra_instruction
+        )
+        if not script:
+            continue
+
+        hook_err = check_hook_uniqueness(script, recent_scripts)
+        if not hook_err:
+            return script
+
+        logger.info("Script attempt %d produced duplicate hook (%s). Retrying...", attempt, hook_err)
+        candidates.append(script)
+
+    if candidates:
+        logger.warning(
+            "After 3 attempts, could not generate a strictly unique hook for [%s]. Accepting least similar candidate.",
+            topic,
+        )
+        def similarity_score(cand):
+            words = set(extract_hook_words(cand, n_words=8))
+            score = 0
+            for r in recent_scripts:
+                r_words = set(extract_hook_words(r, n_words=8))
+                score += len(words.intersection(r_words))
+            return score
+
+        candidates.sort(key=similarity_score)
+        return candidates[0]
 
     logger.warning("All LLM attempts failed for topic: %s. Using fallback.", topic)
     return _fallback_script(topic, category, key_learning_objective)

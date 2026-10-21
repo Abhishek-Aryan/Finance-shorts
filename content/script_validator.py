@@ -184,3 +184,46 @@ def _check_financial_calculations(text: str) -> list[str]:
             pass
 
     return issues
+
+
+def extract_hook_words(script: dict[str, Any] | str, n_words: int = 8) -> list[str]:
+    """
+    Extracts the first n words of the hook, lowercased with punctuation stripped.
+    Looks in voiceover_hook, hook, scenes[0].voiceover, or full text.
+    """
+    if isinstance(script, dict):
+        text = script.get("voiceover_hook") or script.get("hook") or ""
+        if not text:
+            scenes = script.get("scenes", [])
+            if scenes and isinstance(scenes[0], dict):
+                text = scenes[0].get("voiceover", "")
+        if not text:
+            text = script.get("full_voiceover") or script.get("full_script") or ""
+    else:
+        text = str(script)
+
+    clean = re.sub(r"[^\w\s]", "", str(text)).lower()
+    return clean.split()[:n_words]
+
+
+def check_hook_uniqueness(
+    script: dict[str, Any] | str,
+    recent_scripts: list[dict[str, Any] | str],
+) -> Optional[str]:
+    """
+    Compares the first 8 words (lowercased, punctuation stripped) with
+    the first 8 words of the recent scripts.
+    Returns an error string if equal (duplicate hook), or None if unique.
+    """
+    candidate_words = extract_hook_words(script, n_words=8)
+    if not candidate_words:
+        return None
+
+    candidate_str = " ".join(candidate_words)
+
+    for idx, recent in enumerate(recent_scripts):
+        recent_words = extract_hook_words(recent, n_words=8)
+        if len(candidate_words) >= 4 and candidate_words == recent_words:
+            return f"Duplicate hook: first 8 words {candidate_str!r} match recent script #{idx + 1}"
+
+    return None

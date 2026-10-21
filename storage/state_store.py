@@ -244,6 +244,17 @@ def all_rows(state_file: Path | None = None) -> dict[str, dict]:
     return st.get("rows", {})
 
 
+def get_recent_published_scripts(limit: int = 10, state_file: Path | None = None) -> list[str]:
+    """Returns script_full texts of the last `limit` published scripts from state."""
+    st = load(state_file)
+    done_rows = [
+        r for r in st.get("rows", {}).values()
+        if r.get("status") == "Done" and r.get("script_full")
+    ]
+    done_rows.sort(key=lambda x: x.get("published_at") or x.get("scheduled_at") or "", reverse=True)
+    return [r["script_full"] for r in done_rows[:limit]]
+
+
 def reconcile(
     state: dict | None = None,
     excel_path: Path | None = None,
