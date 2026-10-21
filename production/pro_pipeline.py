@@ -26,6 +26,7 @@ from visuals.veo_provider import generate_all_scenes
 from visuals.video_provider import BudgetCapReached, QuotaExceeded
 from visuals.cinematic_composer import compose_pro_video
 from publishing.youtube_publisher import YouTubePublisher
+from storage import state_store
 
 logger = logging.getLogger(__name__)
 
@@ -120,13 +121,36 @@ def run_pro_pipeline(
     scenes_dir.mkdir(parents=True, exist_ok=True)
 
     try:
-        # ── Step 1: Script Generation ─────────────────────────────────────────
+        # ── Step 1: Script Generation with Hook-Uniqueness Check ──────────────
         logger.info("═══ [1/5] SCRIPT GENERATION: %s ═══", topic)
-        script = generate_pro_script(
-            topic=topic,
-            category=category,
-            learning_objective=objective,
-        )
+        past_scripts = state_store.get_recent_published_scripts(limit=10)
+        past_hooks = {
+            " ".join(ps.strip().lower().split()[:8])
+            for ps in past_scripts
+            if ps and len(ps.strip().split()) >= 3
+        }
+
+        script = None
+        for attempt in range(1, 4):
+            candidate = generate_pro_script(
+                topic=topic,
+                category=category,
+                learning_objective=objective,
+            )
+            cand_vo = candidate.get("full_voiceover", "")
+            cand_hook = " ".join(cand_vo.strip().lower().split()[:8])
+            if cand_hook in past_hooks:
+                logger.warning(
+                    "Script hook collision detected ('%s', attempt %d/3). Retrying generation...",
+                    cand_hook, attempt
+                )
+                continue
+            script = candidate
+            break
+
+        if not script:
+            script = candidate  # Use latest candidate if all retries exhausted
+
         result["script"] = script
         scenes = script.get("scenes", [])
         voiceover_text = script.get("full_voiceover", "")
@@ -259,8 +283,12 @@ def publish_composed(
 
     verify_composed_video(video_path)
 
-    logger.info("═══ PUBLISHING TO YOUTUBE: %s ═══", topic)
-    title = script.get("video_title", topic)[:100]
+    raw_title = script.get("video_title", topic)
+    if "#Shorts" not in raw_title and "#shorts" not in raw_title:
+        title = f"{raw_title} #Shorts"
+    else:
+        title = raw_title
+    title = title[:100]
     description = _build_description(script, topic, category)
     tags = script.get("tags", ["finance", "investing", "india", "shorts"])
 

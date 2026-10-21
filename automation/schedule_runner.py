@@ -3,7 +3,7 @@ Finance Shorts Pro - Autonomous Schedule Trigger Runner
 Monitors the 14-day publishing schedule (data/publishing_schedule.xlsx).
 Runs continuously or as a cron trigger to:
 1. Identify the next due topic according to IST time (09:00, 15:00, 20:00).
-2. Generate script (Gemini / OpenRouter) + TTS (Edge-TTS Andrew Neural) + HeyGen scene visuals.
+2. Generate script (Gemini / OpenRouter) + TTS (Edge-TTS Andrew Neural) + Google Veo scene visuals.
 3. Compose and verify final vertical 1080x1920 Short.
 4. Publish directly to connected YouTube channel.
 5. Update schedule state atomically and mark 'Done' in the Excel sheet.
@@ -26,6 +26,7 @@ import config
 from automation.run_lock import LockHeld, acquire_run_lock
 from production.pro_pipeline import publish_composed, run_pro_pipeline, verify_composed_video
 from storage import state_store
+from visuals.video_provider import BudgetCapReached, QuotaExceeded
 from storage.schedule_manager import (
     ExcelLockedError,
     format_status_cell,
@@ -101,6 +102,7 @@ def publish_next_topic(
       2 = Configuration or credential error
       3 = State conflict between Excel and state
       4 = Published to YouTube, but Excel view is stale / locked
+      5 = Budget cap reached (video generation seconds exceeded daily or run cap)
     """
     now_dt = now or datetime.now(IST)
     if now_dt.tzinfo is None:
@@ -195,6 +197,21 @@ def publish_next_topic(
             # Verify video
             if not dry_run and config.PUBLISHING_MODE == "production":
                 verify_composed_video(video_path)
+
+        except BudgetCapReached as bce:
+            logger.warning("Budget cap reached for %s: %s", row_key, bce)
+            print(f"[BUDGET CAP] {bce}", file=sys.stderr)
+            if not dry_run:
+                # Revert claimed status in state and Excel back to Pending without failing
+                state_store.upsert(row_key, state_file=s_path, status="Pending", claimed_at=None, job_id=None)
+                try:
+                    wb = openpyxl.load_workbook(str(e_path))
+                    ws = wb["Publishing Schedule"] if "Publishing Schedule" in wb.sheetnames else wb.active
+                    format_status_cell(ws.cell(row=row_index, column=10), "Pending", row_index)
+                    wb.save(str(e_path))
+                except Exception:
+                    pass
+            return 5
 
         except Exception as pe:
             logger.error("Pipeline failure for %s before upload: %s", row_key, pe, exc_info=True)
