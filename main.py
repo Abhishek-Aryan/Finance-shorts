@@ -211,7 +211,7 @@ def cmd_run_daily(args: argparse.Namespace) -> None:
     """Run the complete autonomous daily cycle."""
     logger_setup.setup_logging("INFO")
     print("\n=== STARTING AUTONOMOUS DAILY WORKER ===")
-    from automation.daily_worker import run_daily_cycle
+    from legacy.daily_worker import run_daily_cycle
     max_vids = getattr(args, "max_videos", 1) or 1
     report = run_daily_cycle(max_videos_to_publish=int(max_vids))
     print("\n=== DAILY CYCLE SUMMARY ===")
@@ -274,9 +274,9 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     sub = p.add_subparsers(dest="command")
 
-    sub.add_parser("init",   help="Initialise database and Excel queue")
-    sub.add_parser("status", help="Show pipeline status summary")
-    sub.add_parser("sync",   help="Sync SQLite state to Excel queue")
+    sub.add_parser("init",   help="[Legacy] Initialise SQLite database and Excel queue")
+    sub.add_parser("status", help="[Legacy] Show SQLite pipeline status summary")
+    sub.add_parser("sync",   help="[Legacy] Sync SQLite state to Excel queue")
 
     # 14-Day Schedule commands
     sub.add_parser("schedule-status", help="Display 14-day publishing schedule status")
@@ -290,21 +290,21 @@ def _build_parser() -> argparse.ArgumentParser:
     ay = sub.add_parser("auth-youtube", help="Authenticate YouTube Channel via OAuth2")
     ay.add_argument("--force", action="store_true", help="Force re-authentication even if token exists")
 
-    t = sub.add_parser("topics", help="List topics")
+    t = sub.add_parser("topics", help="[Legacy] List SQLite topics")
     t.add_argument("--status", help="Filter by status (e.g. IDEA, VIDEO_READY, PUBLISHED)")
 
-    g = sub.add_parser("generate", help="Generate script for a topic via local LLM")
+    g = sub.add_parser("generate", help="[Legacy] Generate script for a topic via local LLM")
     g.add_argument("--topic-id", dest="topic_id", help="Specific topic ID (default: next eligible)")
     g.add_argument("--auto-approve", dest="auto_approve", action="store_true",
                    help="Skip manual review even for unverified claims")
 
-    prod = sub.add_parser("produce", help="Render video (audio + visuals + FFmpeg)")
+    prod = sub.add_parser("produce", help="[Legacy] Render video (audio + visuals + FFmpeg)")
     prod.add_argument("--topic-id", dest="topic_id", help="Topic ID to render")
 
-    pub = sub.add_parser("publish", help="Publish video to YouTube & Instagram")
+    pub = sub.add_parser("publish", help="[Legacy] Publish video to YouTube & Instagram")
     pub.add_argument("--topic-id", dest="topic_id", help="Topic ID to publish")
 
-    rd = sub.add_parser("run-daily", help="Run full autonomous daily production & publish cycle")
+    rd = sub.add_parser("run-daily", help="[Legacy] Run full autonomous daily production & publish cycle (SQLite + Ollama)")
     rd.add_argument("--max-videos", dest="max_videos", type=int, default=1,
                     help="Max videos to publish in this cycle (default: 1)")
 
