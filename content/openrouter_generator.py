@@ -1,7 +1,7 @@
 """
 Finance Shorts Pro - OpenRouter Script Generator
 Uses MiniMax M3.1 Flash (via OpenRouter) to generate cinematic storyboard scripts
-for each finance topic, including HeyGen video scene prompts.
+for each finance topic, including Google Veo video scene prompts.
 """
 
 from __future__ import annotations
@@ -86,10 +86,12 @@ def _enrich_script_data(script_data: dict, topic: str) -> dict:
     scenes = script_data.get("scenes", [])
     for s in scenes:
         vis = s.get("visual_scene", "Mentor explaining financial charts in dark studio")
-        s["heygen_video_prompt"] = (
+        prompt_text = (
             f"{CHARACTER_DESC} {vis}. "
             "Cinematic lighting, dark atmospheric studio, glowing gold accents, vertical 9:16."
         )
+        s["video_prompt"] = prompt_text
+        s["heygen_video_prompt"] = prompt_text
 
     fv = script_data.get("full_voiceover")
     if isinstance(fv, list):
@@ -395,6 +397,7 @@ def _fallback_script(topic: str, category: str, objective: str) -> dict[str, Any
             "on_screen_text": ost,
             "data_callout": callout,
             "visual_scene": vis,
+            "video_prompt": f"{CHARACTER_DESC} {vis}. Cinematic dark studio, gold rim glow.",
             "heygen_video_prompt": f"{CHARACTER_DESC} {vis}. Cinematic dark studio, gold rim glow.",
         })
 

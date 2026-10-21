@@ -22,8 +22,8 @@ matplotlib>=3.7.0             # Financial charts and graphs
 filelock>=3.12.0              # Process file locking for run_lock
 pytz>=2024.1                  # Timezone support
 
-# ── Optional Paid Services ────────────────────────────────
-# HeyGen video avatar generation (optional paid dependency; requires HEYGEN_API_KEY)
+# ── Video Generation ──────────────────────────────────────
+# Google Veo video generation via Gemini API (uses requests & google-api-python-client)
 
 # ── YouTube API ───────────────────────────────────────────
 google-api-python-client>=2.100.0

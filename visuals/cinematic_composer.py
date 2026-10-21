@@ -1,6 +1,6 @@
 """
 Finance Shorts Pro - Cinematic Video Composer
-Assembles HeyGen-generated scene clips with:
+Assembles Google Veo scene clips with:
 - Professional voiceover (Andrew Multilingual Neural TTS)
 - Animated text overlays (scene titles, data callouts)
 - Animated progress bar
@@ -58,7 +58,7 @@ def compose_pro_video(
 ) -> Path:
     """
     Assembles the full cinematic Short:
-    1. Concatenates scene MP4s (HeyGen clips or dynamic graphic motion cards) with crossfade transitions
+    1. Concatenates scene MP4s (Veo clips or dynamic graphic motion cards) with crossfade transitions
     2. Overlays animated text (on_screen_text + data_callout per scene)
     3. Burns kinetic subtitles
     4. Adds animated top progress bar

@@ -22,7 +22,8 @@ from typing import Optional
 import config
 from content.openrouter_generator import generate_pro_script
 from audio.tts_engine import TTSEngine
-from visuals.heygen_generator import generate_all_scenes
+from visuals.veo_provider import generate_all_scenes
+from visuals.video_provider import BudgetCapReached, QuotaExceeded
 from visuals.cinematic_composer import compose_pro_video
 from publishing.youtube_publisher import YouTubePublisher
 
@@ -154,10 +155,10 @@ def run_pro_pipeline(
         result["duration"] = total_duration
         logger.info("TTS audio: %.1fs | SRT: %s", total_duration, srt_path)
 
-        # ── Step 3: HeyGen Scene Videos ───────────────────────────────────────
-        logger.info("═══ [3/5] HEYGEN SCENE VIDEOS (%d scenes) ═══", len(scenes))
+        # ── Step 3: Google Veo Scene Videos ───────────────────────────────────
+        logger.info("═══ [3/5] GOOGLE VEO SCENE VIDEOS (%d scenes) ═══", len(scenes))
         if dry_run:
-            logger.info("[DRY RUN] Skipping HeyGen scene generation")
+            logger.info("[DRY RUN] Skipping Veo scene generation")
             scene_paths = [None] * len(scenes)
         else:
             scene_paths = generate_all_scenes(scenes, job_id, scenes_dir)

@@ -51,11 +51,17 @@ EXCEL_FILE     = _ROOT / _get("EXCEL_FILE", "data/finance_content_queue.xlsx")
 SCHEDULE_EXCEL = _ROOT / _get("SCHEDULE_EXCEL", "data/publishing_schedule.xlsx")
 SQLITE_DB      = _ROOT / _get("SQLITE_DB", "data/finance_shorts.db")
 
-# ── OpenRouter, Gemini & HeyGen Models ────────────────────────
-OPENROUTER_API_KEY = _get("OPENROUTER_API_KEY", "")
-GEMINI_API_KEY     = _get("GEMINI_API_KEY", "")
-SCRIPT_MODEL       = _get("SCRIPT_MODEL", "gemini-flash-lite-latest")
-VIDEO_MODEL        = _get("VIDEO_MODEL", "heygen/heygen-video-1")
+# ── OpenRouter, Gemini & Veo Models ──────────────────────────
+OPENROUTER_API_KEY      = _get("OPENROUTER_API_KEY", "")
+GEMINI_API_KEY          = _get("GEMINI_API_KEY", "")
+SCRIPT_MODEL            = _get("SCRIPT_MODEL", "gemini-flash-lite-latest")
+VIDEO_PROVIDER          = _get("VIDEO_PROVIDER", "veo")
+VEO_MODEL               = _get("VEO_MODEL", "veo-3.1-fast-generate-preview")
+VEO_MAX_SCENE_SECONDS   = _get_int("VEO_MAX_SCENE_SECONDS", 5)
+VEO_TIMEOUT_SECONDS     = _get_int("VEO_TIMEOUT_SECONDS", 300)
+VEO_MAX_SECONDS_PER_DAY = _get_int("VEO_MAX_SECONDS_PER_DAY", 60)
+VEO_MAX_SECONDS_PER_RUN = _get_int("VEO_MAX_SECONDS_PER_RUN", 60)
+USAGE_LEDGER_FILE       = DATA_DIR / "usage_ledger.json"
 
 OUTPUT_VIDEOS  = OUTPUT_DIR / "videos"
 OUTPUT_AUDIO   = OUTPUT_DIR / "audio"
