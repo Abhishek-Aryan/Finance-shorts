@@ -1,8 +1,26 @@
-# Windows Task Scheduler Setup for Finance Shorts Pro
-# Sets up 3 daily automated triggers: 09:00 AM, 03:00 PM, and 08:00 PM IST
+param(
+    [switch]$Force
+)
 
-$TaskRoot = "C:\Users\Admin\finance.bat"
-$LogPath = "C:\Users\Admin\.gemini\antigravity-ide\scratch\finance-shorts\logs\scheduler.log"
+$RepoRoot = Split-Path -Parent $PSScriptRoot
+$RunBat = Join-Path $RepoRoot "run.bat"
+$WorkflowFile = Join-Path $RepoRoot ".github\workflows\publish_shorts.yml"
+
+Write-Host "==========================================================" -ForegroundColor Cyan
+Write-Host "  LOCAL FALLBACK ONLY. Production runs in the cloud (see README)." -ForegroundColor Yellow
+Write-Host "  Setting up Windows Task Scheduler for Finance Shorts Pro" -ForegroundColor Cyan
+Write-Host "==========================================================" -ForegroundColor Cyan
+
+# Refuse to install if cloud workflow has uncommented schedule: unless -Force
+if (Test-Path $WorkflowFile) {
+    $hasCloudSchedule = Select-String -Path $WorkflowFile -Pattern "^\s*schedule:" -Quiet
+    if ($hasCloudSchedule -and -not $Force) {
+        Write-Host " [ABORT] Cloud schedule is enabled in .github/workflows/publish_shorts.yml!" -ForegroundColor Red
+        Write-Host " Running local scheduler concurrently would cause duplicate uploads." -ForegroundColor Red
+        Write-Host " Pass -Force to install local scheduler anyway." -ForegroundColor Yellow
+        exit 1
+    }
+}
 
 $Times = @(
     @{ Name = "FinanceShorts_09AM"; Time = "09:00" },
@@ -10,18 +28,14 @@ $Times = @(
     @{ Name = "FinanceShorts_08PM"; Time = "20:00" }
 )
 
-Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "  Setting up Windows Task Scheduler for Finance Shorts Pro" -ForegroundColor Cyan
-Write-Host "==========================================================" -ForegroundColor Cyan
-
 foreach ($entry in $Times) {
     $taskName = $entry.Name
     $triggerTime = $entry.Time
 
     $action = New-ScheduledTaskAction `
-        -Execute "C:\Users\Admin\finance.bat" `
+        -Execute $RunBat `
         -Argument "publish-next" `
-        -WorkingDirectory "C:\Users\Admin\.gemini\antigravity-ide\scratch\finance-shorts"
+        -WorkingDirectory $RepoRoot
 
     $trigger = New-ScheduledTaskTrigger -Daily -At $triggerTime
 
@@ -29,7 +43,9 @@ foreach ($entry in $Times) {
         -AllowStartIfOnBatteries `
         -DontStopIfGoingOnBatteries `
         -StartWhenAvailable `
-        -WakeToRun
+        -WakeToRun `
+        -MultipleInstances IgnoreNew `
+        -ExecutionTimeLimit (New-TimeSpan -Hours 1)
 
     try {
         Register-ScheduledTask `
@@ -37,7 +53,7 @@ foreach ($entry in $Times) {
             -Action $action `
             -Trigger $trigger `
             -Settings $settings `
-            -Description "Finance Shorts autonomous publishing trigger at $triggerTime IST" `
+            -Description "Finance Shorts autonomous publishing trigger at $triggerTime IST (Local fallback)" `
             -Force | Out-Null
 
         Write-Host " [OK] Registered: $taskName -> Daily at $triggerTime IST" -ForegroundColor Green
@@ -48,6 +64,5 @@ foreach ($entry in $Times) {
 }
 
 Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "  Setup Complete! Tasks will run automatically every day." -ForegroundColor Green
-Write-Host "  Trigger times: 09:00 AM, 3:00 PM, 8:00 PM IST" -ForegroundColor Yellow
+Write-Host "  Setup Complete! Local fallback tasks registered." -ForegroundColor Green
 Write-Host "==========================================================" -ForegroundColor Cyan

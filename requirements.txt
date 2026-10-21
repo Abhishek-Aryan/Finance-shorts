@@ -18,8 +18,9 @@ ffmpeg-python>=0.2.0          # FFmpeg Python bindings
 Pillow>=10.0.0                # Image generation and compositing
 matplotlib>=3.7.0             # Financial charts and graphs
 
-# ── Scheduling ────────────────────────────────────────────
+# ── Scheduling / Concurrency ──────────────────────────────
 APScheduler>=3.10.0           # Local Python scheduler
+filelock>=3.12.0              # Process file locking for run_lock
 pytz>=2024.1                  # Timezone support
 
 # ── YouTube API ───────────────────────────────────────────
