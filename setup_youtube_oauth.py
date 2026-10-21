@@ -109,8 +109,10 @@ def authenticate_youtube(force_reauth: bool = False) -> bool:
             subscribers = stats.get("subscriberCount", "Hidden")
             video_count = stats.get("videoCount", "0")
 
+            channel_id = channel.get("id", "Unknown")
             print("\n" + "=" * 60)
             print(" SUCCESS! CONNECTED TO YOUTUBE CHANNEL:")
+            print(f" Channel ID     : {channel_id}")
             print(f" Channel Title  : {title}")
             print(f" Subscribers    : {subscribers}")
             print(f" Total Videos   : {video_count}")

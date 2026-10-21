@@ -74,7 +74,11 @@ def check_youtube_token(token_file: Path | str | None = None) -> int:
     try:
         credentials.refresh(Request())
     except RefreshError as r_err:
-        print("[ERROR] YouTube authorization expired or revoked", file=sys.stderr)
+        print(
+            "YouTube authorization expired or revoked. Set the Google OAuth app to In production, "
+            "then run: python main.py auth-youtube --force, and update the YOUTUBE_TOKEN_JSON secret.",
+            file=sys.stderr,
+        )
         logger.error("Token refresh failed: %s", r_err)
         return 2
     except Exception as exc:
