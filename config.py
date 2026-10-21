@@ -107,12 +107,15 @@ _token_rel = _get("YOUTUBE_TOKEN_FILE", "config/youtube_token.json")
 YOUTUBE_TOKEN_FILE = _ROOT / _token_rel if not Path(_token_rel).is_absolute() else Path(_token_rel)
 YOUTUBE_CATEGORY_ID  = _get_int("YOUTUBE_CATEGORY_ID", 27)
 
-_privacy_val = _get("YOUTUBE_PRIVACY_STATUS", "unlisted").lower()
-if _privacy_val not in ("public", "unlisted", "private"):
-    raise ValueError(f"Invalid YOUTUBE_PRIVACY_STATUS {_privacy_val!r}, must be 'public', 'unlisted', or 'private'")
-YOUTUBE_PRIVACY_STATUS = _privacy_val
+_env_privacy = os.environ.get("YOUTUBE_PRIVACY_STATUS", "").strip().lower()
+if _env_privacy and _env_privacy not in ("public", "unlisted", "private"):
+    raise ValueError(f"Invalid YOUTUBE_PRIVACY_STATUS {_env_privacy!r}, must be 'public', 'unlisted', or 'private'")
+YOUTUBE_PRIVACY_STATUS = _env_privacy or "unlisted"
+PRIVACY_RAMP_DAYS    = _get_int("PRIVACY_RAMP_DAYS", 3)
+MAX_UPLOADS_PER_RUN  = _get_int("MAX_UPLOADS_PER_RUN", 1)
 
 # ── Instagram ─────────────────────────────────────────────
+INSTAGRAM_PUBLISH_ENABLED = _get_bool("INSTAGRAM_PUBLISH_ENABLED", False)
 INSTAGRAM_ACCESS_TOKEN = _get("INSTAGRAM_ACCESS_TOKEN", "")
 INSTAGRAM_ACCOUNT_ID   = _get("INSTAGRAM_ACCOUNT_ID", "")
 INSTAGRAM_APP_ID       = _get("INSTAGRAM_APP_ID", "")
