@@ -1,0 +1,72 @@
+name: Schedule Watchdog
+
+# Runs daily at 17:00 UTC (22:30 IST) to verify that scheduled runs were not skipped or dropped by GitHub Actions.
+# If any topic is >3 hours overdue and still Pending, opens or updates a tracking issue.
+
+on:
+  schedule:
+    # 22:30 IST = 17:00 UTC
+    - cron: '0 17 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: finance-shorts-watchdog
+  cancel-in-progress: false
+
+env:
+  TZ: Asia/Kolkata
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  check-overdue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Repository
+        # Pin to major tag v4 (SHA pinning recommended for enterprise security)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        # Pin to major tag v5
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: 'requirements.txt'
+
+      - name: Install Dependencies
+        run: |
+          set -euo pipefail
+          pip install openpyxl pytz
+
+      - name: Run Overdue Schedule Check
+        id: check
+        run: |
+          set -euo pipefail
+          set +e
+          python tools/watchdog.py --threshold-hours 3.0 --out-title watchdog_title.txt --out-body watchdog_body.txt
+          CHECK_CODE=$?
+          echo "CHECK_CODE=${CHECK_CODE}" >> "$GITHUB_ENV"
+          set -e
+
+      - name: Alert on Overdue Topics
+        if: env.CHECK_CODE != '0' && env.CHECK_CODE != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TITLE=$(cat watchdog_title.txt)
+          EXISTING_ISSUE=$(gh issue list --state open --search "$TITLE" --json number -q '.[0].number')
+          if [ -n "$EXISTING_ISSUE" ]; then
+            echo "Updating existing watchdog issue #${EXISTING_ISSUE}..."
+            gh issue comment "$EXISTING_ISSUE" --body-file watchdog_body.txt
+          else
+            echo "Opening new watchdog alert issue..."
+            gh issue create --title "$TITLE" --body-file watchdog_body.txt
+          fi
