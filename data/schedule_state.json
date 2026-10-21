@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-21T22:10:17.169814+05:30",
+  "updated_at": "2026-10-22T01:23:33.841014+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -86,15 +86,15 @@
       "day": 2,
       "scheduled_at": "2026-10-21T20:00:00+05:30",
       "topic": "Bond Duration and Interest Rate Risk",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D02-20:00_1792612291",
+      "claimed_at": "2026-10-22T01:21:31.516969+05:30",
+      "youtube_video_id": "-uqMKTS48sU",
+      "youtube_url": "https://youtube.com/shorts/-uqMKTS48sU",
+      "published_at": "2026-10-22T01:23:33.840848+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Did you know rising interest rates can secretly crush your safe bond portfolio without any warning whatsoever? Bond duration measures price sensitivity. Higher duration means your bond prices drop significantly harder when market interest rates climb higher. If a ten-year government bond has seven years duration, a one percent rate hike destroys seven percent value. In India, RBI repo rate hikes directly hammer long-duration gilt mutual funds, wiping out months of fixed interest gains. Always match your investment horizon with bond duration to protect your hard-earned capital from nasty market volatility. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D03-09:00": {
       "row_index": 8,
