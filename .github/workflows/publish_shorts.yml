@@ -119,22 +119,28 @@ jobs:
       - name: Run Preflight Check
         if: env.PAUSED != 'true'
         env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          YOUTUBE_CLIENT_SECRETS_JSON: ${{ secrets.YOUTUBE_CLIENT_SECRETS_JSON }}
-          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
-          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
-          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY || secrets.OPENROUTER_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_KEY }}
+          YOUTUBE_CLIENT_SECRETS_JSON: ${{ secrets.YOUTUBE_CLIENT_SECRETS_JSON || secrets.YOUTUBE_CLIENT_SECRETS || secrets.CLIENT_SECRETS }}
+          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON || secrets.YOUTUBE_TOKEN || secrets.TOKEN_JSON }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN || secrets.INSTAGRAM_TOKEN }}
+          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID || secrets.INSTAGRAM_ID }}
         run: |
           set -euo pipefail
+          echo "=== PREFLIGHT SECRET PRESENCE CHECK ==="
+          echo "  - YOUTUBE_CLIENT_SECRETS: $([ -n "${YOUTUBE_CLIENT_SECRETS_JSON:-}" ] && echo 'FOUND' || echo 'MISSING')"
+          echo "  - YOUTUBE_TOKEN:          $([ -n "${YOUTUBE_TOKEN_JSON:-}" ] && echo 'FOUND' || echo 'MISSING')"
+          echo "  - GEMINI_API_KEY:         $([ -n "${GEMINI_API_KEY:-}" ] && echo 'FOUND' || echo 'MISSING')"
+          echo "  - OPENROUTER_API_KEY:     $([ -n "${OPENROUTER_API_KEY:-}" ] && echo 'FOUND' || echo 'NOT SET (optional)')"
+          echo "======================================="
           python tools/preflight.py --mode "${MODE}"
 
       # Step 7: Materialize credentials securely from environment
       - name: Materialize Credentials
         if: env.PAUSED != 'true'
         env:
-          SECRETS_JSON: ${{ secrets.YOUTUBE_CLIENT_SECRETS_JSON }}
-          TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
+          SECRETS_JSON: ${{ secrets.YOUTUBE_CLIENT_SECRETS_JSON || secrets.YOUTUBE_CLIENT_SECRETS || secrets.CLIENT_SECRETS }}
+          TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON || secrets.YOUTUBE_TOKEN || secrets.TOKEN_JSON }}
         run: |
           set -euo pipefail
           mkdir -p config
@@ -142,11 +148,13 @@ jobs:
             printf '%s' "${SECRETS_JSON}" > config/youtube_client_secrets.json
             chmod 600 config/youtube_client_secrets.json
             python -c "import json, sys; json.load(open(sys.argv[1]))" config/youtube_client_secrets.json
+            echo "[OK] config/youtube_client_secrets.json materialized and valid JSON"
           fi
           if [ -n "${TOKEN_JSON}" ]; then
             printf '%s' "${TOKEN_JSON}" > config/youtube_token.json
             chmod 600 config/youtube_token.json
             python -c "import json, sys; json.load(open(sys.argv[1]))" config/youtube_token.json
+            echo "[OK] config/youtube_token.json materialized and valid JSON"
           fi
 
       # Step 8: Validate YouTube OAuth token health in production mode
@@ -160,10 +168,12 @@ jobs:
       - name: Publish Next Topic
         if: env.PAUSED != 'true'
         env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
-          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY || secrets.OPENROUTER_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.GEMINI_KEY }}
+          YOUTUBE_CLIENT_SECRETS_JSON: ${{ secrets.YOUTUBE_CLIENT_SECRETS_JSON || secrets.YOUTUBE_CLIENT_SECRETS || secrets.CLIENT_SECRETS }}
+          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON || secrets.YOUTUBE_TOKEN || secrets.TOKEN_JSON }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN || secrets.INSTAGRAM_TOKEN }}
+          INSTAGRAM_ACCOUNT_ID: ${{ secrets.INSTAGRAM_ACCOUNT_ID || secrets.INSTAGRAM_ID }}
           PUBLISHING_MODE: ${{ env.MODE }}
         run: |
           set -euo pipefail
@@ -246,10 +256,11 @@ jobs:
           name: logs-${{ github.run_id }}
           path: logs/
           retention-days: 14
+          if-no-files-found: ignore
 
       # Step 13: Interpret exit code contract and fail job appropriately
       - name: Interpret Exit Code
-        if: always() && env.PAUSED != 'true'
+        if: always() && env.PAUSED != 'true' && env.EXIT_CODE != ''
         run: |
           set -euo pipefail
           CODE="${EXIT_CODE:-}"

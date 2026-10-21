@@ -48,15 +48,38 @@ def check_env_vars(mode: str) -> list[str]:
     missing: list[str] = []
 
     # Mandatory production variables
-    required_vars = [
-        "YOUTUBE_CLIENT_SECRETS_JSON",
-        "YOUTUBE_TOKEN_JSON",
-        "GEMINI_API_KEY",  # Required for Google Veo video generation
-    ]
+    # 1. YouTube Client Secrets JSON (primary: YOUTUBE_CLIENT_SECRETS_JSON, fallback: YOUTUBE_CLIENT_SECRETS / CLIENT_SECRETS)
+    val_client = (
+        os.environ.get("YOUTUBE_CLIENT_SECRETS_JSON", "").strip()
+        or os.environ.get("YOUTUBE_CLIENT_SECRETS", "").strip()
+        or os.environ.get("CLIENT_SECRETS", "").strip()
+    )
+    if not val_client:
+        missing.append("YOUTUBE_CLIENT_SECRETS_JSON")
 
-    # Script generation requires at least one of OPENROUTER_API_KEY or GEMINI_API_KEY
-    has_llm = bool(os.environ.get("OPENROUTER_API_KEY", "").strip() or os.environ.get("GEMINI_API_KEY", "").strip())
-    if not has_llm:
+    # 2. YouTube Token JSON (primary: YOUTUBE_TOKEN_JSON, fallback: YOUTUBE_TOKEN / TOKEN_JSON)
+    val_token = (
+        os.environ.get("YOUTUBE_TOKEN_JSON", "").strip()
+        or os.environ.get("YOUTUBE_TOKEN", "").strip()
+        or os.environ.get("TOKEN_JSON", "").strip()
+    )
+    if not val_token:
+        missing.append("YOUTUBE_TOKEN_JSON")
+
+    # 3. Gemini API Key (primary: GEMINI_API_KEY, fallback: GEMINI_KEY)
+    val_gemini = (
+        os.environ.get("GEMINI_API_KEY", "").strip()
+        or os.environ.get("GEMINI_KEY", "").strip()
+    )
+    if not val_gemini:
+        missing.append("GEMINI_API_KEY")
+
+    # 4. LLM Script Model (Gemini or OpenRouter)
+    val_openrouter = (
+        os.environ.get("OPENROUTER_API_KEY", "").strip()
+        or os.environ.get("OPENROUTER_KEY", "").strip()
+    )
+    if not val_openrouter and not val_gemini:
         missing.append("OPENROUTER_API_KEY")
 
     # Instagram variables only if Instagram is enabled
@@ -64,12 +87,9 @@ def check_env_vars(mode: str) -> list[str]:
         os.environ.get("INSTAGRAM_PUBLISH_ENABLED", "").lower() in ("true", "1", "yes")
     )
     if instagram_enabled:
-        required_vars.extend(["INSTAGRAM_ACCESS_TOKEN", "INSTAGRAM_ACCOUNT_ID"])
-
-    for var in required_vars:
-        val = os.environ.get(var)
-        if not val or not val.strip():
-            missing.append(var)
+        for v in ("INSTAGRAM_ACCESS_TOKEN", "INSTAGRAM_ACCOUNT_ID"):
+            if not os.environ.get(v, "").strip():
+                missing.append(v)
 
     return missing
 
