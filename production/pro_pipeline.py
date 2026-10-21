@@ -185,7 +185,14 @@ def run_pro_pipeline(
             logger.info("Skipping Veo scene generation (dry_run=%s, provider=%s)", dry_run, config.VIDEO_PROVIDER)
             scene_paths = [None] * len(scenes)
         else:
-            scene_paths = generate_all_scenes(scenes, job_id, scenes_dir)
+            try:
+                scene_paths = generate_all_scenes(scenes, job_id, scenes_dir)
+            except QuotaExceeded as qe:
+                logger.warning(
+                    "Veo quota exhausted or unavailable (%s). Falling back to native luxury cinematic visual plates so publishing proceeds on schedule.",
+                    qe,
+                )
+                scene_paths = [None] * len(scenes)
 
         result["scene_paths"] = [str(p) if p else None for p in scene_paths]
         ok_count = sum(1 for p in scene_paths if p and Path(p).exists())
