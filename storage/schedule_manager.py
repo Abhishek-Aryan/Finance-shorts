@@ -20,10 +20,58 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
+from openpyxl.worksheet.datavalidation import DataValidation
+
+import config
+
 logger = logging.getLogger(__name__)
 
-SCHEDULE_FILE = Path(__file__).parent.parent / "data" / "publishing_schedule.xlsx"
+SCHEDULE_FILE = Path(config.SCHEDULE_EXCEL)
 CURRICULUM_JSON = Path(__file__).parent.parent / "curriculum_42.json"
+
+DONE_FILL = PatternFill("solid", fgColor="0D2E16")
+IN_PROGRESS_FILL = PatternFill("solid", fgColor="1C2D42")
+FAILED_FILL = PatternFill("solid", fgColor="3A1010")
+ALT_FILL = PatternFill("solid", fgColor="1A1A2E")
+DARK_FILL = PatternFill("solid", fgColor="111122")
+
+
+def add_status_validation(ws, min_row: int = 2, max_row: int = 43) -> None:
+    """Adds or updates the Done/Pending/In progress/Failed dropdown on column J."""
+    for dv in list(ws.data_validations.dataValidation):
+        if any("J" in str(sq) for sq in dv.sqref):
+            ws.data_validations.dataValidation.remove(dv)
+
+    dv = DataValidation(
+        type="list",
+        formula1='"Done,Pending,In progress,Failed"',
+        allow_blank=True,
+    )
+    ws.add_data_validation(dv)
+    dv.add(f"J{min_row}:J{max_row}")
+
+
+def format_status_cell(cell, status: str, row_idx: int) -> None:
+    """Applies distinct fill and font based on status value."""
+    val = str(status).strip()
+    val_lower = val.lower()
+    if "done" in val_lower:
+        cell.value = "Done"
+        cell.fill = DONE_FILL
+        cell.font = Font(name="Calibri", color="39FF14", bold=True, size=10)
+    elif "in progress" in val_lower:
+        cell.value = "In progress"
+        cell.fill = IN_PROGRESS_FILL
+        cell.font = Font(name="Calibri", color="00BFFF", bold=True, size=10)
+    elif "failed" in val_lower:
+        cell.value = "Failed"
+        cell.fill = FAILED_FILL
+        cell.font = Font(name="Calibri", color="FF4500", bold=True, size=10)
+    else:
+        cell.value = "Pending"
+        row_fill = ALT_FILL if row_idx % 2 == 0 else DARK_FILL
+        cell.fill = row_fill
+        cell.font = Font(name="Calibri", color="FFA500", bold=True, size=10)
 
 
 def _parse_time(t_str: str) -> dt_time:
@@ -130,7 +178,7 @@ def create_schedule_excel() -> Path:
                                        vertical="center", wrap_text=True)
 
             if col == 10:  # Posted?
-                cell.font = Font(name="Calibri", color="39FF14" if is_done else "FFA500", bold=True, size=10)
+                format_status_cell(cell, "Done" if is_done else "Pending", row_idx)
             elif col == 6:  # Topic
                 cell.font = Font(name="Calibri", color=WHITE, bold=True, size=11)
             elif col == 7:  # Category
@@ -140,6 +188,7 @@ def create_schedule_excel() -> Path:
 
         ws.row_dimensions[row_idx].height = 42
 
+    add_status_validation(ws, min_row=2, max_row=len(curriculum) + 1)
     ws.freeze_panes = "A2"
     wb.save(str(SCHEDULE_FILE))
     logger.info("Schedule Excel created: %s (%d rows)", SCHEDULE_FILE.name, len(curriculum))
