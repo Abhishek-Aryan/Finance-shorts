@@ -90,6 +90,7 @@ def publish_next_topic(
     excel_path: Path | None = None,
     state_file: Path | None = None,
     lock_file: Path | None = None,
+    force_privacy: str | None = None,
 ) -> int:
     """
     Publishes the next due topic according to the strict 10-step publish safety sequence.
@@ -215,8 +216,17 @@ def publish_next_topic(
             }
         else:
             # ── Step 7: Upload ───────────────────────────────────────────────
+            effective_privacy = config.resolve_youtube_privacy(
+                force_privacy=force_privacy or "",
+                state_file=s_path,
+                now=now_dt,
+            )
             try:
-                published_res = publish_composed(compose_result, dry_run=dry_run)
+                published_res = publish_composed(
+                    compose_result,
+                    dry_run=dry_run,
+                    privacy_status=effective_privacy,
+                )
             except Exception as ue:
                 logger.error("Upload failure for %s: %s", row_key, ue, exc_info=True)
                 if not dry_run:

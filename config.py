@@ -114,6 +114,73 @@ YOUTUBE_PRIVACY_STATUS = _env_privacy or "unlisted"
 PRIVACY_RAMP_DAYS    = _get_int("PRIVACY_RAMP_DAYS", 3)
 MAX_UPLOADS_PER_RUN  = _get_int("MAX_UPLOADS_PER_RUN", 1)
 
+
+def resolve_youtube_privacy(
+    force_privacy: str = "",
+    state_file: Path | None = None,
+    now: datetime | None = None,
+) -> str:
+    """
+    Determines effective YouTube privacy status according to the safety ramp policy:
+    1. force_privacy (from CLI argument / workflow_dispatch input) always wins if set.
+    2. Explicit YOUTUBE_PRIVACY_STATUS environment variable wins if provided in os.environ.
+    3. Otherwise, for the first PRIVACY_RAMP_DAYS calendar days after the first published date,
+       use 'unlisted'; after that, use 'public'.
+    Logs which was chosen and why.
+    """
+    import json
+    from zoneinfo import ZoneInfo
+    log = logging.getLogger(__name__)
+
+    if force_privacy and force_privacy.strip():
+        chosen = force_privacy.strip().lower()
+        if chosen not in ("public", "unlisted", "private"):
+            raise ValueError(f"Invalid force_privacy {chosen!r}, must be 'public', 'unlisted', or 'private'")
+        log.info("YouTube privacy status: '%s' (Forced via force_privacy input)", chosen)
+        return chosen
+
+    if "YOUTUBE_PRIVACY_STATUS" in os.environ and os.environ["YOUTUBE_PRIVACY_STATUS"].strip():
+        chosen = os.environ["YOUTUBE_PRIVACY_STATUS"].strip().lower()
+        if chosen not in ("public", "unlisted", "private"):
+            raise ValueError(f"Invalid YOUTUBE_PRIVACY_STATUS {chosen!r}")
+        log.info("YouTube privacy status: '%s' (Explicitly set via environment variable)", chosen)
+        return chosen
+
+    # Privacy ramp logic
+    s_path = Path(state_file or (DATA_DIR / "schedule_state.json"))
+    first_pub_date = None
+    if s_path.exists():
+        try:
+            with open(s_path, "r", encoding="utf-8") as f:
+                st = json.load(f)
+                for r in st.get("rows", {}).values():
+                    if r.get("status") == "Done" and r.get("published_at"):
+                        p_dt = datetime.fromisoformat(r["published_at"])
+                        if first_pub_date is None or p_dt < first_pub_date:
+                            first_pub_date = p_dt
+        except Exception:
+            pass
+
+    now_dt = now or datetime.now(ZoneInfo("Asia/Kolkata"))
+    if first_pub_date:
+        days_since_launch = (now_dt.date() - first_pub_date.date()).days
+        if days_since_launch < PRIVACY_RAMP_DAYS:
+            log.info(
+                "YouTube privacy status: 'unlisted' (Safety ramp active: %d/%d days since launch %s)",
+                days_since_launch, PRIVACY_RAMP_DAYS, first_pub_date.date().isoformat()
+            )
+            return "unlisted"
+        else:
+            log.info(
+                "YouTube privacy status: 'public' (Safety ramp expired: %d days >= %d days)",
+                days_since_launch, PRIVACY_RAMP_DAYS
+            )
+            return "public"
+
+    log.info("YouTube privacy status: 'unlisted' (Safety ramp: initial launch period)")
+    return "unlisted"
+
+
 # ── Instagram ─────────────────────────────────────────────
 INSTAGRAM_PUBLISH_ENABLED = _get_bool("INSTAGRAM_PUBLISH_ENABLED", False)
 INSTAGRAM_ACCESS_TOKEN = _get("INSTAGRAM_ACCESS_TOKEN", "")

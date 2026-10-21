@@ -245,7 +245,10 @@ def cmd_schedule_status(args: argparse.Namespace) -> None:
 def cmd_publish_next(args: argparse.Namespace) -> None:
     logger_setup.setup_logging("INFO")
     from automation.schedule_runner import publish_next_topic
-    code = publish_next_topic(dry_run=args.dry_run)
+    code = publish_next_topic(
+        dry_run=args.dry_run,
+        force_privacy=getattr(args, "force_privacy", "") or "",
+    )
     sys.exit(code)
 
 
@@ -283,6 +286,8 @@ def _build_parser() -> argparse.ArgumentParser:
 
     pn = sub.add_parser("publish-next", help="Produce and publish the next pending topic immediately")
     pn.add_argument("--dry-run", action="store_true", help="Generate without real video rendering/publishing")
+    pn.add_argument("--force-privacy", choices=["", "unlisted", "public", "private"], default="",
+                    help="Override YouTube privacy status (public, unlisted, private)")
 
     rs = sub.add_parser("run-schedule", help="Run background daemon triggering at 9AM, 3PM, 8PM IST")
     rs.add_argument("--dry-run", action="store_true", help="Simulate without real video rendering/publishing")
