@@ -121,7 +121,8 @@ def test_select_due_row_from_copy_of_real_file(tmp_path):
     Day 2 15:00 ('EV/EBITDA vs P/E') is selected from a copy of the real file
     when now is 2026-10-21 15:05 IST.
     """
-    real_excel = Path("data/publishing_schedule.xlsx")
+    baseline_excel = Path("data/backups/publishing_schedule_baseline.xlsx")
+    real_excel = baseline_excel if baseline_excel.exists() else Path("data/publishing_schedule.xlsx")
     assert real_excel.exists(), "Real publishing schedule must exist"
 
     copy_excel = tmp_path / "real_copy.xlsx"

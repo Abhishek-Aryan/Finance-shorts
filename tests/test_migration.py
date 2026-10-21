@@ -21,7 +21,8 @@ from tools.audit_schedule import audit_schedule
 
 
 def test_migration_against_real_schedule_copy(tmp_path):
-    real_excel = Path("data/publishing_schedule.xlsx")
+    baseline_excel = Path("data/backups/publishing_schedule_baseline.xlsx")
+    real_excel = baseline_excel if baseline_excel.exists() else Path("data/publishing_schedule.xlsx")
     assert real_excel.exists()
 
     copy_excel = tmp_path / "publishing_schedule_migrated.xlsx"
