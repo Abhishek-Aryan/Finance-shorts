@@ -25,10 +25,11 @@ IST = ZoneInfo("Asia/Kolkata")
 
 EXIT_CODE_MEANINGS = {
     "0": "OK or nothing due",
-    "1": "Pipeline failure (Script generation, TTS audio, HeyGen visuals, or video composition error)",
+    "1": "Pipeline failure (Script generation, TTS audio, Google Veo visuals, or video composition error)",
     "2": "Configuration or credential error (Missing API keys, missing OAuth client secrets, or expired/revoked YouTube token)",
     "3": "State conflict (Excel row is marked 'Pending' but state store records 'Done' with a YouTube video ID)",
     "4": "Published to YouTube, but Excel view is stale / locked",
+    "5": "Budget cap reached (Daily or per-run Veo video seconds cap reached, row left Pending)",
 }
 
 
@@ -113,7 +114,11 @@ def build_alert(
 
     # Issue Title
     if code_str == "2":
-        title = "YouTube token or credentials need attention"
+        title = "Finance Shorts needs credentials or YouTube re-authorization"
+    elif code_str == "3":
+        title = "Finance Shorts schedule conflict"
+    elif code_str == "5":
+        title = "Finance Shorts video budget cap reached"
     else:
         title = "Finance Shorts publish failed"
 
@@ -131,20 +136,40 @@ def build_alert(
     if code_str == "2":
         body_lines.extend([
             "#### 🔑 Credential Recovery Instructions:",
-            "The YouTube OAuth token or Google Cloud credentials have expired, been revoked, or are missing.",
+            "The YouTube OAuth token or API keys are missing, expired, or revoked.",
             "",
-            "1. **Authenticate Locally**:",
+            "1. **Re-authorize Locally**:",
             "   ```powershell",
             "   .venv\\Scripts\\python main.py auth-youtube --force",
             "   ```",
-            "2. **Copy the refreshed token**:",
-            "   - Open `config/youtube_token.json` in a text editor.",
-            "   - Copy the entire JSON content.",
-            "3. **Update GitHub Repository Secret**:",
-            "   - Go to: **Settings > Secrets and variables > Actions**.",
-            "   - Update the **`YOUTUBE_TOKEN_JSON`** secret with the copied JSON.",
-            "4. **Verify OAuth App Publishing Status**:",
-            "   - In Google Cloud Console, ensure your OAuth consent screen is set to **'In production'** rather than 'Testing' (tokens in testing expire after ~7 days).",
+            "2. **Update GitHub Secrets** (Repository Settings > Secrets and variables > Actions):",
+            "   - `YOUTUBE_TOKEN_JSON`: Paste entire contents of `config/youtube_token.json`.",
+            "   - `YOUTUBE_CLIENT_SECRETS_JSON`: Paste entire contents of `config/youtube_client_secrets.json`.",
+            "   - `GEMINI_API_KEY`: Required for Google Veo video generation.",
+            "   - `OPENROUTER_API_KEY`: Required for script generation.",
+            "3. **Check Google Cloud OAuth Consent Screen**:",
+            "   - In Google Cloud Console, verify Publishing status is **'In production'** to prevent 7-day token expiration.",
+            "",
+        ])
+    elif code_str == "3":
+        body_lines.extend([
+            "#### ⚠️ Schedule Conflict Detected:",
+            "The human-edited Excel schedule shows this row as 'Pending', but the state store shows it is already marked 'Done' with an existing YouTube video ID.",
+            "To resolve:",
+            "1. Run `git pull origin main`.",
+            "2. Check `data/schedule_state.json` to verify the published video ID.",
+            "3. Mark the row as 'Done' in `data/publishing_schedule.xlsx` or remove the conflict, then commit and push.",
+            "",
+        ])
+    elif code_str == "5":
+        body_lines.extend([
+            "#### 💰 Video Generation Budget Cap Reached:",
+            "The scheduled run exceeded configured daily or per-run Veo video seconds caps.",
+            "The row was **not** marked as failed and remains **Pending**.",
+            "",
+            "To raise the limits, adjust repository variables or workflow env:",
+            "- `VEO_MAX_SECONDS_PER_DAY` (current default: 60s)",
+            "- `VEO_MAX_SECONDS_PER_RUN` (current default: 60s)",
             "",
         ])
 

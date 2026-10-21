@@ -49,15 +49,15 @@ def check_env_vars(mode: str) -> list[str]:
 
     # Mandatory production variables
     required_vars = [
-        "OPENROUTER_API_KEY",
         "YOUTUBE_CLIENT_SECRETS_JSON",
         "YOUTUBE_TOKEN_JSON",
+        "GEMINI_API_KEY",  # Required for Google Veo video generation
     ]
 
-    # Check Gemini API Key if Gemini is the script model
-    script_model = getattr(config, "SCRIPT_MODEL", "gemini-flash-lite-latest")
-    if "gemini" in script_model.lower():
-        required_vars.append("GEMINI_API_KEY")
+    # Script generation requires at least one of OPENROUTER_API_KEY or GEMINI_API_KEY
+    has_llm = bool(os.environ.get("OPENROUTER_API_KEY", "").strip() or os.environ.get("GEMINI_API_KEY", "").strip())
+    if not has_llm:
+        missing.append("OPENROUTER_API_KEY")
 
     # Instagram variables only if Instagram is enabled
     instagram_enabled = getattr(config, "INSTAGRAM_PUBLISH_ENABLED", False) or (

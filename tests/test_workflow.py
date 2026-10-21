@@ -64,7 +64,7 @@ def test_workflow_timeout_minutes(workflow_data):
     jobs = workflow_data.get("jobs", {})
     assert "publish" in jobs
     publish_job = jobs["publish"]
-    assert publish_job.get("timeout-minutes") == 60
+    assert publish_job.get("timeout-minutes") == 90
 
 
 def test_no_secrets_in_step_bodies(workflow_data):

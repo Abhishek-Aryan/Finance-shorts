@@ -47,7 +47,7 @@ env:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       # Step 1: Gate check publishing mode and pause switch
@@ -72,7 +72,7 @@ jobs:
 
           if [ "${MODE}" = "production" ]; then
             if [ "${PUBLISH_ENABLED:-false}" != "true" ]; then
-              echo "Publishing paused"
+              echo "Publishing paused: set repository variable PUBLISH_ENABLED to true to resume"
               echo "PAUSED=true" >> "$GITHUB_ENV"
               exit 0
             fi
@@ -204,11 +204,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add data/publishing_schedule.xlsx data/schedule_state.json
+          git add data/publishing_schedule.xlsx data/schedule_state.json data/usage_ledger.json
 
-          # Strict security verification: ensure no config files were staged
-          if git diff --staged --name-only | grep -E '^config/'; then
-            echo "ERROR: config/ file detected in staged changes! Aborting commit." >&2
+          # Strict security verification: ensure no config/ or output/ files were staged
+          if git diff --staged --name-only | grep -E '^(config/|output/)'; then
+            echo "ERROR: config/ or output/ file detected in staged changes! Aborting commit." >&2
             exit 1
           fi
 
@@ -264,6 +264,9 @@ jobs:
               ;;
             4)
               echo "::warning::Exit code 4: Published to YouTube, but Excel view is stale."
+              ;;
+            5)
+              echo "::warning::Exit code 5: Budget cap reached, row left Pending."
               ;;
             1)
               echo "::error::Exit code 1: Pipeline failure during generation, rendering, or upload."
