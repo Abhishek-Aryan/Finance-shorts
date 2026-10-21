@@ -350,3 +350,6 @@ class TTSEngine:
             normalize=normalize,
         )
 
+    # Alias for compatibility with pro_pipeline
+    generate_speech = generate_audio
+

@@ -56,7 +56,7 @@ def print_schedule_status(excel_path: Path | None = None, state_file: Path | Non
 
     for t in topics:
         status_val = str(t.get("status", "")).strip()
-        status_sym = "✅ Done" if "done" in status_val.lower() else f"⏳ {status_val or 'Pending'}"
+        status_sym = "[DONE]" if "done" in status_val.lower() else f"[{status_val or 'Pending'}]"
         print(f"  D{t['day']:<4} {t['time']:<10} {t['topic'][:36]:<38} {status_sym}")
 
     print("-" * 70)
@@ -67,9 +67,9 @@ def print_schedule_status(excel_path: Path | None = None, state_file: Path | Non
     else:
         next_slot = getattr(select_due_row, "next_scheduled_at", None)
         if next_slot:
-            print(f"  ⏳ Nothing due right now. Next scheduled slot is at: {next_slot}")
+            print(f"  Nothing due right now. Next scheduled slot is at: {next_slot}")
         else:
-            print("  🎉 All topics in the curriculum have been completed!")
+            print("  All topics in the curriculum have been completed!")
     print("=" * 70 + "\n")
 
 
@@ -255,7 +255,7 @@ def publish_next_topic(
                 video_id=vid,
                 video_url=url,
             )
-            print(f"✅ Published: {topic_title} -> {url}")
+            print(f"[PUBLISHED] {topic_title} -> {url}")
             return 0
         except (ExcelLockedError, Exception) as ee:
             logger.error("Upload succeeded (ID: %s, URL: %s) but Excel write failed: %s", vid, url, ee)
@@ -276,7 +276,7 @@ def run_trigger_daemon(poll_interval_sec: int = 30, dry_run: bool = False) -> No
     Persists fired slots into state store to avoid double-fires across restarts.
     Trigger slots: read from config.PUBLISH_TIMES (default: 09:00, 15:00, 20:00 IST).
     """
-    print("🕒 Starting Finance Shorts Autonomous Schedule Daemon...")
+    print("Starting Finance Shorts Autonomous Schedule Daemon...")
     print("   Timezone: Asia/Kolkata (IST)")
     print(f"   Triggers: {', '.join(config.PUBLISH_TIMES)} IST")
     print("   Press Ctrl+C to stop.\n")
@@ -306,8 +306,8 @@ def run_trigger_daemon(poll_interval_sec: int = 30, dry_run: bool = False) -> No
 
                 # Widen trigger window: any time after the slot until next slot
                 if now_ist >= slot_dt:
-                    logger.info("⏰ SCHEDULE TRIGGER FIRED: %s IST (%s)", slot_time, today_str)
-                    print(f"\n⏰ Trigger fired for {slot_time} IST! Processing next topic...")
+                    logger.info("SCHEDULE TRIGGER FIRED: %s IST (%s)", slot_time, today_str)
+                    print(f"\n[TRIGGER] Fired for {slot_time} IST! Processing next topic...")
 
                     exit_code = publish_next_topic(dry_run=dry_run, now=now_ist)
                     if exit_code in (0, 4):

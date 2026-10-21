@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-21T11:55:50.064471+05:30",
+  "updated_at": "2026-10-21T12:59:41.980382+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -635,6 +635,13 @@
       "published_at": null,
       "last_error": null,
       "script_full": null
+    }
+  },
+  "daemon": {
+    "fired": {
+      "2026-10-21": [
+        "09:00"
+      ]
     }
   }
 }

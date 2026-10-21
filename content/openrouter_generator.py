@@ -313,13 +313,15 @@ Return ONLY this JSON structure:
 def generate_pro_script(
     topic: str,
     category: str,
-    key_learning_objective: str,
+    key_learning_objective: str = "",
     recent_scripts: list[dict | str] | None = None,
+    learning_objective: str | None = None,
 ) -> dict[str, Any]:
     """
     Generates a full pro-level storyboard script with hook uniqueness check.
     Retries up to 3 times if the hook duplicates any of the last 10 published scripts.
     """
+    target_objective = learning_objective or key_learning_objective or ""
     from content.script_validator import check_hook_uniqueness, extract_hook_words
     from storage.state_store import get_recent_published_scripts
 
@@ -340,7 +342,7 @@ def generate_pro_script(
             )
 
         script = _generate_single_script(
-            topic, category, key_learning_objective, extra_instruction=extra_instruction
+            topic, category, target_objective, extra_instruction=extra_instruction
         )
         if not script:
             continue

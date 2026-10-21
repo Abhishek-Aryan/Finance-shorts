@@ -299,7 +299,28 @@ def reconcile(
 
         state_entry = rows_state.get(rk)
         if not state_entry:
-            continue
+            d_obj = _parse_date(date_val)
+            t_obj = _parse_time(time_val)
+            scheduled_dt = datetime.combine(d_obj, t_obj, tzinfo=IST)
+            state_entry = {
+                "row_index": row_idx,
+                "day": int(day),
+                "scheduled_at": scheduled_dt.isoformat(),
+                "topic": str(topic).strip(),
+                "status": "Done" if is_excel_done else "Pending",
+                "attempts": 0,
+                "job_id": None,
+                "claimed_at": None,
+                "youtube_video_id": None,
+                "youtube_url": None,
+                "published_at": None,
+                "last_error": None,
+                "script_full": str(script).strip() if script else None,
+            }
+            if is_excel_done:
+                state_entry["note"] = "imported from Excel"
+            rows_state[rk] = state_entry
+            modified = True
 
         state_status = state_entry.get("status", "Pending")
         video_id = state_entry.get("youtube_video_id")
