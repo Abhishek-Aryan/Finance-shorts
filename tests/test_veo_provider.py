@@ -248,3 +248,70 @@ def test_no_heygen_imports_or_calls_in_visuals_or_content():
             assert "import heygen" not in text.lower(), f"{py_file} imports heygen"
             assert "from visuals.heygen_generator import" not in text, f"{py_file} imports heygen_generator"
             assert "heygen/heygen-video-1" not in text, f"{py_file} calls heygen-video-1"
+
+
+def test_veo_provider_additional_branches(tmp_path, monkeypatch):
+    """Test edge cases in veo_provider to maintain >=85% coverage."""
+    ledger_file = tmp_path / "corrupt_ledger.json"
+    ledger_file.write_text("NOT_VALID_JSON{")
+
+    provider = VeoProvider(api_key="test-key", ledger_path=ledger_file)
+    assert "aspect_ratio_9_16" in provider.supported_features
+
+    # Corrupt ledger falls back to clean dict
+    from visuals.veo_provider import _load_ledger
+    loaded = _load_ledger(ledger_file)
+    assert loaded["version"] == 1
+    assert loaded["daily_usage"] == {}
+
+    # _convert_to_vertical success & failure
+    raw_p = tmp_path / "raw.mp4"
+    raw_p.write_bytes(b"dummy")
+    out_p = tmp_path / "out.mp4"
+
+    fail_proc = MagicMock()
+    fail_proc.returncode = 1
+    fail_proc.stderr = "FFmpeg conversion error"
+    monkeypatch.setattr("subprocess.run", lambda *a, **kw: fail_proc)
+
+    with pytest.raises(VideoProviderError) as exc_info:
+        provider._convert_to_vertical(raw_p, out_p, target_duration=5)
+    assert "FFmpeg conversion to vertical failed" in str(exc_info.value)
+
+    # _verify_clip branches: ffprobe error, no streams, json decode error
+    clip_p = tmp_path / "clip.mp4"
+    clip_p.write_bytes(b"dummy")
+
+    # 1. ffprobe command failed
+    with pytest.raises(VideoProviderError) as exc:
+        provider._verify_clip(clip_p, 1)
+    assert "ffprobe failed for scene 1" in str(exc.value)
+
+    # 2. ffprobe no streams
+    proc_no_streams = MagicMock()
+    proc_no_streams.returncode = 0
+    proc_no_streams.stdout = json.dumps({"streams": []})
+    monkeypatch.setattr("subprocess.run", lambda *a, **kw: proc_no_streams)
+    with pytest.raises(VideoProviderError) as exc:
+        provider._verify_clip(clip_p, 1)
+    assert "no stream found by ffprobe" in str(exc.value).lower()
+
+    # 3. ffprobe invalid json
+    proc_bad_json = MagicMock()
+    proc_bad_json.returncode = 0
+    proc_bad_json.stdout = "INVALID_JSON"
+    monkeypatch.setattr("subprocess.run", lambda *a, **kw: proc_bad_json)
+    with pytest.raises(VideoProviderError) as exc:
+        provider._verify_clip(clip_p, 1)
+    assert "failed to parse ffprobe output" in str(exc.value).lower()
+
+    # _download_video size check
+    dest_p = tmp_path / "small.mp4"
+    mock_resp = MagicMock()
+    mock_resp.iter_content.return_value = [b"small"]
+    mock_resp.raise_for_status = MagicMock()
+    monkeypatch.setattr("requests.get", lambda *a, **kw: mock_resp)
+
+    with pytest.raises(VideoProviderError) as exc:
+        provider._download_video("http://example.com/video.mp4", dest_p)
+    assert "missing or too small" in str(exc.value).lower()

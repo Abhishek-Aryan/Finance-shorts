@@ -79,3 +79,28 @@ def test_daemon_persistence_across_restart(tmp_path):
     # Second restart check
     reloaded = state_store.load(state_file=state_file)
     assert reloaded["daemon"]["fired"]["2026-10-21"] == ["09:00", "15:00"]
+
+
+def test_run_lock_timeout_and_release_error(tmp_path, monkeypatch):
+    """Test Timeout -> LockHeld and release exception handling in run_lock."""
+    from unittest.mock import MagicMock
+    from filelock import Timeout
+    from automation.run_lock import acquire_run_lock, LockHeld
+
+    fake_lock = MagicMock()
+    fake_lock.acquire.side_effect = Timeout("Timed out")
+    monkeypatch.setattr("automation.run_lock.FileLock", lambda *a, **kw: fake_lock)
+
+    with pytest.raises(LockHeld) as exc:
+        with acquire_run_lock(tmp_path / "test.lock"):
+            pass
+    assert "holds the lock" in str(exc.value)
+
+    # Test release exception
+    fake_lock_2 = MagicMock()
+    fake_lock_2.release.side_effect = RuntimeError("Disk IO error")
+    monkeypatch.setattr("automation.run_lock.FileLock", lambda *a, **kw: fake_lock_2)
+
+    with acquire_run_lock(tmp_path / "test2.lock"):
+        pass  # should not raise
+

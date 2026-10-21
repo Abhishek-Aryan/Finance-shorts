@@ -209,3 +209,46 @@ def test_schedule_runner_main_and_status(capsys):
         schedule_runner.print_schedule_status()
         out = capsys.readouterr().out
         assert "NEXT UP: Day 1 [D01-09:00] Yield Curve" in out
+
+
+def test_schedule_runner_more_branches(tmp_path, monkeypatch, capsys):
+    """Test naive now, RunInProgressError, and status empty branches."""
+    excel_path = tmp_path / "sched.xlsx"
+    state_path = tmp_path / "state.json"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Publishing Schedule"
+    ws.append(["Day #", "Week", "Date", "Day of Week", "Publish Time", "Topic", "Category", "Objective", "Script", "Posted?"])
+    ws.append([1, 1, "20-Oct-2026", "Tuesday", "9:00 AM", "Topic 1", "Basics", "Obj", "Script", "Pending"])
+    wb.save(excel_path)
+
+    # 1. RunInProgressError returns 0
+    with patch("automation.schedule_runner.config.validate", return_value=[]), \
+         patch("automation.schedule_runner.acquire_run_lock"), \
+         patch("automation.schedule_runner.state_store.reconcile", side_effect=state_store.RunInProgressError("Active")):
+        code = schedule_runner.publish_next_topic(
+            now=datetime(2026, 10, 20, 9, 0),  # naive datetime to test tz replacement
+            excel_path=excel_path,
+            state_file=state_path,
+        )
+        assert code == 0
+
+    # 2. print_schedule_status with next_slot
+    with patch("automation.schedule_runner.select_due_row", return_value=None):
+        setattr(schedule_runner.select_due_row, "next_scheduled_at", "2026-10-21 15:00")
+        schedule_runner.print_schedule_status(excel_path=excel_path, state_file=state_path)
+        out = capsys.readouterr().out
+        assert "Next scheduled slot is at" in out
+
+        # When next_slot is None
+        setattr(schedule_runner.select_due_row, "next_scheduled_at", None)
+        schedule_runner.print_schedule_status(excel_path=excel_path, state_file=state_path)
+        out2 = capsys.readouterr().out
+        assert "All topics in the curriculum have been completed!" in out2
+
+    # 3. CLI status
+    import runpy
+    with patch("sys.argv", ["schedule_runner.py", "status"]):
+        runpy.run_module("automation.schedule_runner", run_name="__main__")
+        out3 = capsys.readouterr().out
+        assert "FINANCE SHORTS PRO" in out3
