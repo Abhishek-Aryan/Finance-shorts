@@ -19,8 +19,8 @@ foreach ($entry in $Times) {
     $triggerTime = $entry.Time
 
     $action = New-ScheduledTaskAction `
-        -Execute "cmd.exe" `
-        -Argument "/c `"$TaskRoot`" publish-next >> `"$LogPath`" 2>&1" `
+        -Execute "C:\Users\Admin\finance.bat" `
+        -Argument "publish-next" `
         -WorkingDirectory "C:\Users\Admin\.gemini\antigravity-ide\scratch\finance-shorts"
 
     $trigger = New-ScheduledTaskTrigger -Daily -At $triggerTime
