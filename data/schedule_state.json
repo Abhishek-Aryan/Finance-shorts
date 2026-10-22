@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-22T14:24:13.091985+05:30",
+  "updated_at": "2026-10-22T18:39:56.304704+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -116,15 +116,15 @@
       "day": 3,
       "scheduled_at": "2026-10-22T15:00:00+05:30",
       "topic": "Margin Trading and Margin Calls",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D03-15:00_1792674112",
+      "claimed_at": "2026-10-22T18:31:52.225367+05:30",
+      "youtube_video_id": "WdYUtZgAGro",
+      "youtube_url": "https://youtube.com/shorts/WdYUtZgAGro",
+      "published_at": "2026-10-22T18:39:56.304499+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Did you know why Margin Trading and Margin Calls is watched closely by the world's best investors?  When this happens, smart money repositions immediately. Historically, every major shift in this metric has triggered major moves in equity markets. In the Indian market, this directly impacts Nifty volatility and corporate debt costs. The golden rule: Never fight the macro trend. Protect your capital first. Follow for daily finance intelligence. Share this with an investor friend."
     },
     "D03-20:00": {
       "row_index": 10,
