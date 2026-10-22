@@ -62,8 +62,8 @@ jobs:
         run: |
           set -euo pipefail
           TITLE=$(cat watchdog_title.txt)
-          EXISTING_ISSUE=$(gh issue list --state open --search "$TITLE" --json number -q '.[0].number')
-          if [ -n "$EXISTING_ISSUE" ]; then
+          EXISTING_ISSUE=$(gh issue list --state open --search "$TITLE" --json number -q '.[0].number' 2>/dev/null || true)
+          if [ -n "$EXISTING_ISSUE" ] && [ "$EXISTING_ISSUE" != "null" ]; then
             echo "Updating existing watchdog issue #${EXISTING_ISSUE}..."
             gh issue comment "$EXISTING_ISSUE" --body-file watchdog_body.txt
           else
