@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-22T18:39:56.304704+05:30",
+  "updated_at": "2026-10-22T20:09:42.829638+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -131,15 +131,15 @@
       "day": 3,
       "scheduled_at": "2026-10-22T20:00:00+05:30",
       "topic": "Call and Put Options Payoff",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D03-20:00_1792679801",
+      "claimed_at": "2026-10-22T20:06:41.237311+05:30",
+      "youtube_video_id": "30MEE6IONdk",
+      "youtube_url": "https://youtube.com/shorts/30MEE6IONdk",
+      "published_at": "2026-10-22T20:09:42.829402+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Are you losing money on options because you do not understand payoff graphs? Watch this quick breakdown. A call option payoff rises infinitely as stock prices climb, whereas a put option profits when the market drops hard. Historical Nifty data shows that buying naked options without checking payoff limits destroys over eighty percent of retail trader capital. On the National Stock Exchange, Indian traders use strike prices in rupees to calculate exact breakeven points before entering trades. Always map your maximum risk and reward on a payoff chart before risking your hard earned money in derivatives. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D04-09:00": {
       "row_index": 11,
