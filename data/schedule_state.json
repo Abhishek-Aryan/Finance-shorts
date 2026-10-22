@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-22T01:23:33.841014+05:30",
+  "updated_at": "2026-10-22T14:24:13.091985+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -101,15 +101,15 @@
       "day": 3,
       "scheduled_at": "2026-10-22T09:00:00+05:30",
       "topic": "Operating vs Financial Leverage",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D03-09:00_1792659137",
+      "claimed_at": "2026-10-22T14:22:16.936538+05:30",
+      "youtube_video_id": "dl-5WOPx1OI",
+      "youtube_url": "https://youtube.com/shorts/dl-5WOPx1OI",
+      "published_at": "2026-10-22T14:24:13.091852+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Did you know leverage can explode your profits or completely destroy your business overnight? Let us decode this financial puzzle. Operating leverage relies on massive fixed costs like machinery. Financial leverage depends entirely on debt and interest payments. Companies with high operating leverage see huge profit jumps when sales rise, but massive losses when demand drops. In India, NSE manufacturing firms manage high operating leverage, while real estate developers juggle heavy debt interest. Smart investors always check a company's debt ratio before buying shares to avoid sudden bankruptcy risks. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D03-15:00": {
       "row_index": 9,
