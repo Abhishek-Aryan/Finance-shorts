@@ -103,13 +103,13 @@ jobs:
         if: env.PAUSED != 'true'
         run: |
           set -euo pipefail
-          if ! command -v ffmpeg >/dev/null 2>&1; then
-            sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=20
-            sudo apt-get install -y -o Acquire::Retries=3 -o Acquire::http::Timeout=20 ffmpeg fonts-liberation
-          else
-            echo "ffmpeg is pre-installed on runner:"
+          if command -v ffmpeg >/dev/null 2>&1; then
+            echo "ffmpeg already installed on runner image:"
             ffmpeg -version | head -1
-            sudo apt-get install -y --no-install-recommends -o Acquire::Retries=2 -o Acquire::http::Timeout=15 fonts-liberation || true
+          else
+            echo "ffmpeg not found; installing via apt..."
+            sudo apt-get update -o Acquire::Retries=3 -o Acquire::http::Timeout=20
+            sudo apt-get install -y -o DPkg::Lock::Timeout=60 ffmpeg fonts-liberation
           fi
 
       # Step 5: Install Python dependencies
