@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 def publish_to_youtube(
     topic_id: str,
-    privacy_status: str = "unlisted",
+    privacy_status: str = "public",
     force_test_mode: Optional[bool] = None,
 ) -> dict[str, Any]:
     """

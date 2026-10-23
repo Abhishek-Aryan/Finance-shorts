@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS uploads (
     video_id            TEXT,
     published_url       TEXT,
     scheduled_at        TEXT,
-    privacy_status      TEXT NOT NULL DEFAULT 'unlisted',
+    privacy_status      TEXT NOT NULL DEFAULT 'public',
     error_message       TEXT,
     reconciled          INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY (topic_id) REFERENCES topics(topic_id)
@@ -352,7 +352,7 @@ def record_upload_attempt(
     topic_id: str,
     platform: str,
     scheduled_at: Optional[str] = None,
-    privacy_status: str = "unlisted",
+    privacy_status: str = "public",
 ) -> None:
     now = _now()
     with get_connection() as conn:

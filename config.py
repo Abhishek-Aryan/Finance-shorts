@@ -118,8 +118,8 @@ YOUTUBE_CATEGORY_ID  = _get_int("YOUTUBE_CATEGORY_ID", 27)
 _env_privacy = os.environ.get("YOUTUBE_PRIVACY_STATUS", "").strip().lower()
 if _env_privacy and _env_privacy not in ("public", "unlisted", "private"):
     raise ValueError(f"Invalid YOUTUBE_PRIVACY_STATUS {_env_privacy!r}, must be 'public', 'unlisted', or 'private'")
-YOUTUBE_PRIVACY_STATUS = _env_privacy or "unlisted"
-PRIVACY_RAMP_DAYS    = _get_int("PRIVACY_RAMP_DAYS", 3)
+YOUTUBE_PRIVACY_STATUS = _env_privacy or "public"
+PRIVACY_RAMP_DAYS    = _get_int("PRIVACY_RAMP_DAYS", 0)
 MAX_UPLOADS_PER_RUN  = _get_int("MAX_UPLOADS_PER_RUN", 1)
 
 
@@ -129,12 +129,11 @@ def resolve_youtube_privacy(
     now: datetime | None = None,
 ) -> str:
     """
-    Determines effective YouTube privacy status according to the safety ramp policy:
+    Determines effective YouTube privacy status:
     1. force_privacy (from CLI argument / workflow_dispatch input) always wins if set.
     2. Explicit YOUTUBE_PRIVACY_STATUS environment variable wins if provided in os.environ.
-    3. Otherwise, for the first PRIVACY_RAMP_DAYS calendar days after the first published date,
-       use 'unlisted'; after that, use 'public'.
-    Logs which was chosen and why.
+    3. If PRIVACY_RAMP_DAYS > 0 and within ramp window, use 'unlisted'.
+    4. Otherwise defaults to 'public'.
     """
     import json
     from zoneinfo import ZoneInfo
@@ -154,43 +153,37 @@ def resolve_youtube_privacy(
         log.info("YouTube privacy status: '%s' (Explicitly set via environment variable)", chosen)
         return chosen
 
-    # Privacy ramp logic: Days 1-3 unlisted, Days 4-14 public
-    s_path = Path(state_file or (DATA_DIR / "schedule_state.json"))
-    launch_date = None
-    if s_path.exists():
-        try:
-            with open(s_path, "r", encoding="utf-8") as f:
-                st = json.load(f)
-                for r in st.get("rows", {}).values():
-                    if r.get("day") == 1 and r.get("scheduled_at"):
-                        s_dt = datetime.fromisoformat(r["scheduled_at"])
-                        if launch_date is None or s_dt < launch_date:
-                            launch_date = s_dt
-                    if r.get("status") == "Done" and r.get("published_at"):
-                        p_dt = datetime.fromisoformat(r["published_at"])
-                        if launch_date is None or p_dt < launch_date:
-                            launch_date = p_dt
-        except Exception:
-            pass
+    if PRIVACY_RAMP_DAYS > 0:
+        s_path = Path(state_file or (DATA_DIR / "schedule_state.json"))
+        launch_date = None
+        if s_path.exists():
+            try:
+                with open(s_path, "r", encoding="utf-8") as f:
+                    st = json.load(f)
+                    for r in st.get("rows", {}).values():
+                        if r.get("day") == 1 and r.get("scheduled_at"):
+                            s_dt = datetime.fromisoformat(r["scheduled_at"])
+                            if launch_date is None or s_dt < launch_date:
+                                launch_date = s_dt
+                        if r.get("status") == "Done" and r.get("published_at"):
+                            p_dt = datetime.fromisoformat(r["published_at"])
+                            if launch_date is None or p_dt < launch_date:
+                                launch_date = p_dt
+            except Exception:
+                pass
 
-    now_dt = now or datetime.now(ZoneInfo("Asia/Kolkata"))
-    if launch_date:
-        days_since_launch = (now_dt.date() - launch_date.date()).days
-        if days_since_launch < PRIVACY_RAMP_DAYS:
-            log.info(
-                "YouTube privacy status: 'unlisted' (Safety ramp active: %d/%d days since launch %s)",
-                days_since_launch, PRIVACY_RAMP_DAYS, launch_date.date().isoformat()
-            )
-            return "unlisted"
-        else:
-            log.info(
-                "YouTube privacy status: 'public' (Safety ramp expired: %d days >= %d days)",
-                days_since_launch, PRIVACY_RAMP_DAYS
-            )
-            return "public"
+        now_dt = now or datetime.now(ZoneInfo("Asia/Kolkata"))
+        if launch_date:
+            days_since_launch = (now_dt.date() - launch_date.date()).days
+            if days_since_launch < PRIVACY_RAMP_DAYS:
+                log.info(
+                    "YouTube privacy status: 'unlisted' (Safety ramp active: %d/%d days since launch %s)",
+                    days_since_launch, PRIVACY_RAMP_DAYS, launch_date.date().isoformat()
+                )
+                return "unlisted"
 
-    log.info("YouTube privacy status: 'unlisted' (Safety ramp: initial launch period)")
-    return "unlisted"
+    log.info("YouTube privacy status: 'public'")
+    return "public"
 
 
 # ── Instagram ─────────────────────────────────────────────

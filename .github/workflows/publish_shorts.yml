@@ -29,8 +29,8 @@ on:
       force_privacy:
         description: 'Override privacy'
         type: choice
-        options: ['', unlisted, public, private]
-        default: ''
+        options: [public, unlisted, private]
+        default: public
 
 concurrency:
   group: finance-shorts-publish
@@ -43,6 +43,7 @@ permissions:
 env:
   TZ: Asia/Kolkata
   PYTHONUNBUFFERED: '1'
+  YOUTUBE_PRIVACY_STATUS: 'public'
 
 jobs:
   publish:
@@ -60,11 +61,14 @@ jobs:
           if [ "${{ github.event_name }}" = "schedule" ]; then
             MODE="production"
             DRY_RUN="false"
-            FORCE_PRIVACY=""
+            FORCE_PRIVACY="public"
           else
             MODE="${{ inputs.mode }}"
             DRY_RUN="${{ inputs.dry_run }}"
             FORCE_PRIVACY="${{ inputs.force_privacy }}"
+            if [ -z "${FORCE_PRIVACY}" ]; then
+              FORCE_PRIVACY="public"
+            fi
           fi
           echo "MODE=${MODE}" >> "$GITHUB_ENV"
           echo "DRY_RUN=${DRY_RUN}" >> "$GITHUB_ENV"
