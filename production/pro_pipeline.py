@@ -23,7 +23,7 @@ import config
 from content.openrouter_generator import generate_pro_script
 from audio.tts_engine import TTSEngine
 from visuals.veo_provider import generate_all_scenes
-from visuals.video_provider import BudgetCapReached, QuotaExceeded
+from visuals.video_provider import BudgetCapReached, QuotaExceeded, VideoProviderError
 from visuals.cinematic_composer import compose_pro_video
 from publishing.youtube_publisher import YouTubePublisher
 from storage import state_store
@@ -187,10 +187,10 @@ def run_pro_pipeline(
         else:
             try:
                 scene_paths = generate_all_scenes(scenes, job_id, scenes_dir)
-            except QuotaExceeded as qe:
+            except (QuotaExceeded, VideoProviderError, Exception) as ve:
                 logger.warning(
-                    "Veo quota exhausted or unavailable (%s). Falling back to native luxury cinematic visual plates so publishing proceeds on schedule.",
-                    qe,
+                    "Veo video generation unavailable or failed (%s). Falling back to native luxury cinematic visual plates so publishing proceeds on schedule.",
+                    ve,
                 )
                 scene_paths = [None] * len(scenes)
 

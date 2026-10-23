@@ -218,6 +218,11 @@ class VeoProvider(SceneVideoProvider):
                         "already_exists": False,
                     }
 
+                # Non-retryable client errors (400 Bad Request, 404 Model Not Found / Deprecated)
+                if resp.status_code in (400, 404):
+                    logger.error("Veo API non-retryable client error %d on scene %d: %s", resp.status_code, index, resp.text)
+                    raise VideoProviderError(f"Google Veo API client error {resp.status_code}: {resp.text}")
+
                 # Check for quota exhaustion / non-retryable 429
                 body = resp.text.lower()
                 if resp.status_code == 429 and ("quota" in body or "resource_exhausted" in body or "insufficient" in body):
@@ -232,7 +237,7 @@ class VeoProvider(SceneVideoProvider):
 
                 resp.raise_for_status()
 
-            except (QuotaExceeded, BudgetCapReached):
+            except (QuotaExceeded, BudgetCapReached, VideoProviderError):
                 raise
             except Exception as e:
                 last_error = e
