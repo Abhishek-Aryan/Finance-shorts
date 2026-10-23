@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-23T14:19:12.234761+05:30",
+  "updated_at": "2026-10-23T19:52:02.574167+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -146,10 +146,10 @@
       "day": 4,
       "scheduled_at": "2026-10-23T09:00:00+05:30",
       "topic": "Implied Volatility and India VIX",
-      "status": "Pending",
-      "attempts": 1,
-      "job_id": "D04-09:00_1792745262",
-      "claimed_at": "2026-10-23T14:17:42.742112+05:30",
+      "status": "Failed",
+      "attempts": 2,
+      "job_id": "D04-09:00_1792765217",
+      "claimed_at": "2026-10-23T19:50:17.775188+05:30",
       "youtube_video_id": null,
       "youtube_url": null,
       "published_at": null,
