@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-23T19:52:02.574167+05:30",
+  "updated_at": "2026-10-23T20:07:38.643058+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -161,15 +161,15 @@
       "day": 4,
       "scheduled_at": "2026-10-23T15:00:00+05:30",
       "topic": "Sharpe Ratio: Return per Unit of Risk",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D04-15:00_1792766035",
+      "claimed_at": "2026-10-23T20:03:55.471205+05:30",
+      "youtube_video_id": "Dd_yvcbavA4",
+      "youtube_url": "https://youtube.com/shorts/Dd_yvcbavA4",
+      "published_at": "2026-10-23T20:07:38.642835+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Are you taking too much risk for tiny returns in your portfolio? Most investors ignore the hidden danger of market volatility completely. The Sharpe Ratio measures your exact return per unit of risk. It divides your portfolio excess returns by total asset volatility. A ratio above one point zero is considered good. Anything above two point zero proves exceptional investment skill and discipline. When choosing Nifty mutual funds, check their Sharpe ratio first. Indian investors often chase high returns while ignoring massive downside risk. Always compare funds with similar risk profiles. Never judge an investment purely by its trailing returns without calculating the Sharpe ratio. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D04-20:00": {
       "row_index": 13,
