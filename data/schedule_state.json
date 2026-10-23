@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-23T20:07:38.643058+05:30",
+  "updated_at": "2026-10-23T20:32:09.815333+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -146,15 +146,15 @@
       "day": 4,
       "scheduled_at": "2026-10-23T09:00:00+05:30",
       "topic": "Implied Volatility and India VIX",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D04-09:00_1792767619",
+      "claimed_at": "2026-10-23T20:30:18.883185+05:30",
+      "youtube_video_id": "O1tCBg2vnIw",
+      "youtube_url": "https://youtube.com/shorts/O1tCBg2vnIw",
+      "published_at": "2026-10-23T20:32:09.815176+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Did you know a single market index can predict investor panic before it even strikes your portfolio today? Implied volatility measures what options markets expect for future price swings, acting as a true fear gauge. When uncertainty spikes, option premiums soar because traders demand higher compensation for taking on massive market risks. On the National Stock Exchange, India VIX tracks Nifty fifty options to measure domestic investor sentiment accurately. Smart investors buy options when volatility is low and sell premium when the fear index climbs high. Follow the journey to improve your financial knowledge. Drop your trading questions below right now."
     },
     "D04-15:00": {
       "row_index": 12,
