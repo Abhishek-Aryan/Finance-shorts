@@ -8,9 +8,7 @@
     "topic": "Yield Curve Inversion and Recession Signals",
     "category": "Advanced Macro",
     "objective": "Explain why short-term rates above long-term rates have preceded most US recessions, and what it does not prove.",
-    "status": "Pending",
-    "topic_id": "T01",
-    "visual_subject": "a lone silhouette standing on an overlook watching two elevated roads cross and slope steeply downward into fog"
+    "status": "Pending"
   },
   {
     "day": 1,
@@ -21,9 +19,7 @@
     "topic": "Free Cash Flow vs Net Profit",
     "category": "Financial Statements",
     "objective": "Show why accounting profit can look healthy while cash drains, and how to compute free cash flow.",
-    "status": "Pending",
-    "topic_id": "T02",
-    "visual_subject": "a lone silhouette standing beside a massive vault door left ajar with warm light spilling out onto stone"
+    "status": "Pending"
   },
   {
     "day": 1,
@@ -34,9 +30,7 @@
     "topic": "Discounted Cash Flow (DCF) Basics",
     "category": "Valuation",
     "objective": "A business is worth the present value of its future cash flows; see what the discount rate does.",
-    "status": "Pending",
-    "topic_id": "T03",
-    "visual_subject": "a silhouette tracing a curved glowing spiral path that folds back from the horizon into the present"
+    "status": "Pending"
   },
   {
     "day": 2,
@@ -47,9 +41,7 @@
     "topic": "P/E Ratio and Earnings Yield",
     "category": "Valuation",
     "objective": "Read P/E as the inverse of earnings yield and compare it with bond yields.",
-    "status": "Pending",
-    "topic_id": "T04",
-    "visual_subject": "a silhouette holding a dual brass scale reflecting faint golden light against towering architectural columns"
+    "status": "Pending"
   },
   {
     "day": 2,
@@ -60,9 +52,7 @@
     "topic": "EV/EBITDA vs P/E",
     "category": "Valuation",
     "objective": "Know when enterprise-value multiples are more useful than P/E, especially for leveraged firms.",
-    "status": "Pending",
-    "topic_id": "T05",
-    "visual_subject": "a dark figure observing a deep ice formation where the submerged base dwarfs the visible peak"
+    "status": "Pending"
   },
   {
     "day": 2,
@@ -73,9 +63,7 @@
     "topic": "Bond Duration and Interest Rate Risk",
     "category": "Fixed Income",
     "objective": "Explain why bond prices fall when yields rise and how duration measures that sensitivity.",
-    "status": "Pending",
-    "topic_id": "T06",
-    "visual_subject": "a silhouette balancing carefully on an arched stone bridge as gentle ocean swells rise below"
+    "status": "Pending"
   },
   {
     "day": 3,
@@ -86,9 +74,7 @@
     "topic": "Operating vs Financial Leverage",
     "category": "Corporate Finance",
     "objective": "Distinguish fixed-cost leverage in operations from debt leverage and why both amplify outcomes.",
-    "status": "Pending",
-    "topic_id": "T07",
-    "visual_subject": "a figure grasping a long mechanical fulcrum pivoting a massive dark stone block toward light"
+    "status": "Pending"
   },
   {
     "day": 3,
@@ -99,9 +85,7 @@
     "topic": "Margin Trading and Margin Calls",
     "category": "Risk Management",
     "objective": "Understand how borrowed money magnifies losses and how a margin call forces selling.",
-    "status": "Pending",
-    "topic_id": "T08",
-    "visual_subject": "a silhouette standing on a narrow cliff ledge looking down into a mist covered canyon"
+    "status": "Pending"
   },
   {
     "day": 3,
@@ -112,9 +96,7 @@
     "topic": "Call and Put Options Payoff",
     "category": "Derivatives",
     "objective": "Read an option payoff diagram: premium, strike, breakeven and maximum loss for buyers.",
-    "status": "Pending",
-    "topic_id": "T09",
-    "visual_subject": "a silhouette facing a split archway with upward golden stairs and downward shadowy corridors"
+    "status": "Pending"
   },
   {
     "day": 4,
@@ -125,9 +107,7 @@
     "topic": "Implied Volatility and India VIX",
     "category": "Derivatives",
     "objective": "Understand what implied volatility measures and how India VIX reflects expected market swings.",
-    "status": "Pending",
-    "topic_id": "T10",
-    "visual_subject": "a figure looking out at a gathering storm over an obsidian sea with lightning rimming dark clouds"
+    "status": "Pending"
   },
   {
     "day": 4,
@@ -138,9 +118,7 @@
     "topic": "Sharpe Ratio: Return per Unit of Risk",
     "category": "Portfolio Management",
     "objective": "Compare investments on risk-adjusted return and understand the ratio's limits.",
-    "status": "Pending",
-    "topic_id": "T11",
-    "visual_subject": "a silhouette climbing a steep mountain ridge tethered securely by a glowing safety cable"
+    "status": "Pending"
   },
   {
     "day": 4,
@@ -151,9 +129,7 @@
     "topic": "Correlation and Real Diversification",
     "category": "Portfolio Management",
     "objective": "Explain why owning many stocks is not diversification if they all fall together.",
-    "status": "Pending",
-    "topic_id": "T12",
-    "visual_subject": "several distinct geometric monoliths standing at varying angles under a vast calm night sky"
+    "status": "Pending"
   },
   {
     "day": 5,
@@ -164,9 +140,7 @@
     "topic": "Loss Aversion and Investor Behavior",
     "category": "Behavioral Finance",
     "objective": "Recognize how the pain of losses drives panic selling and poor timing decisions.",
-    "status": "Pending",
-    "topic_id": "T13",
-    "visual_subject": "a silhouette staring into a polished dark mirror where the reflection casts an extended shadow"
+    "status": "Pending"
   },
   {
     "day": 5,
@@ -177,9 +151,7 @@
     "topic": "Real Returns After Tax and Inflation",
     "category": "Investing Maths",
     "objective": "Calculate post-tax, post-inflation return on an Indian investment and why nominal returns mislead.",
-    "status": "Pending",
-    "topic_id": "T14",
-    "visual_subject": "a figure watching water evaporate slowly from a shallow carved golden basin in the breeze"
+    "status": "Pending"
   },
   {
     "day": 5,
@@ -190,9 +162,7 @@
     "topic": "Working Capital Cycle",
     "category": "Financial Statements",
     "objective": "Trace how inventory, receivables and payables decide whether a business needs cash to grow.",
-    "status": "Pending",
-    "topic_id": "T15",
-    "visual_subject": "a silhouette walking beside a slow rotating waterwheel channeling clear streams through quiet stone canals"
+    "status": "Pending"
   },
   {
     "day": 6,
@@ -203,9 +173,7 @@
     "topic": "Return on Equity and DuPont Analysis",
     "category": "Financial Statements",
     "objective": "Split ROE into margin, asset turnover and leverage to see where returns really come from.",
-    "status": "Pending",
-    "topic_id": "T16",
-    "visual_subject": "a dark figure examining a multifaceted cut crystal refracting a single beam into three distinct rays"
+    "status": "Pending"
   },
   {
     "day": 6,
@@ -216,9 +184,7 @@
     "topic": "Credit Spreads and Corporate Bonds",
     "category": "Fixed Income",
     "objective": "Understand how the yield gap over government bonds prices default risk.",
-    "status": "Pending",
-    "topic_id": "T17",
-    "visual_subject": "two silhouettes standing on adjacent bridge piers separated by a widening expanse of dark water"
+    "status": "Pending"
   },
   {
     "day": 6,
@@ -229,9 +195,7 @@
     "topic": "Put-Call Parity",
     "category": "Derivatives",
     "objective": "See how a call, a put, the stock and a bond must price together to rule out free money.",
-    "status": "Pending",
-    "topic_id": "T18",
-    "visual_subject": "a perfectly balanced suspended mobile with geometric brass weights floating in still air"
+    "status": "Pending"
   },
   {
     "day": 7,
@@ -242,9 +206,7 @@
     "topic": "Options Greeks: Delta and Theta",
     "category": "Derivatives",
     "objective": "Understand how an option's price reacts to stock moves (delta) and to time decay (theta).",
-    "status": "Pending",
-    "topic_id": "T19",
-    "visual_subject": "an hourglass with glowing sand trickling steadily while a silhouette observes time passing"
+    "status": "Pending"
   },
   {
     "day": 7,
@@ -255,9 +217,7 @@
     "topic": "Short Selling and Borrowing Costs",
     "category": "Risk Management",
     "objective": "Explain how short sellers profit from falls, and the costs and unlimited-loss risk they carry.",
-    "status": "Pending",
-    "topic_id": "T20",
-    "visual_subject": "a figure standing under a steep inclined canopy catching falling leaves in cupped hands"
+    "status": "Pending"
   },
   {
     "day": 7,
@@ -268,9 +228,7 @@
     "topic": "Dividend Discount Model",
     "category": "Valuation",
     "objective": "Value a stock as the present value of expected dividends, and where the model breaks.",
-    "status": "Pending",
-    "topic_id": "T21",
-    "visual_subject": "a mature tree silhouette with ripe golden fruit dropping rhythmically into a still pool below"
+    "status": "Pending"
   },
   {
     "day": 8,
@@ -281,9 +239,7 @@
     "topic": "Economic Value Added (EVA)",
     "category": "Corporate Finance",
     "objective": "Judge whether a company earns more than its cost of capital, not just accounting profit.",
-    "status": "Pending",
-    "topic_id": "T22",
-    "visual_subject": "a silhouette sculpting excess stone away from a refined glowing pedestal inside an ancient hall"
+    "status": "Pending"
   },
   {
     "day": 8,
@@ -294,9 +250,7 @@
     "topic": "Beta and Systematic Risk",
     "category": "Portfolio Management",
     "objective": "Measure how much a stock moves with the market, and what beta cannot capture.",
-    "status": "Pending",
-    "topic_id": "T23",
-    "visual_subject": "a lone ship mast swaying with rhythmic ocean swells while a silhouette keeps watch"
+    "status": "Pending"
   },
   {
     "day": 8,
@@ -307,9 +261,7 @@
     "topic": "Value at Risk (VaR) and Its Blind Spots",
     "category": "Risk Management",
     "objective": "Understand what VaR estimates and why it fails in extreme market crashes.",
-    "status": "Pending",
-    "topic_id": "T24",
-    "visual_subject": "a figure peering through a narrow telescope at distant darkness unaware of the wide shoreline around"
+    "status": "Pending"
   },
   {
     "day": 9,
@@ -320,9 +272,7 @@
     "topic": "Repo Rate, Reverse Repo and CRR",
     "category": "Indian Monetary Policy",
     "objective": "Explain how the RBI's policy rates and reserve requirements steer liquidity and lending.",
-    "status": "Pending",
-    "topic_id": "T25",
-    "visual_subject": "a silhouette operating a set of grand sluice gates controlling the flow between two deep reservoirs"
+    "status": "Pending"
   },
   {
     "day": 9,
@@ -333,9 +283,7 @@
     "topic": "Real Interest Rates",
     "category": "Macro Economics",
     "objective": "Understand that real rate equals nominal rate minus inflation, and why it drives asset prices.",
-    "status": "Pending",
-    "topic_id": "T26",
-    "visual_subject": "a silhouette standing before an ornate sundial under high overcast skies seeking true direction"
+    "status": "Pending"
   },
   {
     "day": 9,
@@ -346,9 +294,7 @@
     "topic": "Quantitative Easing and Balance Sheets",
     "category": "Macro Economics",
     "objective": "See how central banks expand their balance sheets to push down long-term yields.",
-    "status": "Pending",
-    "topic_id": "T27",
-    "visual_subject": "a vast classical archive hall with towering shelves illuminated by soft golden atmospheric mist"
+    "status": "Pending"
   },
   {
     "day": 10,
@@ -359,9 +305,7 @@
     "topic": "Forward Rates and Currency Hedging",
     "category": "Global Markets",
     "objective": "Explain how interest rate differences set currency forward rates and hedging costs.",
-    "status": "Pending",
-    "topic_id": "T28",
-    "visual_subject": "a figure holding an antique astrolabe aligned toward a distant lighthouse across dark open water"
+    "status": "Pending"
   },
   {
     "day": 10,
@@ -372,9 +316,7 @@
     "topic": "Expense Ratio and Compounding Drag",
     "category": "Investing Maths",
     "objective": "Show how a 1 percent annual fee can cost lakhs over decades of compounding.",
-    "status": "Pending",
-    "topic_id": "T29",
-    "visual_subject": "a silhouette walking a quiet mountain path with a gently leaking pouch of sand behind"
+    "status": "Pending"
   },
   {
     "day": 10,
@@ -385,9 +327,7 @@
     "topic": "Bid-Ask Spread and Market Liquidity",
     "category": "Market Microstructure",
     "objective": "Understand what the spread costs you on every trade and why liquidity disappears in stress.",
-    "status": "Pending",
-    "topic_id": "T30",
-    "visual_subject": "two silhouettes standing across a calm stone courtyard exchanging a small polished wooden box"
+    "status": "Pending"
   },
   {
     "day": 11,
@@ -398,9 +338,7 @@
     "topic": "Kelly Criterion and Position Sizing",
     "category": "Risk Management",
     "objective": "Learn how bet size, not just edge, determines long-run growth and why full Kelly is risky.",
-    "status": "Pending",
-    "topic_id": "T31",
-    "visual_subject": "a silhouette arranging precise marble stones on a dark gridded surface with calculated space"
+    "status": "Pending"
   },
   {
     "day": 11,
@@ -411,9 +349,7 @@
     "topic": "Covered Calls and Premium Income",
     "category": "Derivatives",
     "objective": "Understand the trade-off of selling upside for option premium, and its capped-gain profile.",
-    "status": "Pending",
-    "topic_id": "T32",
-    "visual_subject": "a dark figure gathering golden sheaves of wheat under an arched covered stone portico"
+    "status": "Pending"
   },
   {
     "day": 11,
@@ -424,9 +360,7 @@
     "topic": "Active Funds vs Index Funds: Fee Math",
     "category": "Investing Maths",
     "objective": "Compare the cost gap of active and index funds and why most active funds trail benchmarks after fees.",
-    "status": "Pending",
-    "topic_id": "T33",
-    "visual_subject": "two silhouettes navigating separate paths through a dense forest one straight and one wandering"
+    "status": "Pending"
   },
   {
     "day": 12,
@@ -437,9 +371,7 @@
     "topic": "Momentum vs Mean Reversion",
     "category": "Market Behavior",
     "objective": "Explain the two opposing patterns in returns and why each works over different horizons.",
-    "status": "Pending",
-    "topic_id": "T34",
-    "visual_subject": "a heavy brass pendulum swinging toward its peak above a quiet polished marble floor"
+    "status": "Pending"
   },
   {
     "day": 12,
@@ -450,9 +382,7 @@
     "topic": "Earnings Quality and Impairments",
     "category": "Financial Statements",
     "objective": "Spot when reported profit is inflated by one-time write-offs or aggressive accounting choices.",
-    "status": "Pending",
-    "topic_id": "T35",
-    "visual_subject": "a silhouette inspecting a smooth marble block finding a subtle hairline fissure in the foundation"
+    "status": "Pending"
   },
   {
     "day": 12,
@@ -463,9 +393,7 @@
     "topic": "Leveraged ETFs and Volatility Decay",
     "category": "Derivatives",
     "objective": "Show why daily-reset leveraged products can lose value even when the index ends flat.",
-    "status": "Pending",
-    "topic_id": "T36",
-    "visual_subject": "a winding spiral staircase descending through a shadowy tower gradually narrowing with every turn"
+    "status": "Pending"
   },
   {
     "day": 13,
@@ -476,9 +404,7 @@
     "topic": "Term Premium",
     "category": "Fixed Income",
     "objective": "Explain why long-term bonds usually pay extra yield for the risk of holding them longer.",
-    "status": "Pending",
-    "topic_id": "T37",
-    "visual_subject": "a figure looking down a long colonnade where pillars stretch far into the misty horizon"
+    "status": "Pending"
   },
   {
     "day": 13,
@@ -489,9 +415,7 @@
     "topic": "Stock Buybacks and EPS Illusion",
     "category": "Corporate Finance",
     "objective": "Understand how buybacks lift earnings per share without creating new value by themselves.",
-    "status": "Pending",
-    "topic_id": "T38",
-    "visual_subject": "a figure viewing multiple candle reflections in an infinity mirror gallery receding into darkness"
+    "status": "Pending"
   },
   {
     "day": 13,
@@ -502,9 +426,7 @@
     "topic": "Debt-to-GDP and Sovereign Debt",
     "category": "Macro Economics",
     "objective": "Read debt-to-GDP as a ratio of growth to borrowing, and why interest costs matter more than size.",
-    "status": "Pending",
-    "topic_id": "T39",
-    "visual_subject": "a monumental stone arch supporting an immense balanced dark monolith under a dramatic sky"
+    "status": "Pending"
   },
   {
     "day": 14,
@@ -515,9 +437,7 @@
     "topic": "Fiscal Deficit vs Current Account Deficit",
     "category": "Macro Economics",
     "objective": "Distinguish government overspending from a country's external imbalance and why both matter for the rupee.",
-    "status": "Pending",
-    "topic_id": "T40",
-    "visual_subject": "a silhouette standing between two large bronze cauldrons with differing water levels slowly equalizing"
+    "status": "Pending"
   },
   {
     "day": 14,
@@ -528,9 +448,7 @@
     "topic": "Monetary Policy Transmission Lags",
     "category": "Macro Economics",
     "objective": "Explain why a rate cut takes months to reach loans, prices and jobs.",
-    "status": "Pending",
-    "topic_id": "T41",
-    "visual_subject": "a figure dropping a smooth pebble into a deep subterranean pool waiting for distant ripples"
+    "status": "Pending"
   },
   {
     "day": 14,
@@ -541,8 +459,6 @@
     "topic": "Survivorship Bias in Fund Performance",
     "category": "Behavioral Finance",
     "objective": "Recognize why published fund returns overstate performance by ignoring funds that were shut down.",
-    "status": "Pending",
-    "topic_id": "T42",
-    "visual_subject": "a lone lighthouse standing resilient on jagged coastal rocks amidst remnants of ancient forgotten piers"
+    "status": "Pending"
   }
 ]

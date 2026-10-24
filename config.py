@@ -68,16 +68,8 @@ OUTPUT_VIDEOS  = OUTPUT_DIR / "videos"
 OUTPUT_AUDIO   = OUTPUT_DIR / "audio"
 OUTPUT_VISUALS = OUTPUT_DIR / "visuals"
 
-# ── Visual Plates & Ken Burns Settings ─────────────────────
-ANTIGRAVITY_GEN_SCRIPT = _get("ANTIGRAVITY_GEN_SCRIPT", "")
-IMAGE_MAX_LUMA         = _get_float("IMAGE_MAX_LUMA", 90.0)
-PLATE_DIR              = _ROOT / _get("PLATE_DIR", "assets/plates")
-PLATE_FALLBACK         = _ROOT / _get("PLATE_FALLBACK", "assets/presenter/mentor_character_1.png")
-KENBURNS_MAX_ZOOM      = _get_float("KENBURNS_MAX_ZOOM", 1.06)
-KENBURNS_FPS           = _get_int("KENBURNS_FPS", 30)
-
 # Ensure critical dirs exist at import time
-for _d in (DATA_DIR, OUTPUT_VIDEOS, OUTPUT_AUDIO, OUTPUT_VISUALS, LOGS_DIR, CONFIG_DIR, PLATE_DIR):
+for _d in (DATA_DIR, OUTPUT_VIDEOS, OUTPUT_AUDIO, OUTPUT_VISUALS, LOGS_DIR, CONFIG_DIR):
     _d.mkdir(parents=True, exist_ok=True)
 
 # ── Ollama / LLM ──────────────────────────────────────────

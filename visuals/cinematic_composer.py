@@ -42,143 +42,76 @@ def _best_font() -> str:
 TEXT_YELLOW_ASS  = "&H0000FFFF"   # Bright yellow
 TEXT_WHITE_ASS   = "&H00FFFFFF"
 TEXT_CYAN_ASS    = "&H00FFFF00"
-# Color constants (ASS subtitle style hex is BGR)
-TEXT_YELLOW_ASS  = "&H0000FFFF"   # Bright yellow
-TEXT_WHITE_ASS   = "&H00FFFFFF"
-TEXT_CYAN_ASS    = "&H00FFFF00"
 SHADOW_BLACK_ASS = "&H00000000"
 BOX_BG_ASS       = "&HA0000000"   # 63% opaque black
 
 
-def get_zoom_direction(topic_id: str) -> int:
-    """
-    Parses topic_number from topic_id and returns int(topic_number) % 2.
-    Direction 0 = zoom-in, Direction 1 = zoom-out.
-    Falls back to 0 if topic_number cannot be parsed.
-    """
-    if not topic_id:
-        return 0
-    import re
-    digits = re.findall(r"\d+", str(topic_id))
-    if digits:
-        try:
-            return int(digits[0]) % 2
-        except (ValueError, TypeError):
-            return 0
-    return 0
-
-
-def build_zoompan_filter(
-    direction: int,
-    total_frames: int,
-    fps: int = 30,
-    max_zoom: float = 1.06,
-) -> str:
-    """
-    Builds the Ken Burns zoompan FFmpeg filter expression with pre-scaling to 2160:3840
-    to avoid jitter, centering the viewport.
-    direction=0: zoom-in
-    direction=1: zoom-out
-    """
-    if direction == 1:
-        # zoom-out
-        z_expr = f"if(eq(on,1),{max_zoom:.2f},max(zoom-0.0008,1.0))"
-    else:
-        # zoom-in
-        z_expr = f"if(eq(on,1),1.0,min(max(zoom,1.0)+0.0008,{max_zoom:.2f}))"
-
-    return (
-        f"scale=2160:3840,"
-        f"zoompan=z='{z_expr}':"
-        f"d={total_frames}:"
-        f"x='iw/2-(iw/zoom/2)':"
-        f"y='ih/2-(ih/zoom/2)':"
-        f"s=1080x1920:"
-        f"fps={fps}"
-    )
-
-
 def compose_pro_video(
-    scene_video_paths: Optional[list[Optional[Path]]] = None,
-    scene_data: Optional[list[dict]] = None,
-    audio_path: Path = Path(),
-    srt_path: Optional[Path] = None,
-    output_mp4: Path = Path(),
-    total_duration: float = 30.0,
+    scene_video_paths: list[Optional[Path]],
+    scene_data: list[dict],
+    audio_path: Path,
+    srt_path: Optional[Path],
+    output_mp4: Path,
+    total_duration: float,
     topic_title: str = "Finance Short",
     category: str = "Finance",
-    plate_path: Optional[Path] = None,
-    topic_id: str = "",
 ) -> Path:
     """
-    Assembles the full cinematic Short from a topic plate or scene clips:
-    1. Animates visual plate with Ken Burns motion (alternating zoom-in / zoom-out by topic parity).
-    2. Darkens subtitle safe-zone by 25%.
-    3. Overlays safe-zone kinetic subtitles.
-    4. Mixes TTS voiceover audio with Succession BGM ducking.
+    Assembles the full cinematic Short:
+    1. Concatenates scene MP4s (Veo clips or dynamic graphic motion cards) with crossfade transitions
+    2. Overlays animated text (on_screen_text + data_callout per scene)
+    3. Burns kinetic subtitles
+    4. Adds animated top progress bar
+    5. Merges TTS voiceover audio
     """
     output_mp4 = Path(output_mp4)
     output_mp4.parent.mkdir(parents=True, exist_ok=True)
     font = _best_font()
 
-    fps = getattr(config, "KENBURNS_FPS", 30)
-    max_zoom = getattr(config, "KENBURNS_MAX_ZOOM", 1.06)
-    total_frames = max(int(total_duration * fps), 30)
-
-    # Determine if we render directly from plate_path
-    use_plate_path = bool(plate_path and Path(plate_path).exists())
-    if not use_plate_path and (not scene_video_paths or all(p is None for p in (scene_video_paths or []))):
-        from visuals.plate_scene import plate_scene
-        plate_path = plate_scene(topic_id or topic_title)
-        use_plate_path = True
-
-    vf_parts = []
+    # ── Step 1: Build scene clip list with rich graphic fallbacks ─────────────
+    scene_clips: list[Path] = []
+    scene_durations: list[float] = []
     tmp_blanks: list[Path] = []
-    concat_path: Optional[Path] = None
 
-    if use_plate_path:
-        direction = get_zoom_direction(topic_id)
-        motion_filter = build_zoompan_filter(direction, total_frames, fps, max_zoom)
-        vf_parts.append(motion_filter)
-        # Darken the subtitle zone by 25% (rows 55% to 100%)
-        vf_parts.append("drawbox=y=ih*0.55:w=iw:h=ih*0.45:color=black@0.25:t=fill")
-        # Gold top border line
-        vf_parts.append("drawbox=x=0:y=0:w=iw:h=8:color=0xD4AF37@1:t=fill")
-        video_input = ["-i", str(plate_path)]
-    else:
-        # Fallback multi-clip concat
-        scene_clips: list[Path] = []
-        scene_durations: list[float] = []
+    for i, (clip_path, scene) in enumerate(zip(scene_video_paths, scene_data)):
+        dur = float(scene.get("duration_sec", 8))
+        scene_durations.append(dur)
 
-        for i, (clip_path, scene) in enumerate(zip(scene_video_paths or [], scene_data or [])):
-            dur = float(scene.get("duration_sec", 8))
-            scene_durations.append(dur)
-            if clip_path and Path(clip_path).exists() and Path(clip_path).stat().st_size > 50_000:
-                scene_clips.append(Path(clip_path))
-            else:
-                card_clip = output_mp4.parent / f"scene_card_{i+1:02d}.mp4"
-                _make_graphic_clip(
-                    dest=card_clip,
-                    duration=dur,
-                    scene=scene,
-                    scene_index=i,
-                    total_scenes=len(scene_data or []),
-                    topic_title=topic_title,
-                    category=category,
-                )
-                tmp_blanks.append(card_clip)
-                scene_clips.append(card_clip)
+        if clip_path and clip_path.exists() and clip_path.stat().st_size > 50_000:
+            scene_clips.append(clip_path)
+        else:
+            # Generate rich animated graphic card clip
+            card_clip = output_mp4.parent / f"scene_card_{i+1:02d}.mp4"
+            _make_graphic_clip(
+                dest=card_clip,
+                duration=dur,
+                scene=scene,
+                scene_index=i,
+                total_scenes=len(scene_data),
+                topic_title=topic_title,
+                category=category,
+            )
+            tmp_blanks.append(card_clip)
+            scene_clips.append(card_clip)
 
-        concat_path = output_mp4.parent / f"{output_mp4.stem}_concat.mp4"
-        _concat_with_xfade(scene_clips, scene_durations, concat_path)
+    # ── Step 2: Concatenate with xfade crossdissolve transitions ────────────
+    concat_path = output_mp4.parent / f"{output_mp4.stem}_concat.mp4"
+    _concat_with_xfade(scene_clips, scene_durations, concat_path)
 
-        vf_parts.append("scale=1080:1920:force_original_aspect_ratio=decrease")
-        vf_parts.append("pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black")
-        vf_parts.append("fps=30")
-        vf_parts.append("drawbox=x=0:y=0:w=iw:h=8:color=0xD4AF37@1:t=fill")
-        video_input = ["-i", str(concat_path)]
+    # ── Step 3: Build FFmpeg overlay filter for text + subtitles + progress bar ─
+    vf_parts = []
 
-    # Safe-zone kinetic subtitles
+    # Scale/ensure correct dimensions
+    vf_parts.append("scale=1080:1920:force_original_aspect_ratio=decrease")
+    vf_parts.append("pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black")
+    vf_parts.append("fps=30")
+
+    # Top border line (gold)
+    vf_parts.append("drawbox=x=0:y=0:w=iw:h=8:color=0xD4AF37@1:t=fill")
+
+
+
+    # Kinetic subtitles (yellow, safe-zone)
     if srt_path and Path(srt_path).exists():
         try:
             srt_rel = str(Path(srt_path).resolve().relative_to(Path.cwd())).replace("\\", "/")
@@ -199,7 +132,7 @@ def compose_pro_video(
             "Alignment=2,"
             "MarginV=320"
         )
-        vf_parts.append(f"subtitles='{srt_rel}':force_style='{sub_style}'")
+        vf_parts.append(f"subtitles={srt_rel}:force_style='{sub_style}'")
 
     vf_str = ",".join(vf_parts)
 
@@ -216,7 +149,7 @@ def compose_pro_video(
         )
         cmd = [
             "ffmpeg", "-y",
-            *video_input,
+            "-i", str(concat_path),
             "-i", str(audio_path),
             "-i", str(bgm_path),
             "-filter_complex", filter_complex,
@@ -234,7 +167,7 @@ def compose_pro_video(
     else:
         cmd = [
             "ffmpeg", "-y",
-            *video_input,
+            "-i", str(concat_path),
             "-i", str(audio_path),
             "-vf", vf_str,
             "-c:v", "libx264",
@@ -250,8 +183,7 @@ def compose_pro_video(
     result = subprocess.run(cmd, capture_output=True, text=True)
 
     # Cleanup
-    if concat_path and concat_path.exists():
-        concat_path.unlink(missing_ok=True)
+    concat_path.unlink(missing_ok=True)
     for b in tmp_blanks:
         b.unlink(missing_ok=True)
 

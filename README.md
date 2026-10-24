@@ -6,12 +6,12 @@
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![FFmpeg](https://img.shields.io/badge/FFmpeg-5.0+-green.svg?logo=ffmpeg&logoColor=white)](https://ffmpeg.org/)
 [![YouTube Data API v3](https://img.shields.io/badge/YouTube-Data_API_v3-red.svg?logo=youtube&logoColor=white)](https://developers.google.com/youtube/v3)
-[![Visuals: Plate-Based](https://img.shields.io/badge/Visuals-Cinematic_Plates-gold.svg?logo=artstation&logoColor=white)](assets/plates/)
+[![Google Veo](https://img.shields.io/badge/Video-Google_Veo-8E75C2.svg?logo=google&logoColor=white)](https://ai.google.dev/)
 [![Gemini API](https://img.shields.io/badge/AI-Google_Gemini-4285F4.svg?logo=google&logoColor=white)](https://ai.google.dev/)
 [![Edge TTS](https://img.shields.io/badge/TTS-Andrew_Neural-0078D4.svg?logo=microsoft&logoColor=white)](https://github.com/rany2/edge-tts)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-*An end-to-end, zero-cost cloud pipeline that autonomously scripts, voices, renders with Ken Burns cinematic luxury plates, composes, verifies, and publishes 1080x1920 YouTube Shorts while your PC is off.*
+*An end-to-end, zero-human-intervention cloud pipeline that autonomously scripts, voices, renders with Google Veo, composes, verifies, and publishes cinematic 1080x1920 YouTube Shorts while your PC is off.*
 
 ---
 
@@ -21,10 +21,10 @@
 
 **Finance Shorts Pro** is an autonomous production engine designed to educate modern investors on corporate finance, valuation, equity markets, and macroeconomic indicators.
 
-Driven by a structured 14-day, 42-topic curriculum (3 videos daily at 09:00, 15:00, and 20:00 IST from 20-Oct-2026 to 02-Nov-2026), the engine operates 24/7 in GitHub Actions without relying on local hardware. The pipeline orchestrates AI script generation, neural voice synthesis, plate-based visual rendering with dynamic Ken Burns motion graphics, safe-zone kinetic subtitles, audio ducking with a subtle *Succession* piano backing track, and direct YouTube Data API v3 upload.
+Driven by a structured 14-day, 42-topic curriculum (3 videos daily at 09:00, 15:00, and 20:00 IST from 20-Oct-2026 to 02-Nov-2026), the engine operates 24/7 in GitHub Actions without relying on local hardware. The pipeline orchestrates AI script generation, neural voice synthesis, AI video generation with Google Veo, safe-zone kinetic subtitles, audio ducking with a subtle *Succession* piano backing track, and direct YouTube Data API v3 upload.
 
 > [!NOTE]
-> **Plate-Based Visuals Architecture**: Generative video APIs (Veo/HeyGen) have been replaced with **pre-rendered 9:16 luxury cinematic plates** (`assets/plates/{topic_id}.jpg`). The runtime pipeline composes them using subpixel-supersampled Ken Burns motion, 25% subtitle-zone darkening, and audio ducking, eliminating runtime video API costs ($0 cost in cloud actions) and eliminating video generation timeouts.
+> **HeyGen Deprecation Notice**: HeyGen has been **completely removed** from the production pipeline. All scene video generation is now powered directly by **Google Veo** via the Gemini API (`GEMINI_API_KEY`), backed by the native cinematic compositor with luxury silhouette character plates.
 
 ---
 
@@ -79,37 +79,28 @@ The CLI commands (specifically `python main.py publish-next`) exit with standard
 - **Google TTS (`gTTS`) Secondary Engine**: If all Edge-TTS servers fail, the pipeline instantly engages Google Text-to-Speech with synthetic word-level alignment so audio synthesis never blocks the publishing run.
 - **Piper Neural TTS** (`TTS_ENGINE=piper`): Optional local offline neural synthesis engine.
 
-### 3. Plate-Based Visuals & Ken Burns Motion (Zero-Cost Architecture)
-- **Pre-Generated Cinematic Plates** (`assets/plates/{topic_id}.jpg`): Each topic in the 42-topic curriculum is paired with a curated, high-resolution 9:16 visual metaphor (minimalist silhouette in luxury setting with cinematic chiaroscuro lighting).
-- **Quality Gate Verification** (`visuals/plate_gate.py`): Plates must pass strict programmatic gating (minimum 1080x1920, top/bottom 20% luminance < 90 for clean typography, non-flat standard deviation >= 6.0). Verified plates are tracked in `assets/plates/manifest.json`.
-- **Dynamic Ken Burns Motion**: Instead of static backgrounds or paid AI video generators, our compositor animates plates with alternating subpixel-supersampled Ken Burns motion:
-  - **Even topics (`T02`, `T04`, ...)**: Slow zoom-in from 1.00x to 1.06x centered at (0.5, 0.42).
-  - **Odd topics (`T01`, `T03`, ...)**: Slow zoom-out from 1.06x down to 1.00x centered at (0.5, 0.42).
-- **Graceful Fallback**: If a plate is missing or fails the quality gate, the compositor seamlessly falls back to `assets/presenter/mentor_character_1.png` with a logged warning. Cloud publishing runs never fail due to visual assets.
+### 3. Scene Video Generation & Graceful Fallback
+- **Google Veo Provider** (`visuals/veo_provider.py`): Scene video generation using Google's Gemini video models with asynchronous batch polling.
+- **Automatic Fallback to Luxury Cinematic Plates**: If the video model endpoint encounters a 404, rate limit, quota exhaustion, or downtime, the pipeline gracefully falls back to the native luxury motion-graphics compositor with silhouette character plates and gold typography overlays. The pipeline never aborts.
+- **Character Consistency Limitation**: Current generative video models like Veo do not guarantee identical facial geometry across multi-scene generations. The provider provides reference plate conditioning (`assets/presenter/mentor_character_1.png`) where supported, blended with our cinematic compositor.
 
 ### 4. Audio Ducking & Kinetic Subtitles
-- Multi-layer FFmpeg compositor embeds safe-zone word-by-word kinetic subtitles, 25% subtitle-zone darkening at the lower third, and automatically ducks the *Succession* piano backing track (-18dB under speech).
-- **Public Visibility by Default**: All videos are uploaded directly with `public` visibility.
+- Multi-layer FFmpeg compositor embeds safe-zone word-by-word kinetic subtitles, 4K luxury silhouette plates, and automatically ducks the *Succession* piano backing track (-18dB under speech).
+- **Public Visibility by Default**: All videos are uploaded directly with `public` visibility (no unlisted ramp-up period).
 
 ---
 
-## 🎨 Plate Generation Workflow
+## 💰 Veo Cost Guard & Usage Limits
 
-All visual plates are generated pre-commit locally and tracked in git, guaranteeing zero external dependencies or video generation costs in GitHub Actions:
+Video generation with Google Veo is billed per second of generated video (~$0.10/second for Fast 720p). To prevent runaway billing, Finance Shorts Pro enforces strict, mandatory cost guards:
 
-```powershell
-# Generate plates for specific topics or all missing curriculum topics
-python tools/generate_plates.py --all
-
-# Or generate for a specific topic ID
-python tools/generate_plates.py --topic T14
-
-# Re-evaluate all plates against the quality gate
-python tools/generate_plates.py --re-gate
-```
-
-- **Cloud Actions**: In GitHub Actions, the runner simply loads the committed `.jpg` plate from `assets/plates/`. No video generation APIs or external image credentials are used at runtime.
-- **Budget Cap Exit Code (5)**: Exit code 5 remains supported for backward compatibility, but runtime video generation is now 100% free ($0).
+- **Per-Run Limit**: `VEO_MAX_SECONDS_PER_RUN=60` (default: 60 seconds per execution).
+- **Per-Day Limit**: `VEO_MAX_SECONDS_PER_DAY=60` (default: 60 seconds per UTC day).
+- **Estimated Cost**:
+  - ~30s video ≈ $3.00 per short.
+  - At 3 shorts/day (with budget cap adjusted) ≈ $9.00/day.
+- **Usage Ledger**: Every run records estimated and actual generated seconds in [data/usage_ledger.json](file:///C:/Users/Admin/.gemini/antigravity-ide/scratch/finance-shorts/data/usage_ledger.json).
+- **Budget Exceeded Behavior**: If a planned run would exceed either cap, the provider raises `BudgetCapReached`, exits with **Exit Code 5**, and leaves the schedule row as `Pending` without marking it as failed.
 
 ---
 
