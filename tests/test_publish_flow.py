@@ -104,6 +104,7 @@ def test_publish_flow_call_order(clean_flow_env, monkeypatch, tmp_path):
     # Spy mark_row_done
     orig_mrd = "storage.schedule_manager.mark_row_done"
     monkeypatch.setattr("automation.schedule_runner.mark_row_done", lambda *a, **kw: (events.append("excel_mark_done"), True)[1])
+    monkeypatch.setattr(config, "validate", lambda: [])
 
     monkeypatch.setattr(config, "PUBLISHING_MODE", "production")
     now_due = datetime(2026, 10, 20, 9, 30, tzinfo=IST)
@@ -148,6 +149,7 @@ def test_excel_failure_after_upload_exit_4_and_state_done(clean_flow_env, monkey
         "status": "published",
     })
     monkeypatch.setattr("automation.schedule_runner.mark_row_done", MagicMock(side_effect=ExcelLockedError("Locked")))
+    monkeypatch.setattr(config, "validate", lambda: [])
     monkeypatch.setattr(config, "PUBLISHING_MODE", "production")
 
     now_due = datetime(2026, 10, 20, 9, 30, tzinfo=IST)
