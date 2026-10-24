@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "topics": {
+    "T01": {
+      "file": "assets/plates/T01.jpg",
+      "generator": "antigravity-image-gen",
+      "aspect_ratio": "9:16",
+      "attempts": 1,
+      "luma_top": 36.76,
+      "luma_bottom": 29.15,
+      "passes_gate": true,
+      "status": "ok"
+    },
+    "T02": {
+      "file": "assets/plates/T02.jpg",
+      "generator": "antigravity-image-gen",
+      "aspect_ratio": "9:16",
+      "attempts": 1,
+      "luma_top": 14.63,
+      "luma_bottom": 3.43,
+      "passes_gate": true,
+      "status": "ok"
+    },
+    "T14": {
+      "file": "assets/plates/T14.jpg",
+      "generator": "antigravity-image-gen",
+      "aspect_ratio": "9:16",
+      "attempts": 1,
+      "luma_top": 20.85,
+      "luma_bottom": 2.2,
+      "passes_gate": true,
+      "status": "ok"
+    }
+  }
+}

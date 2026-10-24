@@ -280,6 +280,7 @@ def select_due_row(
     now_ist: datetime | None = None,
     excel_path: Path | None = None,
     state_file: Path | None = None,
+    force_due: bool = False,
 ) -> Optional[dict]:
     """
     Selects the due row for publishing:
@@ -337,11 +338,15 @@ def select_due_row(
 
     if not candidates:
         upcoming.sort(key=lambda x: x["_sched_dt"])
-        next_slot = upcoming[0]["scheduled_at"] if upcoming else None
-        select_due_row.reason = "nothing due"
-        select_due_row.next_scheduled_at = next_slot
-        logger.info("Nothing due. Next scheduled slot is at %s", next_slot)
-        return None
+        if force_due and upcoming:
+            logger.info("force_due=True: selecting earliest upcoming slot %s ahead of schedule", upcoming[0]["scheduled_at"])
+            candidates.append(upcoming[0])
+        else:
+            next_slot = upcoming[0]["scheduled_at"] if upcoming else None
+            select_due_row.reason = "nothing due"
+            select_due_row.next_scheduled_at = next_slot
+            logger.info("Nothing due. Next scheduled slot is at %s", next_slot)
+            return None
 
     candidates.sort(key=lambda x: x["_sched_dt"])
     chosen = candidates[0]

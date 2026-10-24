@@ -26,7 +26,6 @@ import config
 from automation.run_lock import LockHeld, acquire_run_lock
 from production.pro_pipeline import publish_composed, run_pro_pipeline, verify_composed_video
 from storage import state_store
-from visuals.video_provider import BudgetCapReached, QuotaExceeded
 from storage.schedule_manager import (
     ExcelLockedError,
     format_status_cell,
@@ -34,6 +33,7 @@ from storage.schedule_manager import (
     mark_row_done,
     select_due_row,
 )
+from visuals.video_provider import BudgetCapReached
 
 logger = logging.getLogger(__name__)
 
@@ -92,6 +92,7 @@ def publish_next_topic(
     state_file: Path | None = None,
     lock_file: Path | None = None,
     force_privacy: str | None = None,
+    force_due: bool = False,
 ) -> int:
     """
     Publishes the next due topic according to the strict 10-step publish safety sequence.
@@ -150,7 +151,7 @@ def publish_next_topic(
             return 0
 
         # ── Step 3: Select Due Row ────────────────────────────────────────────
-        row = select_due_row(now_ist=now_dt, excel_path=e_path, state_file=s_path)
+        row = select_due_row(now_ist=now_dt, excel_path=e_path, state_file=s_path, force_due=force_due)
         if not row:
             next_slot = getattr(select_due_row, "next_scheduled_at", None)
             logger.info("Nothing due right now. Next scheduled slot: %s", next_slot)
@@ -183,13 +184,23 @@ def publish_next_topic(
 
         # ── Step 5: Run Pro Pipeline (Up to compose step) ────────────────────
         try:
-            compose_result = run_pro_pipeline(
-                topic=topic_title,
-                category=category,
-                objective=objective,
-                publish_now=False,
-                dry_run=dry_run,
-            )
+            try:
+                compose_result = run_pro_pipeline(
+                    topic=topic_title,
+                    category=category,
+                    objective=objective,
+                    publish_now=False,
+                    dry_run=dry_run,
+                    topic_id=row_key,
+                )
+            except TypeError:
+                compose_result = run_pro_pipeline(
+                    topic=topic_title,
+                    category=category,
+                    objective=objective,
+                    publish_now=False,
+                    dry_run=dry_run,
+                )
             if compose_result.get("status") != "composed":
                 raise RuntimeError(f"Composition did not produce 'composed' status: {compose_result.get('error')}")
 
@@ -199,7 +210,14 @@ def publish_next_topic(
 
             # Verify video
             if not dry_run and config.PUBLISHING_MODE == "production":
-                verify_composed_video(video_path)
+                try:
+                    verify_composed_video(
+                        video_path,
+                        is_fallback_plate=compose_result.get("is_fallback_plate", False),
+                        plate_name=Path(compose_result.get("plate_path", "")).name if compose_result.get("plate_path") else "",
+                    )
+                except TypeError:
+                    verify_composed_video(video_path)
 
         except BudgetCapReached as bce:
             logger.warning("Budget cap reached for %s: %s", row_key, bce)
@@ -215,7 +233,6 @@ def publish_next_topic(
                 except Exception:
                     pass
             return 5
-
         except Exception as pe:
             logger.error("Pipeline failure for %s before upload: %s", row_key, pe, exc_info=True)
             if not dry_run:
@@ -361,7 +378,13 @@ if __name__ == "__main__":
     elif len(sys.argv) > 1 and sys.argv[1] == "daemon":
         run_trigger_daemon()
     elif len(sys.argv) > 1 and sys.argv[1] == "publish":
-        code = publish_next_topic()
+        dry_run = "--dry-run" in sys.argv
+        force_due = "--force-due" in sys.argv
+        force_priv = ""
+        for i, arg in enumerate(sys.argv):
+            if arg == "--force-privacy" and i + 1 < len(sys.argv):
+                force_priv = sys.argv[i + 1]
+        code = publish_next_topic(dry_run=dry_run, force_due=force_due, force_privacy=force_priv)
         sys.exit(code)
     else:
         print("Usage: python -m automation.schedule_runner [status|daemon|publish]")

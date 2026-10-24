@@ -22,8 +22,7 @@ from typing import Optional
 import config
 from content.openrouter_generator import generate_pro_script
 from audio.tts_engine import TTSEngine
-from visuals.veo_provider import generate_all_scenes
-from visuals.video_provider import BudgetCapReached, QuotaExceeded, VideoProviderError
+from visuals.plate_scene import plate_scene
 from visuals.cinematic_composer import compose_pro_video
 from publishing.youtube_publisher import YouTubePublisher
 from storage import state_store
@@ -33,12 +32,17 @@ logger = logging.getLogger(__name__)
 SCENES_SUBDIR = "scenes"
 
 
-def verify_composed_video(video_path: Path | str) -> dict:
+def verify_composed_video(
+    video_path: Path | str,
+    is_fallback_plate: bool = False,
+    plate_name: str = "",
+) -> dict:
     """
     Verifies that the video file exists and is a valid video:
     - ffprobe duration between 15 and 60 seconds
     - 1080x1920 resolution
     - at least one audio stream present
+    Logs whether a custom plate or fallback was used.
     Raises ValueError or FileNotFoundError if validation fails.
     """
     v_path = Path(video_path)
@@ -77,11 +81,17 @@ def verify_composed_video(video_path: Path | str) -> dict:
     if not a_stream:
         raise ValueError(f"Video {v_path} contains no audio stream")
 
+    logger.info(
+        "Video verification passed: %s (plate=%s, fallback=%s)",
+        v_path.name, plate_name or "plate", is_fallback_plate
+    )
+
     return {
         "duration": duration,
         "width": width,
         "height": height,
         "has_audio": True,
+        "is_fallback_plate": is_fallback_plate,
     }
 
 
@@ -91,6 +101,7 @@ def run_pro_pipeline(
     objective: str,
     publish_now: bool = False,
     dry_run: bool = False,
+    topic_id: str = "",
 ) -> dict:
     """
     Complete generation pipeline for one topic (up to composition).
@@ -105,10 +116,13 @@ def run_pro_pipeline(
         "topic": topic,
         "category": category,
         "objective": objective,
+        "topic_id": topic_id,
         "job_id": job_id,
         "status": "started",
         "script": None,
         "audio_path": None,
+        "plate_path": None,
+        "is_fallback_plate": False,
         "scene_paths": [],
         "video_path": None,
         "youtube_url": None,
@@ -179,30 +193,20 @@ def run_pro_pipeline(
         result["duration"] = total_duration
         logger.info("TTS audio: %.1fs | SRT: %s", total_duration, srt_path)
 
-        # ── Step 3: Google Veo Scene Videos ───────────────────────────────────
-        logger.info("═══ [3/5] GOOGLE VEO SCENE VIDEOS (%d scenes) ═══", len(scenes))
-        if dry_run or config.VIDEO_PROVIDER != "veo":
-            logger.info("Skipping Veo scene generation (dry_run=%s, provider=%s)", dry_run, config.VIDEO_PROVIDER)
-            scene_paths = [None] * len(scenes)
-        else:
-            try:
-                scene_paths = generate_all_scenes(scenes, job_id, scenes_dir)
-            except (QuotaExceeded, VideoProviderError, Exception) as ve:
-                logger.warning(
-                    "Veo video generation unavailable or failed (%s). Falling back to native luxury cinematic visual plates so publishing proceeds on schedule.",
-                    ve,
-                )
-                scene_paths = [None] * len(scenes)
-
-        result["scene_paths"] = [str(p) if p else None for p in scene_paths]
-        ok_count = sum(1 for p in scene_paths if p and Path(p).exists())
-        logger.info("Scenes generated: %d/%d OK", ok_count, len(scenes))
+        # ── Step 3: Resolve Visual Plate (No Veo) ─────────────────────────────
+        logger.info("═══ [3/5] VISUAL PLATE RESOLUTION (%s) ═══", topic_id or topic)
+        resolved_plate = plate_scene(topic_id or topic)
+        is_fallback = "mentor_character_1" in str(resolved_plate).lower()
+        logger.info("Resolved visual plate: %s (fallback=%s)", resolved_plate.name, is_fallback)
+        result["plate_path"] = str(resolved_plate)
+        result["is_fallback_plate"] = is_fallback
+        result["scene_paths"] = []
 
         # ── Step 4: Compose Final Video ───────────────────────────────────────
         logger.info("═══ [4/5] COMPOSING FINAL SHORT ═══")
         output_mp4 = job_dir / f"{topic_slug}_final.mp4"
         final_video = compose_pro_video(
-            scene_video_paths=scene_paths,
+            plate_path=resolved_plate,
             scene_data=scenes,
             audio_path=audio_path,
             srt_path=srt_path,
@@ -210,6 +214,7 @@ def run_pro_pipeline(
             total_duration=total_duration,
             topic_title=topic,
             category=category,
+            topic_id=topic_id or topic,
         )
         result["video_path"] = str(final_video)
 

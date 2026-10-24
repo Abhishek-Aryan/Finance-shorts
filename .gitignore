@@ -44,6 +44,8 @@ scratch/
 scratch_*.py
 watchdog_*.txt
 alert_*.txt
+assets/plates/.temp_gen/
+*.tmp
 
 # ── OS / Editor ───────────────────────────────────────────
 .DS_Store

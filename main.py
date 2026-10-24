@@ -248,6 +248,7 @@ def cmd_publish_next(args: argparse.Namespace) -> None:
     code = publish_next_topic(
         dry_run=args.dry_run,
         force_privacy=getattr(args, "force_privacy", "") or "",
+        force_due=getattr(args, "force_due", False),
     )
     sys.exit(code)
 
@@ -288,6 +289,7 @@ def _build_parser() -> argparse.ArgumentParser:
     pn.add_argument("--dry-run", action="store_true", help="Generate without real video rendering/publishing")
     pn.add_argument("--force-privacy", choices=["", "unlisted", "public", "private"], default="",
                     help="Override YouTube privacy status (public, unlisted, private)")
+    pn.add_argument("--force-due", action="store_true", help="Force selection of next upcoming topic even if ahead of schedule time")
 
     rs = sub.add_parser("run-schedule", help="Run background daemon triggering at 9AM, 3PM, 8PM IST")
     rs.add_argument("--dry-run", action="store_true", help="Simulate without real video rendering/publishing")
