@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-24T10:33:39.000884+05:30",
+  "updated_at": "2026-10-24T10:37:42.726546+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -191,15 +191,15 @@
       "day": 5,
       "scheduled_at": "2026-10-24T09:00:00+05:30",
       "topic": "Loss Aversion and Investor Behavior",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D05-09:00_1792818346",
+      "claimed_at": "2026-10-24T10:35:46.131742+05:30",
+      "youtube_video_id": "sdgYFXx7S-k",
+      "youtube_url": "https://youtube.com/shorts/sdgYFXx7S-k",
+      "published_at": "2026-10-24T10:37:42.726334+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Why do losing trades hurt twice as much as winning trades make you happy in the stock market? Loss aversion is a psychological trap making investors hold bad stocks way too long just to avoid booking losses. Behavioral studies show humans feel the emotional sting of financial losses twice as intensely as equivalent gains. Indian retail investors often panic sell during NSE corrections or cling onto dead penny stocks losing thousands of rupees. Always set strict stop loss levels before entering any trade to protect your capital from emotional decision making. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D05-15:00": {
       "row_index": 15,
