@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-24T10:37:42.726546+05:30",
+  "updated_at": "2026-10-24T18:58:39.385990+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -206,15 +206,15 @@
       "day": 5,
       "scheduled_at": "2026-10-24T15:00:00+05:30",
       "topic": "Real Returns After Tax and Inflation",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D05-15:00_1792848455",
+      "claimed_at": "2026-10-24T18:57:35.151703+05:30",
+      "youtube_video_id": "Ny8h2PRzY1I",
+      "youtube_url": "https://youtube.com/shorts/Ny8h2PRzY1I",
+      "published_at": "2026-10-24T18:58:39.385770+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Are your investments actually losing value every single day without you realizing it? Nominal returns lie to you. Real returns subtract both taxes and inflation from your gains, revealing what your money can actually buy today. If a fixed deposit yields seven percent, but inflation is six and taxes take one, your real return is zero. In Indian markets, high taxation on capital gains combined with persistent inflation devours significant portfolio wealth over time. Always calculate your post-tax and post-inflation returns before deploying hard earned capital into any new financial asset class. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D05-20:00": {
       "row_index": 16,
