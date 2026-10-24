@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-24T18:58:39.385990+05:30",
+  "updated_at": "2026-10-24T23:06:50.682359+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -221,15 +221,15 @@
       "day": 5,
       "scheduled_at": "2026-10-24T20:00:00+05:30",
       "topic": "Working Capital Cycle",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D05-20:00_1792863281",
+      "claimed_at": "2026-10-24T23:04:41.235580+05:30",
+      "youtube_video_id": "V_nMzxuaaZM",
+      "youtube_url": "https://youtube.com/shorts/V_nMzxuaaZM",
+      "published_at": "2026-10-24T23:06:50.676357+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Why do profitable companies suddenly collapse into bankruptcy without any warning signs at all? It is a cash trap. The working capital cycle tracks how fast cash transforms into inventory, sales, receivables, and back into liquid money. When receivables take ninety days while suppliers demand immediate payment, your business bleeds dry despite massive sales growth. Across NSE listed manufacturing firms, managing strict RBI credit norms and MSME payment rules determines true operational survival. Always analyze the conversion period closely before investing because revenue without liquidity is just an accounting illusion. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D06-09:00": {
       "row_index": 17,
