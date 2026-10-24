@@ -1,17 +1,19 @@
 name: Schedule Watchdog
 
-# Runs daily at 17:00 UTC (22:30 IST) to verify that scheduled runs were not skipped or dropped by GitHub Actions.
-# If any topic is >3 hours overdue and still Pending, opens or updates a tracking issue.
+# Runs hourly at minute 25 to verify that scheduled runs were not skipped or dropped by GitHub Actions.
+# If any topic is >1.5 hours overdue and still Pending, files an alert issue and automatically triggers
+# the Publish Finance Shorts workflow to self-heal and publish the missing slot immediately.
 
 on:
   schedule:
-    # 22:30 IST = 17:00 UTC
-    - cron: '0 17 * * *'
+    # Run every hour at minute 25 (off-peak, avoids :00 and :30 queue congestion)
+    - cron: '25 * * * *'
   workflow_dispatch:
 
 permissions:
   contents: read
   issues: write
+  actions: write
 
 concurrency:
   group: finance-shorts-watchdog
@@ -27,13 +29,11 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout Repository
-        # Pin to major tag v4 (SHA pinning recommended for enterprise security)
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
       - name: Set up Python 3.11
-        # Pin to major tag v5
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -43,30 +43,34 @@ jobs:
       - name: Install Dependencies
         run: |
           set -euo pipefail
-          pip install openpyxl pytz
+          pip install openpyxl pytz python-dotenv
 
       - name: Run Overdue Schedule Check
         id: check
         run: |
           set -euo pipefail
           set +e
-          python tools/watchdog.py --threshold-hours 3.0 --out-title watchdog_title.txt --out-body watchdog_body.txt
+          python tools/watchdog.py --threshold-hours 1.5 --out-title watchdog_title.txt --out-body watchdog_body.txt
           CHECK_CODE=$?
           echo "CHECK_CODE=${CHECK_CODE}" >> "$GITHUB_ENV"
           set -e
 
-      - name: Alert on Overdue Topics
+      - name: Alert and Auto-Recover Overdue Topics
         if: env.CHECK_CODE != '0' && env.CHECK_CODE != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          TITLE=$(cat watchdog_title.txt)
-          EXISTING_ISSUE=$(gh issue list --state open --search "$TITLE" --json number -q '.[0].number' 2>/dev/null || true)
-          if [ -n "$EXISTING_ISSUE" ] && [ "$EXISTING_ISSUE" != "null" ]; then
-            echo "Updating existing watchdog issue #${EXISTING_ISSUE}..."
-            gh issue comment "$EXISTING_ISSUE" --body-file watchdog_body.txt
-          else
-            echo "Opening new watchdog alert issue..."
-            gh issue create --title "$TITLE" --body-file watchdog_body.txt
+          if [ -s watchdog_title.txt ]; then
+            TITLE=$(cat watchdog_title.txt)
+            EXISTING_ISSUE=$(gh issue list --state open --search "$TITLE" --json number -q '.[0].number' 2>/dev/null || true)
+            if [ -n "$EXISTING_ISSUE" ] && [ "$EXISTING_ISSUE" != "null" ]; then
+              echo "Updating existing watchdog issue #${EXISTING_ISSUE}..."
+              gh issue comment "$EXISTING_ISSUE" --body-file watchdog_body.txt || true
+            else
+              echo "Opening new watchdog alert issue..."
+              gh issue create --title "$TITLE" --body-file watchdog_body.txt || true
+            fi
+            echo "Auto-triggering Publish Finance Shorts to recover overdue topic..."
+            gh workflow run publish_shorts.yml -f mode=production -f dry_run=false || true
           fi

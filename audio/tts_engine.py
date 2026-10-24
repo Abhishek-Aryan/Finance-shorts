@@ -141,16 +141,12 @@ def normalize_audio(raw_audio_path: Path, normalized_path: Path) -> Path:
     return normalized_path
 
 
-async def _synthesize_edge_tts_async(
+async def _synthesize_edge_tts_single(
     text: str,
     output_audio_path: Path,
-    voice: str = DEFAULT_VOICE,
+    voice: str,
     rate: str = "+0%",
 ) -> list[dict[str, Any]]:
-    """
-    Synthesizes speech using edge-tts and collects word-level boundary timings.
-    Handles both WordBoundary and SentenceBoundary events.
-    """
     import edge_tts
 
     words: list[dict[str, Any]] = []
@@ -178,8 +174,9 @@ async def _synthesize_edge_tts_async(
                     "duration": round(duration, 3),
                 })
 
-    # If WordBoundary wasn't emitted by edge-tts (common on newer versions),
-    # calculate exact word timings from SentenceBoundary events
+    if not output_audio_path.exists() or output_audio_path.stat().st_size < 1000:
+        raise edge_tts.exceptions.NoAudioReceived("Generated audio file is missing or empty (< 1000 bytes)")
+
     if not words and sentence_events:
         for sent in sentence_events:
             s_text = sent["text"].strip()
@@ -203,6 +200,66 @@ async def _synthesize_edge_tts_async(
     return words
 
 
+async def _synthesize_edge_tts_async(
+    text: str,
+    output_audio_path: Path,
+    voice: str = DEFAULT_VOICE,
+    rate: str = "+0%",
+) -> list[dict[str, Any]]:
+    """
+    Synthesizes speech using edge-tts with exponential retry and automatic multi-voice failover.
+    """
+    voice_candidates = [voice, "en-US-ChristopherNeural", "en-US-GuyNeural", "en-US-EricNeural", "en-IN-PrabhatNeural"]
+    seen_voices = set()
+    deduped_voices = []
+    for v in voice_candidates:
+        if v not in seen_voices:
+            seen_voices.add(v)
+            deduped_voices.append(v)
+
+    last_exc = None
+    for cand_voice in deduped_voices:
+        for attempt in range(1, 3):
+            try:
+                logger.info("Attempting Edge-TTS synthesis with voice '%s' (attempt %d/2)...", cand_voice, attempt)
+                words = await _synthesize_edge_tts_single(text, output_audio_path, voice=cand_voice, rate=rate)
+                logger.info("Edge-TTS succeeded with voice '%s' (%d bytes)", cand_voice, output_audio_path.stat().st_size)
+                return words
+            except Exception as e:
+                last_exc = e
+                logger.warning("Edge-TTS attempt %d failed for voice '%s': %s", attempt, cand_voice, e)
+                await asyncio.sleep(1.5)
+
+    if last_exc:
+        raise last_exc
+    raise RuntimeError("Edge-TTS synthesis exhausted all voice candidates")
+
+
+def _synthesize_gtts_fallback(text: str, output_audio_path: Path) -> list[dict[str, Any]]:
+    """Emergency zero-fail Google TTS fallback with synthetic word boundaries."""
+    logger.warning("Engaging emergency gTTS (Google Text-to-Speech) fallback engine...")
+    from gtts import gTTS
+    tts = gTTS(text=text, lang="en", tld="com", slow=False)
+    tts.save(str(output_audio_path))
+    logger.info("gTTS audio generated successfully (%d bytes)", output_audio_path.stat().st_size)
+
+    duration = get_audio_duration(output_audio_path)
+    words = []
+    tokens = text.split()
+    if tokens:
+        total_chars = sum(len(w) for w in tokens)
+        cur_t = 0.0
+        for w in tokens:
+            w_dur = (len(w) / max(total_chars, 1)) * max(duration, 1.0)
+            words.append({
+                "word": w,
+                "start": round(cur_t, 3),
+                "end": round(cur_t + w_dur, 3),
+            })
+            cur_t += w_dur
+    return words
+
+
 def synthesize_speech(
     text: str,
     output_dir: Optional[Path] = None,
@@ -212,22 +269,9 @@ def synthesize_speech(
     normalize: bool = True,
 ) -> dict[str, Any]:
     """
-    Synchronous entry point for speech synthesis.
-    
-    Generates:
-      1. Raw audio file (.mp3)
-      2. Normalized audio file (.mp3)
-      3. Word-level timestamp JSON (.json)
-      4. Subtitle files (.srt, .vtt)
-    
-    Returns metadata dict:
-      {
-        "audio_path": Path,
-        "word_timestamps": list[dict],
-        "duration": float,
-        "voice": str,
-        "srt_path": Path,
-      }
+    Synchronous entry point for speech synthesis with multi-tier fallback:
+    1. Edge-TTS primary with automatic multi-voice failover and retries
+    2. Emergency gTTS fallback if Microsoft Edge endpoints drop connection
     """
     if output_dir is None:
         output_dir = config.OUTPUT_AUDIO
@@ -242,17 +286,24 @@ def synthesize_speech(
 
     logger.info("Generating speech with voice '%s' for %d characters...", voice, len(cleaned_text))
 
-    # Run async synthesis
-    word_timestamps = asyncio.run(
-        _synthesize_edge_tts_async(cleaned_text, raw_audio, voice=voice, rate=rate)
-    )
+    try:
+        word_timestamps = asyncio.run(
+            _synthesize_edge_tts_async(cleaned_text, raw_audio, voice=voice, rate=rate)
+        )
+    except Exception as e:
+        logger.warning("Edge-TTS synthesis failed after all retries (%s). Falling back to gTTS.", e)
+        word_timestamps = _synthesize_gtts_fallback(cleaned_text, raw_audio)
 
     # Normalize audio loudness
     if normalize:
-        normalize_audio(raw_audio, norm_audio)
-        if raw_audio.exists():
-            raw_audio.unlink()  # Remove unnormalized temp file
-        final_audio = norm_audio
+        try:
+            normalize_audio(raw_audio, norm_audio)
+            if raw_audio.exists():
+                raw_audio.unlink()
+            final_audio = norm_audio
+        except Exception as ne:
+            logger.warning("Audio normalization failed (%s), using raw audio file.", ne)
+            final_audio = raw_audio
     else:
         final_audio = raw_audio
 

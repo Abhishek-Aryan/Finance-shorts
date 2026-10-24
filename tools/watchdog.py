@@ -113,6 +113,9 @@ def main() -> None:
     s_file = Path(args.state_file) if args.state_file else None
     overdue = find_overdue_rows(state_file=s_file, threshold_hours=args.threshold_hours)
 
+    Path(args.out_title).write_text("", encoding="utf-8")
+    Path(args.out_body).write_text("", encoding="utf-8")
+
     if overdue:
         print(f"[WARNING] Found {len(overdue)} overdue topics in schedule:")
         for o in overdue:
