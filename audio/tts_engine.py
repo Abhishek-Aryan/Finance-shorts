@@ -23,6 +23,13 @@ logger = logging.getLogger(__name__)
 # Recommended free high-retention voices for finance shorts
 # AndrewMultilingualNeural is conversational, expressive, and sounds like a real podcast host
 DEFAULT_VOICE = getattr(config, "DEFAULT_VOICE", "en-US-AndrewMultilingualNeural")
+VOICE_FAILOVER_CANDIDATES = [
+    DEFAULT_VOICE,
+    "en-US-ChristopherNeural",
+    "en-US-GuyNeural",
+    "en-US-EricNeural",
+    "en-IN-PrabhatNeural",
+]
 ALTERNATIVE_VOICES = {
     "us_male_conversational": "en-US-AndrewMultilingualNeural",
     "us_male_deep": "en-US-BrianMultilingualNeural",
