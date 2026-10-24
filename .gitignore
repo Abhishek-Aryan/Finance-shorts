@@ -40,6 +40,10 @@ htmlcov/
 tools/test_*.py
 tools/debug_*.py
 tools/user_table_prompt*.txt
+scratch/
+scratch_*.py
+watchdog_*.txt
+alert_*.txt
 
 # ── OS / Editor ───────────────────────────────────────────
 .DS_Store

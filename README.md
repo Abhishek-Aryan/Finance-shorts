@@ -72,18 +72,21 @@ The CLI commands (specifically `python main.py publish-next`) exit with standard
 - **Hook Uniqueness Check**: Every generated script's opening hook (first 8 words) is checked against the last 10 published scripts in `schedule_state.json`. If a collision is detected, generation is retried up to 3 times to guarantee fresh intros.
 - **OpenRouter**: Configured fallback via `OPENROUTER_API_KEY`.
 
-### 2. Voice Synthesis (TTS)
-- **Microsoft Edge-TTS** (`TTS_ENGINE=edge`, default): High-fidelity neural voice synthesis (`en-US-AndrewMultilingualNeural`) with per-word boundary timestamps for kinetic subtitles. No GPU or API keys required.
+### 2. Voice Synthesis (TTS) - Multi-Tier High Availability
+- **Microsoft Edge-TTS Pool** (`TTS_ENGINE=edge`, default): High-fidelity neural voice synthesis with exact word boundary timestamps for kinetic subtitles.
+- **5-Voice Automatic Failover Pool**: If Microsoft drops a connection or a voice server is slow, the engine automatically retries with exponential backoff across 5 curated voices:
+  `en-US-AndrewMultilingualNeural` ➔ `en-US-ChristopherNeural` ➔ `en-US-GuyNeural` ➔ `en-US-EricNeural` ➔ `en-IN-PrabhatNeural`.
+- **Google TTS (`gTTS`) Secondary Engine**: If all Edge-TTS servers fail, the pipeline instantly engages Google Text-to-Speech with synthetic word-level alignment so audio synthesis never blocks the publishing run.
 - **Piper Neural TTS** (`TTS_ENGINE=piper`): Optional local offline neural synthesis engine.
 
-### 3. Scene Video Generation (Google Veo)
-- **Google Veo Provider** (`visuals/veo_provider.py`): Scene video generation using the official Gemini video model (`veo-3.1-fast-generate-preview` or configured `VEO_MODEL`).
-- **Batch Processing**: Submits all scene generation requests first, then polls operations asynchronously to minimize wall-clock runtime.
-- **Retry & Backoff**: Exponential backoff (up to 5 attempts) on transient HTTP 429, 500, and 503 errors.
-- **Character Consistency Limitation**: Current generative video models like Veo do not guarantee identical facial geometry across multi-scene generations. The provider provides reference plate conditioning (`assets/presenter/mentor_character_1.png`) where supported, and the native cinematic composer seamlessly blends luxury silhouette mentor visual plates with gold typography overlays.
+### 3. Scene Video Generation & Graceful Fallback
+- **Google Veo Provider** (`visuals/veo_provider.py`): Scene video generation using Google's Gemini video models with asynchronous batch polling.
+- **Automatic Fallback to Luxury Cinematic Plates**: If the video model endpoint encounters a 404, rate limit, quota exhaustion, or downtime, the pipeline gracefully falls back to the native luxury motion-graphics compositor with silhouette character plates and gold typography overlays. The pipeline never aborts.
+- **Character Consistency Limitation**: Current generative video models like Veo do not guarantee identical facial geometry across multi-scene generations. The provider provides reference plate conditioning (`assets/presenter/mentor_character_1.png`) where supported, blended with our cinematic compositor.
 
 ### 4. Audio Ducking & Kinetic Subtitles
 - Multi-layer FFmpeg compositor embeds safe-zone word-by-word kinetic subtitles, 4K luxury silhouette plates, and automatically ducks the *Succession* piano backing track (-18dB under speech).
+- **Public Visibility by Default**: All videos are uploaded directly with `public` visibility (no unlisted ramp-up period).
 
 ---
 
@@ -156,6 +159,12 @@ Runs 3 times daily at:
 
 - **To Pause**: Navigate to **Settings > Secrets and variables > Actions > Variables**, edit `PUBLISH_ENABLED`, and set to `false`. Workflow runs will exit cleanly with Exit Code 0 and log `"Publishing paused: set repository variable PUBLISH_ENABLED to true to resume"`.
 - **To Resume**: Set `PUBLISH_ENABLED` back to `true`.
+
+### 5. Autonomous Self-Healing Watchdog (`watchdog.yml`)
+
+- Runs every hour at minute 25 (`25 * * * *`, off-peak).
+- Inspects `data/schedule_state.json` for any curriculum topic overdue by >1.5 hours in `Pending` state.
+- **Automated Recovery**: If GitHub Actions ever drops or delays a scheduled cron run, the watchdog automatically files an issue alert and immediately dispatches `publish_shorts.yml` to publish the overdue slot without any human intervention.
 
 ---
 
