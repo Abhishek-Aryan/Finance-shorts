@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-25T19:21:21.020254+05:30",
+  "updated_at": "2026-10-25T20:51:56.174305+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -266,15 +266,15 @@
       "day": 6,
       "scheduled_at": "2026-10-25T20:00:00+05:30",
       "topic": "Put-Call Parity",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D06-20:00_1792941576",
+      "claimed_at": "2026-10-25T20:49:35.745130+05:30",
+      "youtube_video_id": "G7LlycXCR3Y",
+      "youtube_url": "https://youtube.com/shorts/G7LlycXCR3Y",
+      "published_at": "2026-10-25T20:51:56.173300+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Did you know options pricing is locked by a mathematical law that prevents free money in global markets? Put call parity binds European options together, stating that a call plus cash equals a put plus stock. If prices drift out of balance, institutional computers execute instant trades, locking in risk-free profit until equilibrium returns. On the NSE, Nifty index options strictly obey this rule, keeping derivative pricing fair for every retail trader. Never trade mispriced options alone; always check synthetic equivalents to ensure you are getting the best market execution. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D07-09:00": {
       "row_index": 20,
