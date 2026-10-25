@@ -68,18 +68,21 @@ def find_overdue_rows(
 def generate_watchdog_report(
     overdue_rows: list[dict],
     now: datetime | None = None,
+    threshold_hours: float = 0.25,
 ) -> tuple[str, str]:
     """Generates (title, body) for watchdog GitHub Issue alert."""
     title = "Schedule overdue: rows not published"
     now_str = (now or datetime.now(IST)).strftime("%Y-%m-%d %H:%M IST")
+    thresh_mins = int(threshold_hours * 60)
 
     lines = [
         f"### ⚠️ Schedule Watchdog Alert: Overdue Topics Detected",
         "",
         f"- **Inspection Time**: `{now_str}`",
         f"- **Overdue Topics Count**: `{len(overdue_rows)}`",
+        f"- **Threshold**: `{threshold_hours} hrs` (~{thresh_mins} mins)",
         "",
-        "The following curriculum topics are more than 3 hours past their scheduled publishing slot and remain in **Pending** status. This indicates that one or more scheduled GitHub Actions cron runs were dropped, delayed, or failed to trigger:",
+        f"The following curriculum topics are more than {threshold_hours} hours past their scheduled publishing slot and remain in **Pending** status. This indicates that one or more scheduled GitHub Actions cron runs were dropped, delayed, or failed to trigger:",
         "",
         "| Row Key | Day | Scheduled Time | Overdue By | Topic |",
         "|:---:|:---:|:---:|:---:|:---|",
@@ -104,7 +107,7 @@ def generate_watchdog_report(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Watchdog for overdue scheduled topics")
     parser.add_argument("--state-file", default=None, help="Path to schedule_state.json")
-    parser.add_argument("--threshold-hours", type=float, default=3.0, help="Hours overdue threshold")
+    parser.add_argument("--threshold-hours", type=float, default=0.25, help="Hours overdue threshold (default: 0.25h = 15m)")
     parser.add_argument("--out-title", default="watchdog_title.txt", help="Output title file")
     parser.add_argument("--out-body", default="watchdog_body.txt", help="Output body file")
 
@@ -121,7 +124,7 @@ def main() -> None:
         for o in overdue:
             print(f"  - [{o['row_key']}] '{o['topic']}' (overdue by {o['delay_hours']}h)")
 
-        title, body = generate_watchdog_report(overdue)
+        title, body = generate_watchdog_report(overdue, threshold_hours=args.threshold_hours)
         Path(args.out_title).write_text(title, encoding="utf-8")
         Path(args.out_body).write_text(body, encoding="utf-8")
         sys.exit(1)

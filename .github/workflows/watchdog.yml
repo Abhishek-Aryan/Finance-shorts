@@ -1,13 +1,14 @@
 name: Schedule Watchdog
 
-# Runs hourly at minute 25 to verify that scheduled runs were not skipped or dropped by GitHub Actions.
-# If any topic is >1.5 hours overdue and still Pending, files an alert issue and automatically triggers
-# the Publish Finance Shorts workflow to self-heal and publish the missing slot immediately.
+# Runs every 15 minutes at off-peak minutes (10, 25, 40, 55) to verify that scheduled runs
+# were not dropped or queued by GitHub Actions cron congestion.
+# If any topic is >15 minutes overdue and still Pending, files an alert issue and immediately
+# triggers Publish Finance Shorts via workflow_dispatch to self-heal and publish without delay.
 
 on:
   schedule:
-    # Run every hour at minute 25 (off-peak, avoids :00 and :30 queue congestion)
-    - cron: '25 * * * *'
+    # Run every 15 minutes at off-peak minutes (avoids :00 and :30 queue congestion)
+    - cron: '10,25,40,55 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -50,7 +51,7 @@ jobs:
         run: |
           set -euo pipefail
           set +e
-          python tools/watchdog.py --threshold-hours 1.5 --out-title watchdog_title.txt --out-body watchdog_body.txt
+          python tools/watchdog.py --threshold-hours 0.25 --out-title watchdog_title.txt --out-body watchdog_body.txt
           CHECK_CODE=$?
           echo "CHECK_CODE=${CHECK_CODE}" >> "$GITHUB_ENV"
           set -e
@@ -72,5 +73,5 @@ jobs:
               gh issue create --title "$TITLE" --body-file watchdog_body.txt || true
             fi
             echo "Auto-triggering Publish Finance Shorts to recover overdue topic..."
-            gh workflow run publish_shorts.yml -f mode=production -f dry_run=false || true
+            gh workflow run publish_shorts.yml -f mode=production -f dry_run=false -f force_privacy=public || true
           fi
