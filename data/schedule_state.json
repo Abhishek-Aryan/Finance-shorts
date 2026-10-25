@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-25T14:12:44.825865+05:30",
+  "updated_at": "2026-10-25T19:21:21.020254+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -251,15 +251,15 @@
       "day": 6,
       "scheduled_at": "2026-10-25T15:00:00+05:30",
       "topic": "Credit Spreads and Corporate Bonds",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D06-15:00_1792936126",
+      "claimed_at": "2026-10-25T19:18:46.378445+05:30",
+      "youtube_video_id": "Cjg5GrTOv3U",
+      "youtube_url": "https://youtube.com/shorts/Cjg5GrTOv3U",
+      "published_at": "2026-10-25T19:21:21.020039+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Why do corporate bonds pay more than government debt? The secret lies in measuring hidden default risk instantly today. A credit spread is the extra yield investors demand for holding risky corporate debt over safe sovereign bonds. When economic panic strikes, spreads widen dramatically as investors demand massive safety premiums for holding corporate bonds. In Indian markets, RBI rate decisions directly influence how corporate bond spreads behave across NSE listed companies. Always monitor credit spreads before buying bonds, because narrow spreads mean low compensation for high default danger. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D06-20:00": {
       "row_index": 19,
