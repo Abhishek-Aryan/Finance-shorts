@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-24T23:06:50.682359+05:30",
+  "updated_at": "2026-10-25T14:12:44.825865+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -236,15 +236,15 @@
       "day": 6,
       "scheduled_at": "2026-10-25T09:00:00+05:30",
       "topic": "Return on Equity and DuPont Analysis",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D06-09:00_1792917616",
+      "claimed_at": "2026-10-25T14:10:16.360553+05:30",
+      "youtube_video_id": "IGZpd4Y9LMc",
+      "youtube_url": "https://youtube.com/shorts/IGZpd4Y9LMc",
+      "published_at": "2026-10-25T14:12:44.825690+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Are you misjudging stock returns by ignoring the hidden drivers behind your favorite company's true profitability? Return on Equity measures net income against shareholder equity. DuPont analysis breaks this powerful metric down into three actionable pieces. A high ROE driven by massive debt is dangerous. Smart analysts isolate operational efficiency from financial leverage using this framework. On the NSE, top Indian IT firms achieve high ROE through profit margins, while banks rely heavily on financial leverage. Always demand high ROE backed by strong asset turnover rather than reckless borrowing to protect your hard earned wealth. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D06-15:00": {
       "row_index": 18,
