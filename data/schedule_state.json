@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-26T19:44:47.274391+05:30",
+  "updated_at": "2026-10-26T21:47:29.027530+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -311,15 +311,15 @@
       "day": 7,
       "scheduled_at": "2026-10-26T20:00:00+05:30",
       "topic": "Dividend Discount Model",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D07-20:00_1793031280",
+      "claimed_at": "2026-10-26T21:44:40.424967+05:30",
+      "youtube_video_id": "104vfUtBMkE",
+      "youtube_url": "https://youtube.com/shorts/104vfUtBMkE",
+      "published_at": "2026-10-26T21:47:29.027240+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "How do elite investors know if a stock is actually cheap before risking their hard-earned money in the market? The Dividend Discount Model calculates a stock intrinsic value by summing all its future cash payouts discounted back to today. If a stable company pays ten rupees in dividends and grows at five percent, your expected returns become mathematically predictable. Applying this on the NSE helps you spot undervalued dividend giants like TCS or ITC hiding inside the Indian market. Always remember that dividends do not lie, making this model your ultimate shield against overpriced speculative growth traps. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D08-09:00": {
       "row_index": 23,
