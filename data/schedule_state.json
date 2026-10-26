@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-25T20:51:56.174305+05:30",
+  "updated_at": "2026-10-26T12:29:26.839517+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -281,15 +281,15 @@
       "day": 7,
       "scheduled_at": "2026-10-26T09:00:00+05:30",
       "topic": "Options Greeks: Delta and Theta",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D07-09:00_1792997799",
+      "claimed_at": "2026-10-26T12:26:39.336396+05:30",
+      "youtube_video_id": "UhOiAWNtB-4",
+      "youtube_url": "https://youtube.com/shorts/UhOiAWNtB-4",
+      "published_at": "2026-10-26T12:29:26.839266+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Are you losing money on options without knowing why? Delta and theta are secret weapons you must master today. Delta measures how much your option price changes when the underlying asset moves by one single point. Theta represents time decay. It eats away at your option premium every single day you hold the position. On the Indian NSE, option buyers fight theta decay daily, especially during weekly Nifty and BankNifty expiries. Always check theta before buying options and remember that high delta means higher risk and higher reward. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D07-15:00": {
       "row_index": 21,
