@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-26T12:29:26.839517+05:30",
+  "updated_at": "2026-10-26T19:44:47.274391+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -296,15 +296,15 @@
       "day": 7,
       "scheduled_at": "2026-10-26T15:00:00+05:30",
       "topic": "Short Selling and Borrowing Costs",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D07-15:00_1793023907",
+      "claimed_at": "2026-10-26T19:41:47.634838+05:30",
+      "youtube_video_id": "Cq79ZuogTN4",
+      "youtube_url": "https://youtube.com/shorts/Cq79ZuogTN4",
+      "published_at": "2026-10-26T19:44:47.274170+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Ever wondered why betting against a stock can completely drain your trading account before it even falls? Short selling means borrowing shares to sell them now, hoping to buy them back cheaper later for huge profits. But brokers charge heavy borrowing fees called securities lending rates, which can spike past twenty percent annually. On Indian exchanges like the NSE, intraday shorting is common, but holding overnight incurs steep borrowing charges. Always calculate borrowing fees before entering a short position, because holding too long destroys your potential gains. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D07-20:00": {
       "row_index": 22,
