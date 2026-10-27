@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-26T21:47:29.027530+05:30",
+  "updated_at": "2026-10-28T02:28:29.614111+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -326,15 +326,15 @@
       "day": 8,
       "scheduled_at": "2026-10-27T09:00:00+05:30",
       "topic": "Economic Value Added (EVA)",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D08-09:00_1793134592",
+      "claimed_at": "2026-10-28T02:26:32.251638+05:30",
+      "youtube_video_id": "Y-s2tDuqzFQ",
+      "youtube_url": "https://youtube.com/shorts/Y-s2tDuqzFQ",
+      "published_at": "2026-10-28T02:28:29.614111+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Are traditional profits lying to you? Discover Economic Value Added, the ultimate metric that reveals true shareholder wealth creation today. Economic Value Added measures the true economic profit by subtracting the total cost of capital from the net operating profits. When companies generate a positive EVA, they consistently outperform the broader market indexes and reward long-term patient investors significantly. Top Indian conglomerates listed on the NSE use EVA to efficiently allocate billions of rupees across high-growth manufacturing sectors. Always verify if a business clears its hurdle rate before investing your hard-earned money into their equity shares today. Follow the journey to improve your financial knowledge. Drop your questions below in the comments."
     },
     "D08-15:00": {
       "row_index": 24,
