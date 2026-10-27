@@ -96,6 +96,14 @@ def authenticate_youtube(force_reauth: bool = False) -> bool:
 
         print(f"\n[OK] YouTube OAuth credentials saved to:\n  {token_file}")
 
+        # Automatically sync updated credentials to GitHub Actions repository secrets
+        try:
+            from tools.sync_secrets import sync_github_secrets
+            print("\nSyncing updated token to GitHub Actions repository secrets...")
+            sync_github_secrets(token_file=token_file)
+        except Exception as se:
+            logger.warning("Auto-syncing secrets failed: %s", se)
+
     # Verify channel access
     try:
         youtube = build("youtube", "v3", credentials=creds)
