@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-28T02:28:29.614111+05:30",
+  "updated_at": "2026-10-28T04:50:17.988597+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -341,15 +341,15 @@
       "day": 8,
       "scheduled_at": "2026-10-27T15:00:00+05:30",
       "topic": "Beta and Systematic Risk",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D08-15:00_1793143061",
+      "claimed_at": "2026-10-28T04:47:40.873257+05:30",
+      "youtube_video_id": "E8k3qQhKe7k",
+      "youtube_url": "https://youtube.com/shorts/E8k3qQhKe7k",
+      "published_at": "2026-10-28T04:50:17.988353+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Why do some stocks crash twice as hard as the entire market during sudden panics? Systematic risk is the unavoidable danger affecting all assets. Beta measures how violently your stock reacts to this market turbulence. If a stock has a beta of one point five, it theoretically jumps fifteen percent when the market gains ten percent. On the NSE, cyclical Nifty fifty stocks often show higher beta compared to defensive pharma shares during macroeconomic shifts. Always match your portfolio beta with your personal risk tolerance to avoid sleepless nights during severe market downturns. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D08-20:00": {
       "row_index": 25,
