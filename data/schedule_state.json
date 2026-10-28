@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-28T07:10:40.301250+05:30",
+  "updated_at": "2026-10-28T14:30:42.718130+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -371,15 +371,15 @@
       "day": 9,
       "scheduled_at": "2026-10-28T09:00:00+05:30",
       "topic": "Repo Rate, Reverse Repo and CRR",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D09-09:00_1793177904",
+      "claimed_at": "2026-10-28T14:28:24.359016+05:30",
+      "youtube_video_id": "kkJSkvhPORk",
+      "youtube_url": "https://youtube.com/shorts/kkJSkvhPORk",
+      "published_at": "2026-10-28T14:30:42.717936+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "How does the central bank control every single loan interest rate in the entire country overnight using three powerful monetary levers? First is the repo rate, the interest charged when commercial banks borrow money directly from the central bank during cash crunches. Second is the reverse repo rate, where banks park excess funds safely with the regulator to earn a guaranteed daily return. Finally, CRR forces Indian banks to keep a mandatory percentage of total deposits liquid with the RBI as ultimate safety. When repo rates rise, your EMIs increase and markets usually correct. Always track these central bank meetings for better portfolio management. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D09-15:00": {
       "row_index": 27,
