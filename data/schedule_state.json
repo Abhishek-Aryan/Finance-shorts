@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-28T14:30:42.718130+05:30",
+  "updated_at": "2026-10-28T15:30:24.517261+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -386,15 +386,15 @@
       "day": 9,
       "scheduled_at": "2026-10-28T15:00:00+05:30",
       "topic": "Real Interest Rates",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D09-15:00_1793181464",
+      "claimed_at": "2026-10-28T15:27:44.590139+05:30",
+      "youtube_video_id": "EDTDYIpeGxI",
+      "youtube_url": "https://youtube.com/shorts/EDTDYIpeGxI",
+      "published_at": "2026-10-28T15:30:24.517005+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Is your bank account actually losing purchasing power while your savings balance continues to grow higher every single month? Nominal interest is what banks pay you. Real interest strips away inflation to reveal your actual purchasing power growth. If a fixed deposit offers seven percent but inflation runs at six percent, your true wealth gain is only one percent. In India, the RBI repo rate directly dictates your FD returns against CPI inflation, impacting every single Indian saver. Always calculate the real rate before investing to ensure your hard earned capital beats the silent thief called inflation. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D09-20:00": {
       "row_index": 28,
