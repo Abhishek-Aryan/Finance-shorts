@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-28T15:30:24.517261+05:30",
+  "updated_at": "2026-10-28T21:32:26.073305+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -401,15 +401,15 @@
       "day": 9,
       "scheduled_at": "2026-10-28T20:00:00+05:30",
       "topic": "Quantitative Easing and Balance Sheets",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D09-20:00_1793203179",
+      "claimed_at": "2026-10-28T21:29:39.177633+05:30",
+      "youtube_video_id": "PxTlcN_QBps",
+      "youtube_url": "https://youtube.com/shorts/PxTlcN_QBps",
+      "published_at": "2026-10-28T21:32:26.073071+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "How do central banks magically create trillions of dollars out of thin air? Let us decode quantitative easing right now. Quantitative easing happens when central banks buy bonds to flood the economy with cash and lower interest rates for everyone. During major crises, the US Federal Reserve ballooned its balance sheet past nine trillion dollars to stabilize the financial markets. Even the Reserve Bank of India deploys similar liquidity tools to manage bond yields and support domestic economic growth effectively. Remember that expanding balance sheets usually inflate asset prices, making smart stock and real estate selection crucial for investors. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D10-09:00": {
       "row_index": 29,
