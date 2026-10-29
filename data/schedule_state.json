@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-29T12:10:16.043572+05:30",
+  "updated_at": "2026-10-29T15:53:26.627250+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -431,15 +431,15 @@
       "day": 10,
       "scheduled_at": "2026-10-29T15:00:00+05:30",
       "topic": "Expense Ratio and Compounding Drag",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D10-15:00_1793269239",
+      "claimed_at": "2026-10-29T15:50:39.281969+05:30",
+      "youtube_video_id": "CF2FOJsIXTA",
+      "youtube_url": "https://youtube.com/shorts/CF2FOJsIXTA",
+      "published_at": "2026-10-29T15:53:26.627018+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Are tiny investment fees actually stealing thousands from your future self without you even noticing the silent drain happening daily? Expense ratios deduct management costs directly from your fund. Over decades, this creates a massive compounding drag on your returns. Investing one hundred thousand rupees at ten percent for thirty years loses lakhs just to a one percent fee difference. In Indian mutual funds, regular plans cost more than direct plans through SEBI rules, eating your hard earned compounding gains. Always choose low cost index funds or direct mutual funds to keep maximum compounding power working hard for your future. Follow the journey to improve your financial knowledge. Drop your questions in the comments below."
     },
     "D10-20:00": {
       "row_index": 31,
