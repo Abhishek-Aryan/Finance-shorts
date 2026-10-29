@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-28T21:32:26.073305+05:30",
+  "updated_at": "2026-10-29T12:10:16.043572+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -416,15 +416,15 @@
       "day": 10,
       "scheduled_at": "2026-10-29T09:00:00+05:30",
       "topic": "Forward Rates and Currency Hedging",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D10-09:00_1793255861",
+      "claimed_at": "2026-10-29T12:07:41.544155+05:30",
+      "youtube_video_id": "f_plGR7__SM",
+      "youtube_url": "https://youtube.com/shorts/f_plGR7__SM",
+      "published_at": "2026-10-29T12:10:16.043325+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "What if a currency crash wiped out your entire international investment profit overnight? Let us stop that today. Forward rates let you lock in today an exchange rate for a future date, completely eliminating nasty currency volatility risks. Global giants use these binding contracts to protect billions of dollars against unpredictable and sudden foreign exchange market swings. Indian importers trading on the NSE use RBI regulated forward contracts to shield rupee margins from wild dollar fluctuations. Always calculate the interest rate differential between two countries before pricing your forward contract to secure maximum profitability. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D10-15:00": {
       "row_index": 30,
