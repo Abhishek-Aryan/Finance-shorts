@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-29T15:53:26.627250+05:30",
+  "updated_at": "2026-10-29T21:51:59.743023+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -446,15 +446,15 @@
       "day": 10,
       "scheduled_at": "2026-10-29T20:00:00+05:30",
       "topic": "Bid-Ask Spread and Market Liquidity",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D10-20:00_1793290703",
+      "claimed_at": "2026-10-29T21:48:23.198432+05:30",
+      "youtube_video_id": "Kf9wuxyBpPA",
+      "youtube_url": "https://youtube.com/shorts/Kf9wuxyBpPA",
+      "published_at": "2026-10-29T21:51:59.742773+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Why do you lose money instantly the second you buy a stock? It is all about the hidden cost of trading called the spread. The bid is what buyers pay while the ask is what sellers want. That gap between them is pure profit for market makers. High liquidity means tight spreads costing you pennies. Low liquidity means wide spreads stealing huge chunks of your valuable capital immediately. On the NSE stocks like Reliance have tiny spreads. Penny stocks often show massive spreads destroying your returns on every single trade. Always use limit orders instead of market orders on illiquid stocks to protect your hard earned money from terrible spread pricing. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D11-09:00": {
       "row_index": 32,
