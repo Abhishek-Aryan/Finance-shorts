@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-29T21:51:59.743023+05:30",
+  "updated_at": "2026-10-30T14:38:49.490724+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -461,15 +461,15 @@
       "day": 11,
       "scheduled_at": "2026-10-30T09:00:00+05:30",
       "topic": "Kelly Criterion and Position Sizing",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D11-09:00_1793351224",
+      "claimed_at": "2026-10-30T14:37:04.077136+05:30",
+      "youtube_video_id": "bijhVO5J4Z8",
+      "youtube_url": "https://youtube.com/shorts/bijhVO5J4Z8",
+      "published_at": "2026-10-30T14:38:49.490576+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "How do elite traders never go broke while risking millions on volatile market swings every single trading day? The Kelly Criterion is a mathematical formula that calculates the optimal percentage of capital to risk on any single trade. By balancing your edge against potential losses, this clever formula prevents catastrophic drawdowns while maximizing your long term compound growth. Indian retail traders often blow accounts on Nifty options by overleveraging. Kelly sizing keeps your capital safe on NSE. Never risk more than your calculated Kelly fraction, because survival in the market always comes before making massive profits. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D11-15:00": {
       "row_index": 33,
