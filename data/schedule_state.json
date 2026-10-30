@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-30T15:55:22.650810+05:30",
+  "updated_at": "2026-10-30T21:26:06.697153+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -491,15 +491,15 @@
       "day": 11,
       "scheduled_at": "2026-10-30T20:00:00+05:30",
       "topic": "Active Funds vs Index Funds: Fee Math",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D11-20:00_1793375589",
+      "claimed_at": "2026-10-30T21:23:09.354298+05:30",
+      "youtube_video_id": "auM1mWm5W3I",
+      "youtube_url": "https://youtube.com/shorts/auM1mWm5W3I",
+      "published_at": "2026-10-30T21:26:06.696897+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Why are hidden fees silently destroying your mutual fund returns year after year without you even realizing it? Active fund managers charge higher fees for expert stock picking while index funds simply track the broader market cheaply. Over twenty years, a mere one percent fee difference can consume nearly thirty percent of your total accumulated wealth. In Indian markets, SEBI regular mutual funds often cost more than direct index alternatives available on NSE platforms. Always minimize your expense ratio because lower fees guarantee you keep more of your hard earned market returns. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D12-09:00": {
       "row_index": 35,
