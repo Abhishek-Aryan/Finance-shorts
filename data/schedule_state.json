@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-30T14:38:49.490724+05:30",
+  "updated_at": "2026-10-30T15:55:22.650810+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -476,15 +476,15 @@
       "day": 11,
       "scheduled_at": "2026-10-30T15:00:00+05:30",
       "topic": "Covered Calls and Premium Income",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D11-15:00_1793355768",
+      "claimed_at": "2026-10-30T15:52:48.395444+05:30",
+      "youtube_video_id": "WvHoMfTjRrs",
+      "youtube_url": "https://youtube.com/shorts/WvHoMfTjRrs",
+      "published_at": "2026-10-30T15:55:22.650564+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Are you letting your stocks sit idle while missing out on thousands of rupees in monthly cash flow? A covered call strategy means selling call options against shares you already own, collecting immediate cash called premium income. Smart investors generate consistent returns by pocketing this premium, lowering their effective cost basis on high quality equities. On the NSE, lot sizes allow Indian traders to supercharge blue chip portfolios like Reliance with steady option premiums. Remember to choose your strike prices wisely, balancing extra income against the risk of selling your winning shares. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D11-20:00": {
       "row_index": 34,
