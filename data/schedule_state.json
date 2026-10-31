@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-31T15:27:25.792101+05:30",
+  "updated_at": "2026-10-31T20:58:51.136800+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -536,15 +536,15 @@
       "day": 12,
       "scheduled_at": "2026-10-31T20:00:00+05:30",
       "topic": "Leveraged ETFs and Volatility Decay",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D12-20:00_1793460389",
+      "claimed_at": "2026-10-31T20:56:29.552751+05:30",
+      "youtube_video_id": "nlIDckIfNHI",
+      "youtube_url": "https://youtube.com/shorts/nlIDckIfNHI",
+      "published_at": "2026-10-31T20:58:51.136578+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Did you know holding leveraged ETFs for too long quietly destroys your hard-earned trading capital through a hidden mathematical trap? This destruction is called volatility decay. Daily compounding means bouncing back requires much larger percentage gains just to break even. If the underlying asset drops ten percent and rises eleven percent, a standard index recovers, but a leveraged fund stays down. As derivative products expand on the NSE and SEBI reviews leveraged structures, Indian day traders face these exact compounding risks. Treat leveraged products strictly as intraday tools. Never hold them overnight if you want to protect your portfolio from decay. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D13-09:00": {
       "row_index": 38,
