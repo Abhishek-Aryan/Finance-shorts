@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-31T09:37:15.288225+05:30",
+  "updated_at": "2026-10-31T15:27:25.792101+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -521,15 +521,15 @@
       "day": 12,
       "scheduled_at": "2026-10-31T15:00:00+05:30",
       "topic": "Earnings Quality and Impairments",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D12-15:00_1793440438",
+      "claimed_at": "2026-10-31T15:23:58.261380+05:30",
+      "youtube_video_id": "O2xrkaRM5tQ",
+      "youtube_url": "https://youtube.com/shorts/O2xrkaRM5tQ",
+      "published_at": "2026-10-31T15:27:25.791845+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Are you buying fake corporate profits? High net income means nothing if hidden asset impairments are silently destroying company value today. Earnings quality measures the true sustainability of profits. When asset values drop permanently, companies must record massive non-cash impairment charges immediately. Global giants routinely wipe out billions in goodwill. A sudden write-off instantly crushes share prices and traps unsuspecting retail investors completely. On the NSE, Indian firms under Ind AS face strict impairment tests. Watch for inflated asset books hiding bad loans and outdated factories. Always analyze operating cash flow versus net income. Real cash generation exposes true earnings quality before management announces painful asset impairments. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D12-20:00": {
       "row_index": 37,
