@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-11-01T16:17:30.501507+05:30",
+  "updated_at": "2026-11-01T20:36:52.396720+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -581,15 +581,15 @@
       "day": 13,
       "scheduled_at": "2026-11-01T20:00:00+05:30",
       "topic": "Debt-to-GDP and Sovereign Debt",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D13-20:00_1793545480",
+      "claimed_at": "2026-11-01T20:34:40.076068+05:30",
+      "youtube_video_id": "A7fjyFmKIM0",
+      "youtube_url": "https://youtube.com/shorts/A7fjyFmKIM0",
+      "published_at": "2026-11-01T20:36:52.396575+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "How do governments borrow trillions of dollars without actually going completely broke right away? Debt-to-GDP compares total national borrowing against the entire economic output produced by the country. When this crucial ratio exceeds one hundred percent, investors start demanding higher yields for risk. India manages its sovereign debt carefully through RBI policies, balancing growth with fiscal discipline targets. Always monitor sovereign debt ratios because high national borrowing eventually impacts currency strength and inflation. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D14-09:00": {
       "row_index": 41,
