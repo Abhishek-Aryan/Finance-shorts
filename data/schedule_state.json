@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-11-01T13:40:20.663449+05:30",
+  "updated_at": "2026-11-01T16:17:30.501507+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -566,15 +566,15 @@
       "day": 13,
       "scheduled_at": "2026-11-01T15:00:00+05:30",
       "topic": "Stock Buybacks and EPS Illusion",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D13-15:00_1793529880",
+      "claimed_at": "2026-11-01T16:14:40.797653+05:30",
+      "youtube_video_id": "kopHB_3IjwE",
+      "youtube_url": "https://youtube.com/shorts/kopHB_3IjwE",
+      "published_at": "2026-11-01T16:17:30.501204+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Did your favorite company actually grow, or did they just trick your eyes with a clever math trick? When firms buy back shares, total profits stay flat while share count drops, making earnings per share look artificially inflated. Global corporations spent trillions repurchasing their own stock instead of investing in actual business expansion and new product innovation. Top Indian IT giants on the NSE frequently utilize tender offers to return massive cash reserves to everyday shareholders. Always check revenue growth alongside earnings per share before investing your hard earned capital into any stock. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D13-20:00": {
       "row_index": 40,
