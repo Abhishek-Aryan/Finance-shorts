@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-31T20:58:51.136800+05:30",
+  "updated_at": "2026-11-01T13:40:20.663449+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -551,15 +551,15 @@
       "day": 13,
       "scheduled_at": "2026-11-01T09:00:00+05:30",
       "topic": "Term Premium",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D13-09:00_1793520462",
+      "claimed_at": "2026-11-01T13:37:42.211094+05:30",
+      "youtube_video_id": "ig5Te4HJkEs",
+      "youtube_url": "https://youtube.com/shorts/ig5Te4HJkEs",
+      "published_at": "2026-11-01T13:40:20.663208+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Why do investors demand extra cash for locking away money over long periods instead of short durations? Term premium is the extra return demanded by investors to compensate for bearing interest rate risks over long durations. When inflation spikes unpredictably, long term bondholders suffer massive losses, which justifies higher compensation during issuance. In India, RBI policies and fiscal deficits heavily influence this premium on ten year government securities traded on NSE. Always analyze term premium trends before investing in long duration mutual funds to protect your portfolio from volatility. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D13-15:00": {
       "row_index": 39,
