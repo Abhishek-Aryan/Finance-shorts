@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-11-01T20:36:52.396720+05:30",
+  "updated_at": "2026-11-02T15:30:17.643850+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -596,15 +596,15 @@
       "day": 14,
       "scheduled_at": "2026-11-02T09:00:00+05:30",
       "topic": "Fiscal Deficit vs Current Account Deficit",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D14-09:00_1793613439",
+      "claimed_at": "2026-11-02T15:27:19.102388+05:30",
+      "youtube_video_id": "ekpXywUcoB4",
+      "youtube_url": "https://youtube.com/shorts/ekpXywUcoB4",
+      "published_at": "2026-11-02T15:30:17.643542+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "What is the secret difference between government borrowing and global trade imbalances that crushes developing economies? Fiscal deficit measures government borrowing when spending exceeds tax revenue, whereas current account deficit tracks the net trade of goods and services. When both deficits widen simultaneously, foreign investors panic, currency values plummet, and inflation destroys domestic purchasing power across local markets. In India, RBI closely monitors fiscal targets and oil imports because surging crude prices directly widen the current account deficit. Always check a nation s twin deficits before investing because persistent high borrowing signals upcoming currency devaluations and high interest rates. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D14-15:00": {
       "row_index": 42,
