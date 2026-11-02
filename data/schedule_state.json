@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-11-02T17:08:41.379484+05:30",
+  "updated_at": "2026-11-03T01:14:03.879000+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -626,15 +626,15 @@
       "day": 14,
       "scheduled_at": "2026-11-02T20:00:00+05:30",
       "topic": "Survivorship Bias in Fund Performance",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D14-20:00_1793648359",
+      "claimed_at": "2026-11-03T01:09:19.334765+05:30",
+      "youtube_video_id": "6IxSliTj-xk",
+      "youtube_url": "https://youtube.com/shorts/6IxSliTj-xk",
+      "published_at": "2026-11-03T01:14:03.878822+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Did you know why Survivorship Bias in Fund Performance is watched closely by the world's best investors?  When this happens, smart money repositions immediately. Historically, every major shift in this metric has triggered major moves in equity markets. In the Indian market, this directly impacts Nifty volatility and corporate debt costs. The golden rule: Never fight the macro trend. Protect your capital first. Follow for daily finance intelligence. Share this with an investor friend."
     }
   },
   "daemon": {
