@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-11-02T15:30:17.643850+05:30",
+  "updated_at": "2026-11-02T17:08:41.379484+05:30",
   "rows": {
     "D01-09:00": {
       "row_index": 2,
@@ -611,15 +611,15 @@
       "day": 14,
       "scheduled_at": "2026-11-02T15:00:00+05:30",
       "topic": "Monetary Policy Transmission Lags",
-      "status": "Pending",
+      "status": "Done",
       "attempts": 0,
-      "job_id": null,
-      "claimed_at": null,
-      "youtube_video_id": null,
-      "youtube_url": null,
-      "published_at": null,
+      "job_id": "D14-15:00_1793619361",
+      "claimed_at": "2026-11-02T17:06:01.759605+05:30",
+      "youtube_video_id": "J6tG2WCx9eM",
+      "youtube_url": "https://youtube.com/shorts/J6tG2WCx9eM",
+      "published_at": "2026-11-02T17:08:41.379238+05:30",
       "last_error": null,
-      "script_full": null
+      "script_full": "Did you know central bank rate hikes take up to eighteen months to fully impact the entire economy? This delay is called monetary transmission lag. Money moves slowly through commercial banks before hitting everyday consumer loans. Historical Federal Reserve data shows that inflation reacts only after a significant multi-quarter delay from the initial hike. In India, when the RBI adjusts repo rates, it takes months for SBI and HDFC to reprice loans. Smart investors never panic immediately. Always anticipate future macroeconomic pain based on past central bank policy moves. Follow the journey to improve your financial knowledge. Drop your questions below."
     },
     "D14-20:00": {
       "row_index": 43,
